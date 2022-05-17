@@ -8,8 +8,9 @@
       <v-toolbar-title class="home-navbar" @click="home" v-text="title" />
       <v-spacer />
       <!-- <v-toolbar-title class="home-navbar" @click="home" v-text="title" /> -->
-      <div class="text-center">
+      <div v-if="$nuxt.$fire.auth.currentUser" class="text-center">
         <v-menu
+          v-if="$nuxt.$fire.auth.currentUser"
           v-model="menu"
           :close-on-content-click="false"
           :nudge-width="100"
@@ -22,11 +23,11 @@
             >
               <v-list-item-avatar>
                 <img
-                  src="https://cdn.vuetifyjs.com/images/john.jpg"
+                  :src="$nuxt.$fire.auth.currentUser.photoURL"
                   alt="John"
                 >
               </v-list-item-avatar>
-              John Leider
+              {{ $nuxt.$fire.auth.currentUser.displayName }}
               <v-icon
                 large
               >
@@ -40,14 +41,14 @@
               <v-list-item>
                 <v-list-item-avatar>
                   <img
-                    src="https://cdn.vuetifyjs.com/images/john.jpg"
+                    :src="$nuxt.$fire.auth.currentUser.photoURL"
                     alt="John"
                   >
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title>John Leider</v-list-item-title>
-                  <v-list-item-subtitle>Founder of Vuetify</v-list-item-subtitle>
+                  <v-list-item-title>{{ $nuxt.$fire.auth.currentUser.displayName }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ $nuxt.$fire.auth.currentUser.email }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
             </v-list>
@@ -155,8 +156,10 @@ export default {
     signout () {
       if (this.$nuxt.$fire.auth.currentUser) {
         this.$nuxt.$fire.auth.signOut()
+        location.reload()
       } else {
         this.$nuxt.$auth.logout()
+        location.reload()
       }
     }
   }

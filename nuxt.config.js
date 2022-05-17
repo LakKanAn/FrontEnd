@@ -77,28 +77,29 @@ export default {
   ],
 
   auth: {
+    localStorage: false,
+    redirect: {
+      logout: '/',
+      home: '/',
+      login: '/login'
+    },
     strategies: {
       local: {
-        redirect: {
-          login: '/',
-          logout: '/',
-          callback: '/login',
-          home: '/'
-        },
-        token: {
-          property: 'token',
-          global: true
-          // required: true,
-          // type: 'Bearer'
-        },
-        user: {
-          property: 'user'
-          // autoFetch: true
-        },
         endpoints: {
-          login: { url: '/api/auth/login', method: 'post' },
-          logout: { url: '/api/auth/logout', method: 'post' },
-          user: { url: '/api/auth/user', method: 'get' }
+          login: {
+            url: 'http://localhost:5000/v1/site/access_token',
+            method: 'post',
+            propertyName: 'access_token'
+          },
+          logout: {
+            url: 'http://localhost:5000/v1/site/bye',
+            method: 'get'
+          },
+          user: {
+            url: 'http://localhost:5000/v1/site/me',
+            method: 'get',
+            propertyName: 'user'
+          }
         }
       }
     }

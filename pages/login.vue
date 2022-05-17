@@ -108,18 +108,16 @@ export default {
     }
   },
   methods: {
-    login () {
-      const that = this
-      this.$fire.auth
-        .signInWithEmailAndPassword(this.auth.email, this.auth.password)
-        .catch(function (error) {
-          that.snackbarText = error.message
-          that.snackbar = true
-        })
-        .then((user) => {
-          // we are signed in
-          this.$nuxt.$router.push('/')
-        })
+    async login () {
+      try {
+        await this.$fire.auth.signInWithEmailAndPassword(
+          this.email,
+          this.password
+        )
+        await this.auth()
+      } catch (error) {
+        console.log(error)
+      }
     },
     switchLogin () {
       this.loginPage = (this.loginPage === 'users') ? 'admin' : 'users'

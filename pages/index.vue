@@ -21,7 +21,7 @@
             width="100%"
             depressed
             large
-            @click="login"
+            @click="signout"
           >
             ล็อคเอ้า
           </v-btn>
@@ -68,6 +68,13 @@ export default {
       //     console.log('Hello')
       //     this.$nuxt.$router.push('/')
       //   })
+    },
+    signout () {
+      if (this.$nuxt.$fire.auth.currentUser) {
+        this.$nuxt.$fire.auth.signOut()
+      } else {
+        this.$nuxt.$auth.logout()
+      }
     },
     callConsole () {
     },
