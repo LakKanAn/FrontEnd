@@ -59,9 +59,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create .env file
-        run: |
-          echo ${{ secrets.ENV_FILE_CONTENT }} >> .env
+        run: 'echo "$FILE_CONTENT" >> .env'
         shell: bash
+        env:
+          FILE_CONTENT : ${{ secrets.ENV_FILE_CONTENT }}
 
       - name: Build and push
         uses: docker/build-push-action@v2
