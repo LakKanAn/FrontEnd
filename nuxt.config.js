@@ -56,13 +56,13 @@ export default {
       '@nuxtjs/firebase',
       {
         config: {
-          apiKey: process.env.firebase_api,
-          authDomain: process.env.firebase_authDomain,
-          projectId: process.env.firebase_projectId,
-          storageBucket: process.env.firebase_storageBucket,
-          messagingSenderId: process.env.firebase_messagingSenderId,
-          appId: process.env.firebase_appId,
-          measurementId: process.env.firebase_measurementId
+          apiKey: process.env.FIREBASE_API ,
+          authDomain: process.env.FIREBASE_AUTHDOMAIN,
+          projectId: process.env.FIREBASE_PROJECTID,
+          storageBucket: process.env.FIREBASE_STORAGEBUCKET,
+          messagingSenderId: process.env.FIREBASE_MESSAGINGSENDERID,
+          appId: process.env.FIREBASE_APPID,
+          measurementId: process.env.FIREBASE_MEASUREMENTID
         },
         services: {
           auth: {
@@ -89,16 +89,16 @@ export default {
       local: {
         endpoints: {
           login: {
-            url: process.env.backend_url + 'site/access_token',
+            url: process.env.BACKEND_URL + 'site/access_token',
             method: 'post',
             propertyName: 'access_token'
           },
           logout: {
-            url: process.env.backend_url + 'site/bye',
+            url: process.env.BACKEND_URL + 'site/bye',
             method: 'get'
           },
           user: {
-            url: process.env.backend_url + 'site/me',
+            url: process.env.BACKEND_URL + 'site/me',
             method: 'get',
             propertyName: 'user'
           }
