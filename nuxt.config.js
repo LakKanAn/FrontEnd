@@ -1,5 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
-
+require('dotenv').config()
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -39,6 +39,7 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    '@nuxtjs/dotenv',
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/vuetify
@@ -47,6 +48,7 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/dotenv',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
@@ -54,13 +56,13 @@ export default {
       '@nuxtjs/firebase',
       {
         config: {
-          apiKey: 'AIzaSyDz2rNwMV6foL0JvX-eK70lc5w5XMrSNKg',
-          authDomain: 'lankkanan.firebaseapp.com',
-          projectId: 'lankkanan',
-          storageBucket: 'lankkanan.appspot.com',
-          messagingSenderId: '841060873578',
-          appId: '1:841060873578:web:6aaf1b19f8306287f5e113',
-          measurementId: 'G-XVM2CECG98'
+          apiKey: process.env.firebase_api,
+          authDomain: process.env.firebase_authDomain,
+          projectId: process.env.firebase_projectId,
+          storageBucket: process.env.firebase_storageBucket,
+          messagingSenderId: process.env.firebase_messagingSenderId,
+          appId: process.env.firebase_appId,
+          measurementId: process.env.firebase_measurementId
         },
         services: {
           auth: {
@@ -87,16 +89,16 @@ export default {
       local: {
         endpoints: {
           login: {
-            url: 'http://localhost:5000/v1/site/access_token',
+            url: process.env.backend_url + 'site/access_token',
             method: 'post',
             propertyName: 'access_token'
           },
           logout: {
-            url: 'http://localhost:5000/v1/site/bye',
+            url: process.env.backend_url + 'site/bye',
             method: 'get'
           },
           user: {
-            url: 'http://localhost:5000/v1/site/me',
+            url: process.env.backend_url + 'site/me',
             method: 'get',
             propertyName: 'user'
           }

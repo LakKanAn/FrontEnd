@@ -111,8 +111,8 @@ export default {
     async login () {
       try {
         await this.$fire.auth.signInWithEmailAndPassword(
-          this.email,
-          this.password
+          this.auth.email,
+          this.auth.password
         )
         await this.auth()
       } catch (error) {
