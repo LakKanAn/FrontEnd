@@ -15,7 +15,7 @@
     "@nuxtjs/auth-next": "5.0.0-1648802546.c9880dc",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/firebase": "^8.2.2",
-    "dotenv": "^1.4.1",
+    "@nuxtjs/dotenv": "^1.4.1",
     "core-js": "^3.19.3",
     "firebase": "^9.8.1",
     "nuxt": "^2.15.8",
@@ -27,7 +27,6 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.3",
-    "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/eslint-config": "^8.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/vuetify": "^1.12.3",
