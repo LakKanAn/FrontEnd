@@ -56,7 +56,7 @@ export default {
       '@nuxtjs/firebase',
       {
         config: {
-          apiKey: process.env.FIREBASE_API ,
+          apiKey: process.env.FIREBASE_API,
           authDomain: process.env.FIREBASE_AUTHDOMAIN,
           projectId: process.env.FIREBASE_PROJECTID,
           storageBucket: process.env.FIREBASE_STORAGEBUCKET,
