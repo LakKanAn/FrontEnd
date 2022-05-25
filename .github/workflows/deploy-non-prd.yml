@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - dev
+      - main
 
 jobs:
   code-testing:
@@ -15,16 +16,10 @@ jobs:
 #         run: npm install
 
 #       - name: Create .env file
-#         run: echo $FILE_CONTENT >> .env
+#         run: 'echo "$FILE_CONTENT" >> .env'
 #         shell: bash
 #         env:
-#           FILE_CONTENT : ${{secrets.ENV_FILE_CONTENT}}
-
-#       - name: Create firebase auth file
-#         run: echo $FILE_CONTENT >> firebase_auth.json
-#         shell: bash
-#         env:
-#           FILE_CONTENT : ${{secrets.FB_FILE_CONTENT}}
+#           FILE_CONTENT : ${{ secrets.ENV_FILE_CONTENT }}
 
 #       - name: Run Test
 #         run: npm test --collectCoverage
