@@ -1,33 +1,23 @@
-FROM node:lts as builder
+FROM node:lts-alpine as builder
 
 WORKDIR /app
-
+COPY package*.json ./
+RUN  npm install
 COPY . .
-
-RUN npm install \
-  --prefer-offline \
-  --frozen-lockfile \
-  --non-interactive \
-  --production=false
-
 RUN npm run build
 
-RUN rm -rf node_modules && \
-  NODE_ENV=production npm install \
-  --prefer-offline \
-  --pure-lockfile \
-  --non-interactive \
-  --production=true
-
-# RUN npm run generate
-
-FROM node:lts-alpine
+FROM node:lts-alpine as final
 
 WORKDIR /app
-
-COPY --from=builder /app  .
+ADD package.json .
+ADD nuxt.config.js .
+COPY --from=builder /app/.nuxt ./.nuxt
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/static ./static
+# COPY --from=builder /app  .
 
 ENV HOST 0.0.0.0
+ENV NUXT_PORT=3000
 EXPOSE 3000
 
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "start" ]

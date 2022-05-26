@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - dev
+      - main
 
 jobs:
   code-testing:
@@ -15,16 +16,10 @@ jobs:
 #         run: npm install
 
 #       - name: Create .env file
-#         run: echo $FILE_CONTENT >> .env
+#         run: 'echo "$FILE_CONTENT" >> .env'
 #         shell: bash
 #         env:
-#           FILE_CONTENT : ${{secrets.ENV_FILE_CONTENT}}
-
-#       - name: Create firebase auth file
-#         run: echo $FILE_CONTENT >> firebase_auth.json
-#         shell: bash
-#         env:
-#           FILE_CONTENT : ${{secrets.FB_FILE_CONTENT}}
+#           FILE_CONTENT : ${{ secrets.ENV_FILE_CONTENT }}
 
 #       - name: Run Test
 #         run: npm test --collectCoverage
@@ -57,6 +52,12 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create .env file
+        run: 'echo "$FILE_CONTENT" >> .env'
+        shell: bash
+        env:
+          FILE_CONTENT : ${{ secrets.ENV_FILE_CONTENT }}
 
       - name: Build and push
         uses: docker/build-push-action@v2
@@ -99,9 +100,9 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
             docker pull ghcr.io/lakkanan/frontend:${{ env.ENV_NAME }}
-            docker rmi $(docker images | grep "<none>" | awk '{print $3}')
             docker-compose -f ~/docker-compose/dev-app-compose.yml down
             docker-compose -f ~/docker-compose/dev-app-compose.yml up -d
+            docker rmi $(docker images | grep "<none>" | awk '{print $3}')
 
   acceptance-testing:
     needs: deploy
