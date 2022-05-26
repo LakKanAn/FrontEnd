@@ -98,16 +98,16 @@ export default {
         },
         endpoints: {
           login: {
-            url: process.env.backend_url + '/site/access_token',
+            url: process.env.BACKEND_URL + '/site/access_token',
             method: 'post',
             propertyName: 'access_token'
           },
           logout: {
-            url: process.env.backend_url + '/site/bye',
+            url: process.env.BACKEND_URL + '/site/bye',
             method: 'get'
           },
           user: {
-            url: process.env.backend_url + '/site/me',
+            url: process.env.BACKEND_URL + '/site/me',
             method: 'get'
           }
         }
@@ -116,7 +116,7 @@ export default {
   },
 
   axios: {
-    baseURL: process.env.backend_url
+    baseURL: process.env.BACKEND_URL
   },
 
   vuetify: {
