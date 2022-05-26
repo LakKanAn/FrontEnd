@@ -87,33 +87,38 @@ export default {
     },
     strategies: {
       local: {
+        token: {
+          property: 'access_token',
+          required: true,
+          type: 'Bearer'
+        },
+        user: {
+          property: 'user', // <--- Default "user"
+          autoFetch: true
+        },
         endpoints: {
           login: {
-            url: process.env.backend_url + 'site/access_token',
+            url: process.env.backend_url + '/site/access_token',
             method: 'post',
             propertyName: 'access_token'
           },
           logout: {
-            url: process.env.backend_url + 'site/bye',
+            url: process.env.backend_url + '/site/bye',
             method: 'get'
           },
           user: {
-            url: process.env.backend_url + 'site/me',
-            method: 'get',
-            propertyName: 'user'
+            url: process.env.backend_url + '/site/me',
+            method: 'get'
           }
         }
       }
     }
   },
 
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/'
+    baseURL: process.env.backend_url
   },
 
-  // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {

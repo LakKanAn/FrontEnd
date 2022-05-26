@@ -5,29 +5,32 @@
       fixed
       app
     >
-      <v-toolbar-title class="home-navbar" @click="home" v-text="title" />
+      <img src="~/assets/logo/logo-web.png" width="180" height="50" class="mt-2 logo-web" @click="home">
       <v-spacer />
       <!-- <v-toolbar-title class="home-navbar" @click="home" v-text="title" /> -->
-      <div v-if="$nuxt.$fire.auth.currentUser" class="text-center">
+      <div v-if="$nuxt.$auth.loggedIn" class="text-center">
         <v-menu
-          v-if="$nuxt.$fire.auth.currentUser"
-          v-model="menu"
+          v-if="$nuxt.$auth.loggedIn"
           :close-on-content-click="false"
           :nudge-width="100"
           offset-x
         >
           <template #activator="{ on, attrs }">
             <div
+              v-if="$nuxt.$auth.loggedIn"
               v-bind="attrs"
               v-on="on"
             >
               <v-list-item-avatar>
                 <img
+                  v-if="$nuxt.$auth.loggedIn"
                   :src="$nuxt.$fire.auth.currentUser.photoURL"
-                  alt="John"
+                  alt="UserPic"
                 >
               </v-list-item-avatar>
-              {{ $nuxt.$fire.auth.currentUser.displayName }}
+              <span class="displayName">
+                {{ $nuxt.$fire.auth.currentUser.displayName }}
+              </span>
               <v-icon
                 large
               >
@@ -36,7 +39,7 @@
             </div>
           </template>
 
-          <v-card>
+          <v-card v-if="$nuxt.$auth.loggedIn">
             <v-list>
               <v-list-item>
                 <v-list-item-avatar>
@@ -56,9 +59,18 @@
             <v-divider />
             <v-list>
               <v-list-item-group
-                v-model="selectedItem"
                 color="primary"
               >
+                <v-list-item v-if="!$nuxt.$auth.user.role === 'distributor'">
+                  <v-list-item-content>
+                    <v-list-item-title @click="storage" v-text="'คลัง'" />
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item v-if="$nuxt.$auth.user.role === 'distributor'">
+                  <v-list-item-content>
+                    <v-list-item-title @click="manageBook" v-text="'จัดการหนังสือ'" />
+                  </v-list-item-content>
+                </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
                     <v-list-item-title v-text="'ข้อมูลส่วนตัว'" />
@@ -67,11 +79,6 @@
                 <v-list-item>
                   <v-list-item-content>
                     <v-list-item-title v-text="'ประวัติการใช้งาน'" />
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title v-text="'ออกจากระบบ'" />
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item>
@@ -92,6 +99,14 @@
             </v-list>
           </v-card>
         </v-menu>
+      </div>
+      <div v-if="!$nuxt.$auth.loggedIn" class="text-center">
+        <v-btn
+          large
+          @click="login"
+        >
+          ล็อคอิน
+        </v-btn>
       </div>
     </v-app-bar>
     <v-main>
@@ -153,13 +168,22 @@ export default {
     home () {
       this.$nuxt.$router.push('/')
     },
+    login () {
+      this.$nuxt.$router.push('/login')
+    },
+    storage () {
+      this.$nuxt.$router.push('/user/storage')
+    },
+    manageBook () {
+      this.$nuxt.$router.push('/distributor/managebook')
+    },
     signout () {
       if (this.$nuxt.$fire.auth.currentUser) {
         this.$nuxt.$fire.auth.signOut()
-        location.reload()
-      } else {
         this.$nuxt.$auth.logout()
-        location.reload()
+      } else {
+        this.$nuxt.$fire.auth.signOut()
+        this.$nuxt.$auth.logout()
       }
     }
   }
@@ -167,7 +191,18 @@ export default {
 </script>
 
 <style>
+@media only screen and (max-width: 600px) {
+  .displayName {
+    display: none;
+  }
+}
 .home-navbar{
+  cursor: pointer;
+}
+.img-logo-center{
+  align-content: center;
+}
+.logo-web{
   cursor: pointer;
 }
 </style>

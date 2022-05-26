@@ -2,30 +2,23 @@
   <div class="inner-index-page">
     <div :class="{'content-book-center':!$vuetify.theme.dark, 'content-book-center-dark':$vuetify.theme.dark} ">
       <div class="px-5">
-        <v-col class="pa-0" cols="6" sm="6" md="3">
+        <v-col class="pa-0" cols="12" sm="8" md="6">
           <h1 class="topic justify-center">
-            หนังสือมาใหม่
+            ทั้งหมดในชั้นหนังสือ ({{ newBook.length }})
           </h1>
         </v-col>
         <hr>
         <v-row class="card-book py-5">
-          <v-col v-for="(items, index) in newBook.slice(0,4)" :key="index" cols="6" sm="4" md="3">
-            <v-card class="br-bot" outlined @click="routerGo(items.bookId)">
+          <v-col v-for="(items, index) in newBook" :key="index" cols="4" sm="3" md="2">
+            <v-card class="br-bot" outlined>
               <v-img
                 :src="items.bookImage"
-                height="300px"
-                max-width="359"
+                height="200px"
+                max-width="200"
               />
-              <v-card-subtitle class="py-1 px-0 over-text">
-                {{ items.category }}
-              </v-card-subtitle>
-              <v-card-title class="pb-4 pt-0 px-0 over-text">
+              <v-card-title class="pb-2 pt-2 px-0 storage-over-text">
                 {{ items.bookTitle }}
               </v-card-title>
-
-              <v-card-subtitle class="py-1 px-0 over-text">
-                {{ items.author }}
-              </v-card-subtitle>
             </v-card>
           </v-col>
         </v-row>
@@ -49,9 +42,9 @@ export default {
   },
   async fetch () {
     const res = await this.$axios.$get(
-      '/market/books'
+      '/users/bookshelf'
     )
-    this.newBook = res.books.reverse()
+    this.newBook = res.bookshelf.reverse()
   },
   methods: {
     login () {
@@ -81,7 +74,6 @@ export default {
           that.snackbar = true
         })
         .then((user) => {
-          // we are signed in
           this.$nuxt.$router.push('/auth/signin')
         })
     },
@@ -119,8 +111,6 @@ export default {
 .inner-index-page{
     width: 100%;
     height: 100%;
-    background-image: url("~/assets/background/warrior.jpg");
-    background-size: auto;
 }
 .content-book-center{
   padding-top: 30px;
@@ -135,20 +125,6 @@ export default {
   margin-right: 10%;
   background-color: #1E1E1E;
   height: 100%;
-}
-
-@media only screen and (max-width: 600px) {
-  .content-book-center-dark {
-  margin-left: 2%;
-  margin-right: 2%;
-  }
-    .content-book-center {
-  margin-left: 2%;
-  margin-right: 2%;
-  }
-      h1{
-    font-size: 24px;
-  }
 }
 .topic{
   background-color:#FF8C00;
@@ -177,9 +153,22 @@ hr{
 .br-bot{
     border-bottom: 3px solid #FF8C00 !important;
 }
-.over-text{
+.storage-over-text{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+@media only screen and (max-width: 600px) {
+  .content-book-center-dark {
+  margin-left: 2%;
+  margin-right: 2%;
+  }
+    .content-book-center {
+  margin-left: 2%;
+  margin-right: 2%;
+  }
+  h1{
+    font-size: 24px;
+  }
 }
 </style>

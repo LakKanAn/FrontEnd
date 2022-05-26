@@ -2,11 +2,11 @@
   <div class="inner-login-page">
     <v-row class="row-login" align="center" justify="center">
       <v-col cols="12" sm="8" md="4" align="center" justify="center">
-        <v-card v-if="loginPage === 'users'" width="500" class="pa-5 elevation-1 text-left">
+        <v-card v-if="loginPage === 'users'" width="500" class="pa-5 elevation-1 text-left card-login">
           <v-card-title>เข้าสู่ระบบ</v-card-title>
           <v-card-subtitle>เข้าสู่ระบบเพื่อใช้งาน</v-card-subtitle>
           <v-btn
-            class="login-button-other my-2 pa-4"
+            class="login-button-other my-2 pa-4 google-login"
             width="100%"
             height="50"
             elevation="2"
@@ -21,7 +21,6 @@
             class="my-2 pa-2 login-button"
             width="49%"
             large
-            @click="$vuetify.theme.dark = !$vuetify.theme.dark"
           >
             Forget Password
           </v-btn>
@@ -113,10 +112,19 @@ export default {
         await this.$fire.auth.signInWithEmailAndPassword(
           this.auth.email,
           this.auth.password
-        )
-        await this.auth()
+        ).then((user) => {
+          const formData = {
+            email: this.$nuxt.$fire.auth.currentUser.email,
+            userId: this.$nuxt.$fire.auth.currentUser.uid,
+            displayName: this.$nuxt.$fire.auth.currentUser.displayName
+          }
+          this.$axios.$post('/distributors/registration', formData)
+          this.$auth.loginWith('local', {
+            data: { token: user.user._delegate.accessToken }
+          })
+          this.$nuxt.$router.push('/distributor/managebook')
+        })
       } catch (error) {
-        console.log(error)
       }
     },
     switchLogin () {
@@ -127,13 +135,20 @@ export default {
       const provider = new this.$nuxt.$fireModule.auth.GoogleAuthProvider()
       this.$fire.auth
         .signInWithPopup(provider)
+        .then((user) => {
+          const formData = {
+            email: this.$nuxt.$fire.auth.currentUser.email,
+            userId: this.$nuxt.$fire.auth.currentUser.uid,
+            displayName: this.$nuxt.$fire.auth.currentUser.displayName
+          }
+          this.$axios.$post('/users/registration', formData)
+          this.$auth.loginWith('local', {
+            data: { token: user.user._delegate.accessToken }
+          })
+        })
         .catch(function (error) {
           that.snackbarText = error.message
           that.snackbar = true
-        })
-        .then((user) => {
-          // we are signed in
-          this.$nuxt.$router.push('/')
         })
     },
     forgotPassword () {
