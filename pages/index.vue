@@ -9,7 +9,7 @@
         </v-col>
         <hr>
         <v-row class="card-book py-5">
-          <v-col v-for="(items, index) in newBook.slice(0,4)" :key="index" cols="6" sm="4" md="3">
+          <v-col v-for="(items, index) in newBook" :key="index" cols="6" sm="4" md="3">
             <v-card class="br-bot" outlined @click="routerGo(items.bookId)">
               <v-img
                 :src="items.bookImage"
