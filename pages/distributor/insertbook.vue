@@ -6,6 +6,7 @@
 import bookForm from '~/components/bookForm.vue'
 export default {
   components: { bookForm },
+  middleware: ['protectDis', 'authCheck'],
   data: () => ({
     valid: true,
     bookTitle: '',

@@ -29,6 +29,7 @@
 
 <script>
 export default {
+  middleware: ['protectUser', 'authCheck'],
   data () {
     return {
       snackbar: false,

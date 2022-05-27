@@ -61,7 +61,7 @@
               <v-list-item-group
                 color="primary"
               >
-                <v-list-item v-if="!$nuxt.$auth.user.role === 'distributor'">
+                <v-list-item v-if="$nuxt.$auth.user.role === 'user'">
                   <v-list-item-content>
                     <v-list-item-title @click="storage" v-text="'คลัง'" />
                   </v-list-item-content>

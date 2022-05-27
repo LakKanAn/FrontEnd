@@ -1,5 +1,6 @@
 export default function ({ app, route, redirect }) {
-  if (!app.$auth.loggedIn) {
+  console.log(app)
+  if (app.$auth.user.role !== 'distributor') {
     return redirect('/')
   }
 }

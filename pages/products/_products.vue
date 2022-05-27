@@ -28,18 +28,9 @@
               </v-card-subtitle>
             </v-card>
             <div class="buy-max">
-              <v-col class="ma-auto d-flex justify-center">
-                <v-btn
-                  elevation="2"
-                  outlined
-                  rounded
-                  large
-                  class="ma-auto buy-button justify-center"
-                  @click="buy"
-                >
-                  ซื้อ {{ mainBooks.price }} บาท
-                </v-btn>
-              </v-col>
+              <slot>
+                <payment :price="mainBooks.price" />
+              </slot>
               <v-col class="ma-auto d-flex justify-center">
                 <v-btn
                   elevation="2"
@@ -69,18 +60,12 @@
           </v-col>
         </v-row>
         <div class="buy-min">
-          <v-col class="ma-auto d-flex justify-center">
-            <v-btn
-              elevation="2"
-              outlined
-              rounded
-              large
-              class="ma-auto buy-button justify-center"
-              @click="buy"
-            >
-              ซื้อ {{ mainBooks.price }} บาท
-            </v-btn>
+          <v-col class="justify-center">
+            <slot>
+              <payment :price="mainBooks.price" />
+            </slot>
           </v-col>
+
           <v-col class="ma-auto d-flex justify-center">
             <v-btn
               elevation="2"
@@ -130,9 +115,12 @@
 </template>
 
 <script>
+import payment from '~/components/payment.vue'
 export default {
+  components: { payment },
   data () {
     return {
+      modal: false,
       idBook: '',
       snackbar: false,
       snackbarText: 'No error message',
@@ -217,15 +205,6 @@ export default {
           that.snackbarText = error.message
           that.snackbar = true
         })
-    },
-    async buy () {
-      const buffer = this.$nuxt.$auth.user
-      const res = await this.$axios.$post(
-        '/market/books/' + this.idBook, {
-          email: buffer.email
-        }
-      )
-      console.log(res)
     }
   }
 }

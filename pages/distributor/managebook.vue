@@ -53,7 +53,9 @@
                   />
                 </template>
                 <template #no-data>
-                  <p>ไม่มีข้อมูล</p>
+                  <p class="ma-0">
+                    ไม่มีข้อมูล
+                  </p>
                 </template>
               </v-data-table>
             </v-col>
@@ -66,6 +68,7 @@
 
 <script>
 export default {
+  middleware: ['protectDis', 'authCheck'],
   data () {
     return {
       headers: [
