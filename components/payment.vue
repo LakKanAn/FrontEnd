@@ -14,7 +14,7 @@
             large
             class="ma-auto buy-button justify-center"
             v-on="on"
-            @click="buy"
+            @click="popup"
           >
             ซื้อ {{ price }} บาท
           </v-btn>
@@ -22,7 +22,7 @@
       </template>
 
       <v-card>
-        <v-card-title class="text-h5 grey lighten-2">
+        <v-card-title class="text-h5 justify-center">
           Payment
         </v-card-title>
 
@@ -35,10 +35,12 @@
                 </label>
                 <input
                   id="cardNumber"
+                  v-imask="cardMasks"
                   :value="cardNumber"
                   autofocus
                   class="card-input__input"
                   autocomplete="off"
+                  @accept="onAcceptCardType"
                 >
               </div>
               <div class="card-input">
@@ -99,15 +101,17 @@
                     <input
 
                       id="cardCvv"
+                      v-imask="cvvMask"
                       class="card-input__input"
                       :value="cvv"
                       autocomplete="off"
+                      @accept="onAcceptCvv"
                     >
                   </div>
                 </div>
               </div>
-              <button class="card-form__button" @click="submitCard">
-                Submit
+              <button class="card-form__button" @click="buy">
+                ชำระเงิน
               </button>
             </div>
           </div>
@@ -120,10 +124,13 @@
 </template>
 
 <script>
+import { IMaskDirective } from 'vue-imask'
+import { cardMasks, cvvMask } from '../plugins/masks'
 export default {
-  props: {
-    price: String
+  directives: {
+    imask: IMaskDirective
   },
+  props: ['price', 'idBook'],
   data () {
     return {
       dialog: false,
@@ -132,30 +139,44 @@ export default {
       expireYear: '',
       name: '',
       cvv: '',
-      currentYear: new Date().getFullYear()
+      currentYear: new Date().getFullYear(),
+      cardMasks,
+      cvvMask
     }
   },
   methods: {
-    submitCard () {
-      alert(`
-        ${this.cardNumber}\n
-        ${this.name}\n
-        ${this.expireMonth}/${this.expireYear}\n
-        ${this.cvv}`)
+    onAcceptCardType (e) {
+      const maskRef = e.detail
+      const type = maskRef.masked.currentMask.cardtype
+
+      if (type !== 'Unknown') {
+        this.symbolImage = type
+      }
+
+      this.cardNumber = maskRef.value
     },
-    buy () {
-      this.dialog = true
-    //   if (this.$nuxt.$auth.loggedIn) {
-    //     const buffer = this.$nuxt.$auth.user
-    //     const res = await this.$axios.$post(
-    //       '/market/books/' + this.idBook, {
-    //         email: buffer.email
-    //       }
-    //     )
-    //     console.log(res)
-    //   } else {
-    //     this.$nuxt.$router.push('/login')
-    //   }
+    onAcceptCvv (e) {
+      const maskRef = e.detail
+      this.cvv = maskRef.value
+    },
+    popup () {
+      if (this.$nuxt.$auth.loggedIn) {
+        this.dialog = true
+      } else {
+        this.$nuxt.$router.push('/login')
+      }
+    },
+    async buy () {
+      if (this.cardNumber && this.name && this.expireMonth && this.expireYear && this.cvv) {
+        const buffer = this.$nuxt.$auth.user
+        const res = await this.$axios.$post(
+          '/market/books/' + this.idBook, {
+            email: buffer.email
+          }
+        )
+        console.log(res)
+        this.dialog = false
+      }
     }
   }
 
@@ -219,7 +240,7 @@ export default {
   &__button {
     width: 100%;
     height: 55px;
-    background: #38a294;
+    background: #FF8C00;
     border: none;
     border-radius: 5px;
     font-size: 22px;
@@ -230,7 +251,7 @@ export default {
     cursor: pointer;
 
     &:hover {
-      background: darken(#38a294, 5%);
+      background: darken(#FF8C00, 5%);
     }
   }
 }

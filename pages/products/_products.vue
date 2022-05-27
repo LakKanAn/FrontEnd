@@ -29,7 +29,7 @@
             </v-card>
             <div class="buy-max">
               <slot>
-                <payment :price="mainBooks.price" />
+                <payment :price="mainBooks.price" :id-book="idBook" />
               </slot>
               <v-col class="ma-auto d-flex justify-center">
                 <v-btn
@@ -62,7 +62,7 @@
         <div class="buy-min">
           <v-col class="justify-center">
             <slot>
-              <payment :price="mainBooks.price" />
+              <payment :price="mainBooks.price" :id-book="idBook" />
             </slot>
           </v-col>
 

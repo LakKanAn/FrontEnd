@@ -207,7 +207,7 @@ export default {
               category: this.category,
               description: this.description,
               price: this.price,
-              genre: this.genre
+              genre: (this.category === 'บันเทิงคดี') ? this.genre : this.category
             }).then((user) => {
             const formData = new FormData()
             formData.append('image', this.fileImage)
@@ -222,7 +222,7 @@ export default {
               category: this.category,
               description: this.description,
               price: this.price,
-              genre: (this.category === 'บันเทิงคดี') ? this.genre : ''
+              genre: (this.category === 'บันเทิงคดี') ? this.genre : this.category
             }).then((user) => {
             const formData = new FormData()
             formData.append('image', this.fileImage)

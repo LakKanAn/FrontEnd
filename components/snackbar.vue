@@ -1,11 +1,5 @@
 <template>
   <div class="text-center ma-2">
-    <v-btn
-      dark
-      @click="snackbar = true"
-    >
-      Open Snackbar
-    </v-btn>
     <v-snackbar
       v-model="snackbar"
     >
@@ -26,9 +20,9 @@
 </template>
 <script>
 export default {
+  props: ['text', 'idBook'],
   data: () => ({
-    snackbar: false,
-    text: 'Hello, I\'m a snackbar'
+    snackbar: false
   })
 }
 </script>
