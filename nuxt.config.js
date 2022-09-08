@@ -122,16 +122,20 @@ export default {
 
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    treeShake: true,
     theme: {
+      options: { customProperties: true },
       dark: false,
       themes: {
         light: {
+          texttopic: '#ffffff',
           primary: '#FF8C00',
           secondary: '#FF8C00',
           accent: '#FF8C00',
           error: '#b71c1c'
         },
         dark: {
+          texttopic: '#000000',
           primary: colors.blue.darken2,
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,

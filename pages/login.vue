@@ -21,6 +21,7 @@
             class="my-2 pa-2 login-button"
             width="49%"
             large
+            @click="forgotPassword"
           >
             Forget Password
           </v-btn>
@@ -90,15 +91,19 @@
         </v-snackbar>
       </v-col>
     </v-row>
+    <snackbar :idBook="2" :text="'Helo'" :wtfsss="snackbarCheck"></snackbar>
   </div>
 </template>
 
 <script>
+import snackbar from '~/components/snackbar.vue'
 export default {
+  components: { snackbar },
   data () {
     return {
       loginPage: 'users',
       snackbar: false,
+      snackbarCheck: false,
       snackbarText: 'No error message',
       auth: {
         email: '',
@@ -152,17 +157,21 @@ export default {
         })
     },
     forgotPassword () {
-      const that = this
-      this.$fire.auth
-        .sendPasswordResetEmail(this.auth.email)
-        .then(function () {
-          that.snackbarText = 'reset link sent to ' + that.auth.email
-          that.snackbar = true
-        })
-        .catch(function (error) {
-          that.snackbarText = error.message
-          that.snackbar = true
-        })
+      console.log('Sad')
+      console.log(this.snackbarCheck)
+      this.snackbarCheck = true
+      console.log(this.snackbarCheck)
+      // const that = this
+      // this.$fire.auth
+      //   .sendPasswordResetEmail(this.auth.email)
+      //   .then(function () {
+      //     that.snackbarText = 'reset link sent to ' + that.auth.email
+      //     that.snackbar = true
+      //   })
+      //   .catch(function (error) {
+      //     that.snackbarText = error.message
+      //     that.snackbar = true
+      //   })
     }
   }
 }

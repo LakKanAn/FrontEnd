@@ -1,7 +1,12 @@
 <template>
   <div class="text-center ma-2">
+    <v-btn
+      dark
+    >
+      {{ snack }}
+    </v-btn>
     <v-snackbar
-      v-model="snackbar"
+      v-model="snack"
     >
       {{ text }}
 
@@ -10,7 +15,7 @@
           color="pink"
           text
           v-bind="attrs"
-          @click="snackbar = false"
+          @click="snack = false"
         >
           Close
         </v-btn>
@@ -20,9 +25,11 @@
 </template>
 <script>
 export default {
-  props: ['text', 'idBook'],
-  data: () => ({
-    snackbar: false
-  })
+  props: ['text', 'idBook', 'wtfsss'],
+  data () {
+    return {
+      snack: this.wtfsss
+    }
+  }
 }
 </script>
