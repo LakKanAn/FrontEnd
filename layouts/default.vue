@@ -82,6 +82,11 @@
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title @click="exchangeBook" v-text="'หน้าแลกเปลี่ยน'" />
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item>
                   <v-list-item-action>
                     <v-switch
                       v-model="$vuetify.theme.dark"
@@ -176,6 +181,9 @@ export default {
     },
     manageBook () {
       this.$nuxt.$router.push('/distributor/managebook')
+    },
+    exchangeBook () {
+      this.$nuxt.$router.push('/market/tradelist')
     },
     signout () {
       if (this.$nuxt.$fire.auth.currentUser) {

@@ -19,10 +19,10 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
             docker pull ghcr.io/lakkanan/frontend:${{ github.event.inputs.deploy-version }}
-            sed -i 's/frontend:\w+/frontend:${{ github.event.inputs.deploy-version }}/g' app-compose.yml
-            docker-compose -f ~/docker-compose/app-compose.yml down
-            docker-compose -f ~/docker-compose/app-compose.yml up -d
-            docker rmi $(docker images | grep "<none>" | awk '{print $3}')
+            sed -i 's/frontend:\w+/frontend:${{ github.event.inputs.deploy-version }}/g' ~/docker-compose/prd/app-compose.yml
+            export COMPOSE_IGNORE_ORPHANS=True
+            docker-compose -f ~/docker-compose/prd/app-compose.yml down
+            docker-compose -f ~/docker-compose/prd/app-compose.yml up -d
 
   acceptance-testing:
     needs: deploy
