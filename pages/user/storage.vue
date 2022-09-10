@@ -24,6 +24,31 @@
         </v-row>
       </div>
     </div>
+
+    <div :class="{'content-book-center':!$vuetify.theme.dark, 'content-book-center-dark':$vuetify.theme.dark} ">
+      <div class="px-5">
+        <v-col class="pa-0" cols="12" sm="8" md="6">
+          <h1 class="topic justify-center">
+            หนังสือที่ลงทะเบียนแลกเปลี่ยน ({{ postBook.length }})
+          </h1>
+        </v-col>
+        <hr>
+        <v-row class="card-book py-5">
+          <v-col v-for="(items, index) in postBook" :key="index" cols="4" sm="3" md="2">
+            <v-card class="br-bot" outlined @click="routerGoTrade(items.bookId)">
+              <v-img
+                :src="items.bookImage"
+                height="200px"
+                max-width="200"
+              />
+              <v-card-title class="pb-2 pt-2 px-0 storage-over-text">
+                {{ items.bookTitle }}
+              </v-card-title>
+            </v-card>
+          </v-col>
+        </v-row>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -38,14 +63,19 @@ export default {
         email: '',
         password: ''
       },
-      newBook: []
+      newBook: [],
+      postBook: []
     }
   },
   async fetch () {
     const res = await this.$axios.$get(
       '/users/bookshelf'
     )
-    this.newBook = res.bookshelf.reverse()
+    const resPost = await this.$axios.$get(
+      '/users/bookpost'
+    )
+    this.newBook = res.bookDetail.reverse()
+    this.postBook = resPost.bookDetail.reverse()
   },
   methods: {
     login () {
@@ -63,33 +93,9 @@ export default {
         this.$nuxt.$auth.logout()
       }
     },
-    callConsole () {
-    },
-    googleLogin () {
-      const that = this
-      const provider = new this.$nuxt.$fireModule.auth.GoogleAuthProvider()
-      this.$fire.auth
-        .signInWithPopup(provider)
-        .catch(function (error) {
-          that.snackbarText = error.message
-          that.snackbar = true
-        })
-        .then((user) => {
-          this.$nuxt.$router.push('/auth/signin')
-        })
-    },
-    forgotPassword () {
-      const that = this
-      this.$fire.auth
-        .sendPasswordResetEmail(this.auth.email)
-        .then(function () {
-          that.snackbarText = 'reset link sent to ' + that.auth.email
-          that.snackbar = true
-        })
-        .catch(function (error) {
-          that.snackbarText = error.message
-          that.snackbar = true
-        })
+    routerGoTrade (item) {
+      localStorage.setItem('owner-trade', '8dgdunbNcQq0N5oQMDPw')
+      this.$nuxt.$router.push('/market/tradeconfirm')
     }
   }
 }
@@ -118,7 +124,6 @@ export default {
   margin-left: 10%;
   margin-right: 10%;
   background-color: white;
-  height: 100%;
 }
 .content-book-center-dark{
   padding-top: 30px;

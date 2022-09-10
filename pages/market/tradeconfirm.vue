@@ -14,7 +14,7 @@
         </v-col>
         <v-col cols="12">
           <h2 class="d-flex justify-center align-center" @click="con">
-            ระหว่าง คุณ {{ ownerName }} กับ คุณ {{ $nuxt.$fire.auth.currentUser.displayName }}
+            ระหว่าง คุณ {{ ownerName }} กับ คุณ {{ offerUserName == '' ? 'ผู้ใช้งานท่านอื่น' : offerUserName }}
           </h2>
         </v-col>
       </v-row>
@@ -60,7 +60,7 @@
             <v-divider class="mx-4" />
           </v-card>
           <h3 class="d-flex align-center justify-center">
-            สถานะของเพื่อน
+            สถานะของคุณ
           </h3>
           <h3 class="d-flex align-center justify-center">
             {{ p1_Status }}
@@ -71,6 +71,7 @@
                 depressed
                 x-large
                 color="success"
+                @click="confirmButton"
               >
                 ตกลง
               </v-btn>
@@ -123,8 +124,8 @@
                     <v-radio
                       v-for="(listOffer,index) in offerBook"
                       :key="index"
-                      :label="listOffer.bookTitle"
-                      :value="listOffer.bookTitle"
+                      :label="listOffer.book.bookTitle"
+                      :value="listOffer.book.bookTitle"
                       @click="changeOfferCard(index)"
                     />
                   </v-radio-group>
@@ -181,7 +182,7 @@
                 {{ offerBookCard.author }}
               </div>
 
-              <div>จากคุณ {{ ownerName }}</div>
+              <div>จากคุณ {{ offerUserName }}</div>
             </v-card-text>
 
             <v-divider class="mx-4" />
@@ -221,33 +222,14 @@
 
             <v-divider class="mx-4" />
           </v-card>
-          <h3 class="d-flex align-center justify-center">
-            สถานะของคุณ
-          </h3>
-          <h3 class="d-flex align-center justify-center">
-            {{ p2_Status }}
-          </h3>
-          <v-row class="mt-1">
-            <v-col cols="6" class="d-flex justify-center">
-              <v-btn
-                depressed
-                x-large
-                color="success"
-                @click="confirmButton"
-              >
-                ตกลง
-              </v-btn>
-            </v-col>
-            <v-col cols="6" class="d-flex justify-center">
-              <v-btn
-                depressed
-                x-large
-                color="error"
-              >
-                ยกเลิก
-              </v-btn>
-            </v-col>
-          </v-row>
+          <div v-if="dialogm1" >
+            <h3 class="d-flex align-center justify-center">
+              สถานะของฝ่ายตรงข้าม
+            </h3>
+            <h3 class="d-flex align-center justify-center">
+              {{ p2_Status }}
+            </h3>
+          </div>
         </v-col>
       </v-row>
     </div>
@@ -264,46 +246,45 @@ export default {
       day: '',
       offerBook: '',
       offerBookCard: '',
+      offerUserName: '',
       ownerName: '',
       dialogm1: '',
       p1_Status: 'ยังไม่ยืนยัน',
-      p2_Status: 'ยังไม่ยืนยัน',
+      p2_Status: 'ยืนยันแล้ว',
       dialog: false
     }
   },
   async fetch () {
-    this.idBook = localStorage.getItem('data-trade')
+    this.idBook = localStorage.getItem('owner-trade')
     const res = await this.$axios.$get(
       '/trade/' + this.idBook
-    )
-    const resListBook = await this.$axios.$get(
-      '/users/bookshelf'
     )
     console.log(res)
     this.allData = res
     this.day = res.postDetail
     this.mainBook = res.BookDetails
     this.ownerName = res.ownerDetails.name
-    this.offerBook = resListBook.bookDetail
-    console.log(this.offerBook)
+    this.offerBook = res.offerDetails
   },
   methods: {
     con () {
       console.log(this.dialogm1)
     },
     async confirmButton () {
-      const index = this.offerBook.map(e => e.bookTitle).indexOf(this.dialogm1)
-      console.log(this.offerBook[index])
-      console.log(this.offerBook[index].bookId)
-      const res = await this.$axios.$post('/trade/' + this.idBook, { bookId: this.offerBook[index].bookId })
+      const index = this.offerBook.map(e => e.book.bookTitle).indexOf(this.dialogm1)
+      console.log(this.offerBook[index].book.bookTitle)
+      console.log(this.offerBook[index].book.bookId)
+      const res = await this.$axios.$post('/trade/confirm/' + this.idBoo + '/' + this.offerBook[index].offerId)
       console.log(res)
     },
     changeOfferCard (index) {
-      this.offerBookCard = this.offerBook[index]
+      this.offerBookCard = this.offerBook[index].book
+      this.offerUserName = this.offerBook[index].name
       console.log(this.offerBookCard)
     },
     cancelSelect () {
       this.dialogm1 = ''
+      this.offerUserName = ''
       this.dialog = false
     }
   }

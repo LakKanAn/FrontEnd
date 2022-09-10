@@ -1,7 +1,7 @@
 <template>
   <div class="wid-80 ma-auto mt-5">
     <v-col class="pa-0" cols="12" sm="12" md="12">
-      <h1 class="topic justify-center">
+      <h1 class="d-flex justify-center">
         <img class="pr-2" src="~/assets/icon/trade.png" alt="trade-image">ศูนย์รวมการแลกเปลี่ยน
       </h1>
     </v-col>
@@ -60,7 +60,7 @@
           <v-row class="py-5">
             <v-col cols="12" sm="4" md="4">
               <v-text-field
-              v-model="choieName"
+                v-model="choieName"
                 outlined
                 hide-details
                 label="ชื่อเรื่อง"
@@ -101,7 +101,7 @@
               md="5"
               class="pa-0 mb-5"
             >
-              <v-card outlined @click="routerGo(list.bookId)">
+              <v-card outlined @click="routerGo(list.postId)">
                 <v-row class="br-bot">
                   <v-col cols="12" sm="4" md="4">
                     <v-img
@@ -119,10 +119,10 @@
                       {{ list.author }}
                     </v-card-subtitle>
                     <v-card-subtitle class="py-1 px-0 over-text">
-                     จากคุณ <span class="ownername">{{ list.ownerName }}</span>
+                      จากคุณ <span class="ownername">{{ list.ownerName }}</span>
                     </v-card-subtitle>
                     <v-card-subtitle class="py-1 px-0 d-flex align-end during">
-                    <img class="pr-2" src="~/assets/icon/bi_clock.png"> ระยะเวลาการแลกเปลี่ยน: {{ list.during }} วัน
+                      <img class="pr-2" src="~/assets/icon/bi_clock.png"> ระยะเวลาการแลกเปลี่ยน: {{ list.during }} วัน
                     </v-card-subtitle>
                   </v-col>
                 </v-row>
@@ -282,6 +282,12 @@ export default {
     this.listBook = res.books
     this.page = res.config.currentPage
     this.totalPage = res.config.totalPage
+  },
+  methods: {
+    routerGo (item) {
+      localStorage.setItem('data-trade', item)
+      this.$nuxt.$router.push('/market/tradepage')
+    }
   }
 }
 </script>
@@ -315,5 +321,8 @@ hr{
 }
 .ownername{
   color: #FF8C00;
+}
+.font-white{
+  color: white;
 }
 </style>

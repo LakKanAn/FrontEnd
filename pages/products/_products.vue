@@ -153,15 +153,19 @@ export default {
   async fetch () {
     let slug = this.$nuxt.$route.path
     slug = slug.split('/products/') // When calling /abc the slug will be "abc"
+    console.log(slug[1])
     const resMain = await this.$axios.$get(
-      '/market/books/' + slug[1]
+      '/market/' + slug[1]
     )
     const res = await this.$axios.$get(
-      '/market/books'
+      '/market/'
     )
     this.idBook = slug[1]
+    console.log(this.idBook)
     this.newBook = res.books.reverse()
+    console.log(resMain.BookDetails)
     this.mainBooks = resMain.BookDetails
+    console.log(this.mainBooks)
   },
   methods: {
     login () {
@@ -178,33 +182,6 @@ export default {
     },
     routerGo (item) {
       this.$nuxt.$router.push('/products/' + item)
-    },
-    googleLogin () {
-      const that = this
-      const provider = new this.$nuxt.$fireModule.auth.GoogleAuthProvider()
-      this.$fire.auth
-        .signInWithPopup(provider)
-        .catch(function (error) {
-          that.snackbarText = error.message
-          that.snackbar = true
-        })
-        .then((user) => {
-          // we are signed in
-          this.$nuxt.$router.push('/auth/signin')
-        })
-    },
-    forgotPassword () {
-      const that = this
-      this.$fire.auth
-        .sendPasswordResetEmail(this.auth.email)
-        .then(function () {
-          that.snackbarText = 'reset link sent to ' + that.auth.email
-          that.snackbar = true
-        })
-        .catch(function (error) {
-          that.snackbarText = error.message
-          that.snackbar = true
-        })
     }
   }
 }

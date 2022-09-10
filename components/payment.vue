@@ -168,11 +168,10 @@ export default {
     },
     async buy () {
       if (this.cardNumber && this.name && this.expireMonth && this.expireYear && this.cvv) {
-        const buffer = this.$nuxt.$auth.user
+        // const buffer = this.$nuxt.$auth.user
+        console.log(this.idBook)
         const res = await this.$axios.$post(
-          '/market/books/' + this.idBook, {
-            email: buffer.email
-          }
+          '/payment/create/' + this.idBook
         )
         console.log(res)
         this.dialog = false
