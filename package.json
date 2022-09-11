@@ -11,7 +11,7 @@
   "dependencies": {
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.12.5",
-    "@nuxtjs/firebase": "^7.4.1",
+    "@nuxtjs/firebase": "^8.2.2",
     "@nuxtjs/pwa": "^3.3.5",
     "core-js": "^3.8.3",
     "firebase": "^8.2.7",
