@@ -22,7 +22,7 @@
       </template>
 
       <v-card>
-        <v-card-title class="text-h5 justify-center">
+        <v-card-title class="justify-center">
           Payment
         </v-card-title>
 
@@ -120,6 +120,40 @@
         <v-divider />
       </v-card>
     </v-dialog>
+
+    <v-dialog
+      v-model="confirmDialog"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="">
+          กรุณายืนยันการชำระเงิน
+        </v-card-title>
+
+        <v-card-text>
+          หากกดตกลงแล้วหนังสือที่ถูกซื้อจะอยู่ในคลังสินค้าของผู้ใช้งาน
+        </v-card-text>
+
+        <v-card-actions>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="dialog = false,confirmDialog = false"
+          >
+            ยกเลิก
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="confirmBuy"
+          >
+            ตกลง
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -135,13 +169,15 @@ export default {
     return {
       dialog: false,
       cardNumber: '',
+      confirmDialog: false,
       expireMonth: '',
       expireYear: '',
       name: '',
       cvv: '',
       currentYear: new Date().getFullYear(),
       cardMasks,
-      cvvMask
+      cvvMask,
+      paymentId: ''
     }
   },
   methods: {
@@ -173,9 +209,17 @@ export default {
         const res = await this.$axios.$post(
           '/payment/create/' + this.idBook
         )
-        console.log(res)
-        this.dialog = false
+        this.paymentId = res.paymentId
+        this.confirmDialog = true
       }
+    },
+    async confirmBuy () {
+      await this.$axios.$put(
+        '/payment/confirm/' + this.idBook
+        , { paymentId: this.paymentId }).then(
+        this.dialog = false,
+        this.confirmDialog = false
+      )
     }
   }
 
@@ -254,7 +298,9 @@ export default {
     }
   }
 }
-
+.v-card__title{
+  font-family: 'Prompt', sans-serif !important;
+}
 .card-input {
   margin-bottom: 20px;
   &__label {

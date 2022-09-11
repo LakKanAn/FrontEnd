@@ -5,7 +5,7 @@
       fixed
       app
     >
-      <img src="~/assets/logo/logo-web.png" width="180" height="50" class="mt-2 logo-web" @click="home">
+      <img src="~/assets/logo/logo-web.png" width="300" height="50" class="mt-2 logo-web" @click="home">
       <v-spacer />
       <!-- <v-toolbar-title class="home-navbar" @click="home" v-text="title" /> -->
       <div v-if="$nuxt.$auth.loggedIn" class="text-center">

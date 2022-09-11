@@ -10,7 +10,9 @@
         <hr>
         <v-row class="main-card-book py-5">
           <v-col cols="12" sm="12" md="8">
-            <v-img :src="mainBooks.bookImage" class="image-cover" />
+            <div class="d-flex justify-center">
+            <v-img :src="mainBooks.bookImage" class="image-cover" max-width="400" />
+            </div>
           </v-col>
           <v-col cols="12" sm="12" md="4">
             <v-card class="detail-card-book br-bot" outlined>
@@ -165,7 +167,7 @@ export default {
     this.newBook = res.books.reverse()
     console.log(resMain.BookDetails)
     this.mainBooks = resMain.BookDetails
-    console.log(this.mainBooks)
+    this.mainBooks.genre = this.mainBooks.genre.join()
   },
   methods: {
     login () {
@@ -297,5 +299,11 @@ hr{
     display: flex;
     width: 80%;
 }
-
+.inner-index-page{
+    width: 100%;
+    height: 100%;
+    background-image: url("~/assets/background/book-bg-flat.png");
+    background-size: auto;
+    background-repeat: repeat;
+}
 </style>

@@ -33,7 +33,7 @@
             <v-select
               v-model="category"
               :items="items"
-              :rules="[v => !!v || 'Item is required']"
+              :rules="[v => !!v || 'จำเป็นต้องใส่ช่องนี้']"
               label="ประเภทหนังสือ"
               required
               outlined
@@ -44,8 +44,8 @@
                   <v-select
                     v-model="genreSelect"
                     :items="itemsGenre"
-                    :rules="[v => !!v || 'Item is required']"
-                    label="หนวดหมู่"
+                    :rules="[v => !!v || 'จำเป็นต้องใส่ช่องนี้']"
+                    label="หมวดหมู่"
                     class="genre-input"
                     required
                     outlined

@@ -39,15 +39,17 @@
         </v-col>
         <hr>
         <v-row class="card-book py-5">
-          <v-col v-for="(items, index) in newBook" :key="'sd'+index" cols="12" sm="12" md="12">
+          <v-col v-for="(items, index) in hotBook" :key="'sd'+index" cols="12" sm="12" md="12">
             <v-card outlined @click="routerGo(items.bookId)">
               <v-row class="br-bot">
-                <v-col cols="12" sm="4" md="4">
-                  <v-img
-                    src="https://picsum.photos/id/11/10/6"
-                    height="311"
-                    max-width="212"
-                  />
+                <v-col cols="12" sm="3" md="3">
+                  <div class="d-flex justify-center">
+                    <v-img
+                      :src="items.bookImage"
+                      height="311"
+                      max-width="212"
+                    />
+                  </div>
                 </v-col>
                 <v-col cols="8" sm="8" md="8">
                   <v-card-subtitle class="py-1 px-0 over-text">
@@ -60,21 +62,24 @@
                   <v-card-subtitle class="py-1 px-0 over-text">
                     {{ items.author }}
                   </v-card-subtitle>
+                  <v-card-text class="pa-0 over-text-des">
+                    <p> {{ items.description }}</p>
+                  </v-card-text>
                 </v-col>
               </v-row>
             </v-card>
           </v-col>
-          <v-col v-for="(items, index) in newBook" :key="'th'+index" cols="12" sm="6" md="6">
+          <v-col v-for="(items, index) in subHotBook" :key="'th'+index" cols="12" sm="6" md="6">
             <v-card outlined @click="routerGo(items.bookId)">
               <v-row class="br-bot">
-                <v-col cols="5" sm="5" md="5">
+                <v-col cols="5" sm="4" md="4">
                   <v-img
-                    src="https://picsum.photos/id/11/10/6"
+                    :src="items.bookImage"
                     height="238"
                     max-width="163"
                   />
                 </v-col>
-                <v-col cols="7" sm="7" md="7">
+                <v-col cols="7" sm="8" md="8">
                   <v-card-subtitle class="py-1 px-0 over-text">
                     {{ items.category }}
                   </v-card-subtitle>
@@ -133,8 +138,8 @@
         </p>
       </div>
 
-      <div class="px-5">
-        <v-col class="pa-0" cols="12" sm="6" md="3">
+      <div class="px-5 pb-0">
+        <v-col class="px-0 pb-0 " cols="12" sm="6" md="3">
           <h1 class="topic justify-center">
             หนังสือทั้งหมด
           </h1>
@@ -166,15 +171,15 @@
               label="ประเภท"
             />
           </v-col>
-          <v-col align-self="center" cols="2" sm="2" md="2">
-            <v-btn color="#FF8C00" x-large class="text-center mb-0 search-button " @click="searchButton()">
+          <v-col align-self="center" cols="12" sm="2" md="2" lg="2">
+            <v-btn color="#FF8C00" x-large class="text-center mb-0 search-button wid-100" @click="searchButton()">
               ค้นหา
             </v-btn>
           </v-col>
         </v-row>
         <hr>
         <v-row class="card-book py-5">
-          <v-col v-for="(items, index) in newBook" :key="'four'+index" cols="6" sm="4" md="3">
+          <v-col v-for="(items, index) in allBook" :key="'four'+index" cols="6" sm="4" md="3">
             <v-card class="br-bot" outlined @click="routerGo(items.bookId)">
               <v-img
                 :src="items.bookImage"
@@ -229,61 +234,23 @@ export default {
         'วารสาร',
         'นิตยสาร'
       ],
-      newBook: [
-        {
-          genre: [
-            'วิทยาศาสตร์',
-            'ผจญภัย',
-            'ระทึกขวัญ'
-          ],
-          author: 'Robert Louis Stevenson',
-          distributorId: 'LpWBgBNMJaXC39ygnkbkdkpzAC92',
-          release: true,
-          bookImage: null,
-          createAt: {
-            _seconds: 1653722464,
-            _nanoseconds: 652000000
-          },
-          bookId: 'Gezftq5aU5zMsnSuwKiI',
-          bookTitle: 'Treasure Island',
-          description: "A masterful tale of ''buccaneers and buried gold''. First published in the children's magazine Young Folks, and considered a coming of age story, it is an adventure tale of superb atmosphere, character, and action, as well as a wry commentary on the ambiguity of morality—as seen in Long John Silver—unusual for children's literature then and now. It is one of the most frequently dramatised of all novels, and its influence on popular lore about pirates can not be overestimated.",
-          category: 'บันเทิงคดี',
-          price: '613',
-          id: 'Gezftq5aU5zMsnSuwKiI'
-        },
-        {
-          author: 'Arthur Conan Doyle',
-          release: true,
-          category: 'บันเทิงคดี',
-          bookTitle: 'The Adventures of Sherlock Holmes',
-          genre: [
-            'วิทยาศาสตร์',
-            'ระทึกขวัญ',
-            'โรแมนติก'
-          ],
-          description: 'A delight for a public which enjoys incident, mystery, and above all that matching of the wits of a clever man against the dumb resistance of the secrecy of inanimate things, which results in the triumph of the human intelligence.',
-          createAt: {
-            _seconds: 1653723744,
-            _nanoseconds: 955000000
-          },
-          distributorId: 'LpWBgBNMJaXC39ygnkbkdkpzAC92',
-          bookImage: null,
-          price: '300',
-          bookId: 'JynpLP4mGC4JqxOGp4S9',
-          id: 'JynpLP4mGC4JqxOGp4S9'
-        }
-      ]
+      newBook: [],
+      hotBook: [],
+      subHotBook: [],
+      allBook: [],
+      backupBook: []
     }
   },
   async fetch () {
     const res = await this.$axios.$get(
       '/market/'
     )
-    //     const res = await this.$axios.$get(
-    //   '/market/'
-    // )
-    this.newBook = res.books
-    console.log(res)
+    this.backupBook = res.books
+    this.newBook = res.books.slice(0, 4)
+    this.hotBook = res.books.slice(0, 4)
+    this.subHotBook = res.books.slice(0, 4)
+    this.allBook = res.books
+    this.hotBook = this.hotBook.reverse()
   },
   methods: {
     async searchButton () {
@@ -293,53 +260,13 @@ export default {
       const genreBuffer = this.genre == '' ? '' : 'genre=' + this.genre
       const res = await this.$axios.$get('/market/filter?' + categoryBuffer + '&' + genreBuffer)
       console.log(res)
-      this.newBook = res.bookDetail
+      this.allBook = res.bookDetail
     },
     login () {
       this.$nuxt.$router.push('/login')
     },
     routerGo (item) {
       this.$nuxt.$router.push('/products/' + item)
-    },
-    signout () {
-      if (this.$nuxt.$fire.auth.currentUser) {
-        this.$nuxt.$fire.auth.signOut()
-        this.$nuxt.$auth.logout()
-      } else {
-        this.$nuxt.$fire.auth.signOut()
-        this.$nuxt.$auth.logout()
-      }
-    },
-    callConsole () {
-    },
-    googleLogin () {
-      const that = this
-      const provider = new this.$nuxt.$fireModule.auth.GoogleAuthProvider()
-      this.$fire.auth
-        .signInWithPopup(provider)
-        .catch(function (error) {
-          that.snackbarText = error.message
-          that.snackbar = true
-        })
-        .then((user) => {
-          // we are signed in
-          this.$nuxt.$router.push('/auth/signin')
-        })
-    },
-    forgotPassword () {
-      this.snackbar = true
-      console.error('Sad')
-      // const that = this
-      // this.$fire.auth
-      //   .sendPasswordResetEmail(this.auth.email)
-      //   .then(function () {
-      //     that.snackbarText = 'reset link sent to ' + that.auth.email
-      //     that.snackbar = true
-      //   })
-      //   .catch(function (error) {
-      //     that.snackbarText = error.message
-      //     that.snackbar = true
-      //   })
     }
   }
 }
@@ -362,8 +289,9 @@ export default {
 .inner-index-page{
     width: 100%;
     height: 100%;
-    background-image: url("~/assets/background/warrior.jpg");
+    background-image: url("~/assets/background/book-bg-flat.png");
     background-size: auto;
+    background-repeat: repeat;
 }
 .content-book-center{
   padding-top: 30px;
@@ -445,5 +373,8 @@ display: -webkit-box;
 -webkit-box-orient: vertical;
 overflow: hidden;
 text-overflow: ellipsis;
+}
+.wid-100{
+  width: 100%;
 }
 </style>

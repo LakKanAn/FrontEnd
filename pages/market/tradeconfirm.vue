@@ -1,12 +1,12 @@
 <template>
   <div class="ma-auto">
     <v-col class="py-5 bg-orange" cols="12" sm="12" md="12">
-      <h1 class="d-flex justify-center">
+      <h1 class="d-flex justify-center h1-trade">
         <img class="pr-2" src="~/assets/icon/trade-white.png" alt="trade-image">การแลกเปลี่ยนของฉัน
       </h1>
     </v-col>
     <div class="wid-60 ma-auto">
-      <v-row>
+      <v-row class="mt-2">
         <v-col cols="12">
           <h2 class="d-flex justify-center align-center">
             <img class="pr-2" src="~/assets/icon/bi_clock_black.png"> ระยะเวลาการแลกเปลี่ยน: {{ day }} วัน
@@ -18,7 +18,7 @@
           </h2>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row class="mb-5">
         <v-col cols="12" sm="12" md="5" lg="5">
           <v-card
             color="#FF8C00"
@@ -65,25 +65,15 @@
           <h3 class="d-flex align-center justify-center">
             {{ p1_Status }}
           </h3>
-          <v-row class="mt-1">
+          <v-row justify="center" v-if="dialogm1" class="mt-1">
             <v-col cols="6" class="d-flex justify-center">
               <v-btn
                 depressed
                 x-large
                 color="success"
-                @click="confirmButton"
+                @click="confirmDialog = true"
               >
                 ตกลง
-              </v-btn>
-            </v-col>
-            <v-col cols="6" class="d-flex justify-center">
-              <v-btn
-                depressed
-                x-large
-                color="error"
-                @click="cancelSelect"
-              >
-                ยกเลิก
               </v-btn>
             </v-col>
           </v-row>
@@ -233,11 +223,45 @@
         </v-col>
       </v-row>
     </div>
+    <v-dialog
+      v-model="confirmDialog"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title>
+          กรุณายืนยันการแลกเปลี่ยน
+        </v-card-title>
+
+        <v-card-text>
+          หากกดตกลงแล้วหนังสือที่ถูกแลกเปลี่ยนจะอยู่ในคลัง
+        </v-card-text>
+
+        <v-card-actions>
+          <v-btn
+            color="#FF8C00"
+            text
+            @click="confirmDialog = false"
+          >
+            ยกเลิก
+          </v-btn>
+
+          <v-btn
+            color="#FF8C00"
+            text
+            @click="confirmButton"
+          >
+            ตกลง
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 export default {
+  middleware: ['protectUser', 'authCheck'],
   data () {
     return {
       idBook: '',
@@ -249,6 +273,7 @@ export default {
       offerUserName: '',
       ownerName: '',
       dialogm1: '',
+      confirmDialog: false,
       p1_Status: 'ยังไม่ยืนยัน',
       p2_Status: 'ยืนยันแล้ว',
       dialog: false
@@ -264,7 +289,11 @@ export default {
     this.day = res.postDetail
     this.mainBook = res.BookDetails
     this.ownerName = res.ownerDetails.name
-    this.offerBook = res.offerDetails
+    if (res.offerDetails === "Don't have any offers") {
+      this.offerBook = []
+    } else {
+      this.offerBook = res.offerDetails
+    }
   },
   methods: {
     con () {
@@ -274,8 +303,8 @@ export default {
       const index = this.offerBook.map(e => e.book.bookTitle).indexOf(this.dialogm1)
       console.log(this.offerBook[index].book.bookTitle)
       console.log(this.offerBook[index].book.bookId)
-      const res = await this.$axios.$post('/trade/confirm/' + this.idBoo + '/' + this.offerBook[index].offerId)
-      console.log(res)
+      await this.$axios.$post('/trade/confirm/' + this.idBook + '/' + this.offerBook[index].offerId)
+      this.confirmDialog = false
     },
     changeOfferCard (index) {
       this.offerBookCard = this.offerBook[index].book
@@ -305,9 +334,15 @@ export default {
 .font-black{
   color: black;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1700px) {
   .wid-60 {
   width: 90%;
+}
+}
+@media screen and (max-width: 479px) {
+  .h1-trade {
+  font-size: 18px !important;
+  align-items: center;
 }
 }
 </style>

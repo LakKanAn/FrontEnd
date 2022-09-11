@@ -86,19 +86,13 @@
             Users Login
           </v-btn>
         </v-card>
-        <v-snackbar v-model="snackbar" :timeout="4000" absolute bottom center>
-          {{ snackbarText }}
-        </v-snackbar>
       </v-col>
     </v-row>
-    <snackbar :idBook="2" :text="'Helo'" :wtfsss="snackbarCheck"></snackbar>
   </div>
 </template>
 
 <script>
-import snackbar from '~/components/snackbar.vue'
 export default {
-  components: { snackbar },
   data () {
     return {
       loginPage: 'users',
@@ -184,7 +178,8 @@ export default {
 .inner-login-page{
     width: 100%;
     height: 100%;
-    background-image: url("~/assets/background/sor.jpg");
+    background-image: url("~/assets/background/book-bg-flat.png");
+    background-repeat: repeat;
     background-size: auto;
 }
 .row-login{
