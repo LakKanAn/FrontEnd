@@ -6,7 +6,7 @@
       </h1>
     </v-col>
     <v-row class="mt-4" justify="center">
-      <v-col cols="12" sm="3" md="3" lg="3">
+      <v-col cols="12" sm="3" md="3" lg="3" class="d-flex justify-center">
         <v-btn
           outlined
           elevation="0"
@@ -19,14 +19,14 @@
             right
             dark
             color="#ff8c00"
-            class="mr-2"
+            class="mr-1"
           >
             mdi-clock-time-two-outline
           </v-icon>
           ประวัติการแลกเปลี่ยน
         </v-btn>
       </v-col>
-      <v-col cols="12" sm="3" md="3" lg="3">
+      <v-col cols="12" sm="3" md="3" lg="3" class="d-flex justify-center">
         <v-btn
           elevation="0"
           color="#ff8c00"
@@ -129,15 +129,15 @@
               class="pa-0 mb-5"
             >
               <v-card outlined @click="routerGo(list.postId)">
-                <v-row class="br-bot">
-                  <v-col cols="12" sm="4" md="4">
+                <v-row justify="center" class="br-bot">
+                  <v-col cols="12" sm="5" md="5" class="d-flex justify-center">
                     <v-img
                       :src="list.bookImage"
                       height="311"
                       max-width="212"
                     />
                   </v-col>
-                  <v-col cols="7" sm="7" md="7">
+                  <v-col cols="11" sm="7" md="7">
                     <v-card-title class="pb-4 pt-0 px-0 over-text">
                       {{ list.bookTitle }}
                     </v-card-title>

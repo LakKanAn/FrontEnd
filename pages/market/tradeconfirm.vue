@@ -8,12 +8,12 @@
     <div class="wid-60 ma-auto">
       <v-row class="mt-2">
         <v-col cols="12">
-          <h2 class="d-flex justify-center align-center">
+          <h2 class="d-flex justify-center align-center text-head">
             <img class="pr-2" src="~/assets/icon/bi_clock_black.png"> ระยะเวลาการแลกเปลี่ยน: {{ day }} วัน
           </h2>
         </v-col>
         <v-col cols="12">
-          <h2 class="d-flex justify-center align-center" @click="con">
+          <h2 class="d-flex justify-center align-center text-head" @click="con">
             ระหว่าง คุณ {{ ownerName }} กับ คุณ {{ offerUserName == '' ? 'ผู้ใช้งานท่านอื่น' : offerUserName }}
           </h2>
         </v-col>
@@ -48,7 +48,7 @@
                 class="mx-0"
               />
 
-              <div class="my-4 text-subtitle-1 font-white">
+              <div class="my-4 text-subtitle-trade-1 font-white">
                 {{ mainBook.author }}
               </div>
 
@@ -168,7 +168,7 @@
                 class="mx-0"
               />
 
-              <div class="my-4 text-subtitle-1">
+              <div class="my-4 text-subtitle-trade-1">
                 {{ offerBookCard.author }}
               </div>
 
@@ -203,7 +203,7 @@
                 class="mx-0"
               />
 
-              <div class="my-4 text-subtitle-1">
+              <div class="my-4 text-subtitle-trade-1">
                 ชื่อผู้เขียน
               </div>
 
@@ -334,6 +334,9 @@ export default {
 .font-black{
   color: black;
 }
+.text-subtitle-trade-1{
+     font-family: 'Prompt', sans-serif !important;
+}
 @media screen and (max-width: 1700px) {
   .wid-60 {
   width: 90%;
@@ -344,5 +347,9 @@ export default {
   font-size: 18px !important;
   align-items: center;
 }
+  .text-head {
+  font-size: 18px !important;
+  align-items: center;
+  }
 }
 </style>
