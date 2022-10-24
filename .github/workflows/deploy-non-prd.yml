@@ -54,10 +54,18 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create .env file
+        if: github.ref != 'refs/heads/main'
         run: 'echo "$FILE_CONTENT" >> .env'
         shell: bash
         env:
           FILE_CONTENT : ${{ secrets.ENV_FILE_CONTENT }}
+
+      - name: Create prd .env file
+        if: github.ref == 'refs/heads/main'
+        run: 'echo "$FILE_CONTENT" >> .env'
+        shell: bash
+        env:
+          FILE_CONTENT : ${{ secrets.PRD_ENV_FILE_CONTENT }}
 
       - name: Build and push
         uses: docker/build-push-action@v2
