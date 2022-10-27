@@ -126,27 +126,26 @@
             <p v-if="disText" class="text-red d-flex justify-center px-auto">
               {{ disText }}
             </p>
-            <div />
-            <v-divider class="my-3" />
-            <v-btn
-              class="my-2 pa-2 login-button"
-              width="49%"
-              depressed
-              large
-              @click="switchLogin"
-            >
-              Admin Login
-            </v-btn>
-            <v-btn
-              class="my-2 pa-2 login-button"
-              width="49%"
-              depressed
-              large
-              @click="switchLogin"
-            >
-              Users Login
-            </v-btn>
           </div>
+          <v-divider class="my-3" />
+          <v-btn
+            class="my-2 pa-2 login-button"
+            width="49%"
+            depressed
+            large
+            @click="switchLogin"
+          >
+            Admin Login
+          </v-btn>
+          <v-btn
+            class="my-2 pa-2 login-button"
+            width="49%"
+            depressed
+            large
+            @click="switchLogin"
+          >
+            Users Login
+          </v-btn>
         </v-card>
       </v-col>
     </v-row>
@@ -191,6 +190,7 @@ export default {
           this.$nuxt.$router.push('/distributor/managebook')
         })
       } catch (error) {
+        console.log(error)
         error.message === this.errorNoUser ? this.disText = 'ไม่มีผู้ใช้งานนี้' : this.snackbarText = 'No error message'
         error.message === this.errorWrongPassword ? this.disText = 'รหัสผ่านไม่ถูกต้อง' : this.snackbarText = 'No error message'
       }
