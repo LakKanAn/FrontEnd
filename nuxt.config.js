@@ -55,6 +55,7 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/dotenv',
+    'nuxt-healthcheck',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
@@ -83,7 +84,13 @@ export default {
       }
     ]
   ],
-
+  healthcheck: {
+    path: '/ping',
+    contentType: 'application/json',
+    healthy: () => {
+      return JSON.stringify({ result: 'pong' })
+    }
+  },
   auth: {
     localStorage: false,
     redirect: {
