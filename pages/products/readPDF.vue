@@ -63,11 +63,19 @@ export default {
   },
   async mounted () {
     try {
-      const param = String(this.$route.query.book)
-      const res = await this.$axios.$get(
-        '/users/bookshelf/' + param
-      )
-      url = res.BookDetails.contentBook
+      const paramBook = String(this.$route.query.book)
+      const paramTrade = String(this.$route.query.trade)
+      if (paramTrade === 'false') {
+        const res = await this.$axios.$get(
+          '/users/bookshelf/' + paramBook
+        )
+        url = res.BookDetails.contentBook
+      } else {
+        const res = await this.$axios.$get(
+          '/users/booktrade/' + paramBook
+        )
+        url = res.BookDetails.contentBook
+      }
       pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js'
       canvas = document.getElementById('the-canvas')
       ctx = canvas.getContext('2d')

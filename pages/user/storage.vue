@@ -341,7 +341,10 @@ export default {
       this.$nuxt.$router.push('/products/' + item)
     },
     readBook (item) {
-      this.$nuxt.$router.push('/products/readPDF?book=' + item)
+      this.$nuxt.$router.push('/products/readPDF?book=' + item + '&trade=' + false)
+    },
+    tradeReadBook (item) {
+      this.$nuxt.$router.push('/products/readPDF?book=' + item + '&trade=' + true)
     },
     registerBook () {
       this.$axios.$post('/users/bookshelf/' + this.currentId + '/post', { timeSet: Number(this.selected) })
