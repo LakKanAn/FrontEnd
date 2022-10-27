@@ -252,6 +252,9 @@ export default {
       title: 'LakkanAn'
     }
   },
+  fetch () {
+    console.log(this.$nuxt.$fire.auth.currentUser.photoURL)
+  },
   methods: {
     home () {
       this.$nuxt.$router.push('/')

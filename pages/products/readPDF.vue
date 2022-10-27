@@ -62,44 +62,48 @@ export default {
     }
   },
   async mounted () {
-    const param = String(this.$route.query.book)
-    const res = await this.$axios.$get(
-      '/users/bookshelf/' + param
-    )
-    url = res.BookDetails.contentBook
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js'
-    canvas = document.getElementById('the-canvas')
-    ctx = canvas.getContext('2d')
-    pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
-      pdfDoc = pdfDoc_
-      document.getElementById('page_count').textContent = pdfDoc.numPages
-      pageRendering = true
-      pdfDoc.getPage(pageNum).then(function (page) {
-        const viewport = page.getViewport({ scale })
-        canvas.width = Math.floor(viewport.width * outputScale)
-        canvas.height = Math.floor(viewport.height * outputScale)
-        canvas.style.width = Math.floor(viewport.width) + 'px'
-        canvas.style.height = Math.floor(viewport.height) + 'px'
-        const transform = outputScale !== 1
-          ? [outputScale, 0, 0, outputScale, 0, 0]
-          : null
+    try {
+      const param = String(this.$route.query.book)
+      const res = await this.$axios.$get(
+        '/users/bookshelf/' + param
+      )
+      url = res.BookDetails.contentBook
+      pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js'
+      canvas = document.getElementById('the-canvas')
+      ctx = canvas.getContext('2d')
+      pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
+        pdfDoc = pdfDoc_
+        document.getElementById('page_count').textContent = pdfDoc.numPages
+        pageRendering = true
+        pdfDoc.getPage(pageNum).then(function (page) {
+          const viewport = page.getViewport({ scale })
+          canvas.width = Math.floor(viewport.width * outputScale)
+          canvas.height = Math.floor(viewport.height * outputScale)
+          canvas.style.width = Math.floor(viewport.width) + 'px'
+          canvas.style.height = Math.floor(viewport.height) + 'px'
+          const transform = outputScale !== 1
+            ? [outputScale, 0, 0, outputScale, 0, 0]
+            : null
 
-        const renderContext = {
-          canvasContext: ctx,
-          transform,
-          viewport
-        }
-
-        const renderTask = page.render(renderContext)
-        renderTask.promise.then(function () {
-          pageRendering = false
-          if (pageNumPending !== null) {
-            pageNumPending = null
+          const renderContext = {
+            canvasContext: ctx,
+            transform,
+            viewport
           }
+
+          const renderTask = page.render(renderContext)
+          renderTask.promise.then(function () {
+            pageRendering = false
+            if (pageNumPending !== null) {
+              pageNumPending = null
+            }
+          })
         })
+        document.getElementById('page_num').textContent = pageNum
       })
-      document.getElementById('page_num').textContent = pageNum
-    })
+    } catch (error) {
+      this.$nuxt.$router.push('/')
+    }
   },
   methods: {
     renderPage (num) {

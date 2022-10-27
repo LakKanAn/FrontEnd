@@ -112,7 +112,7 @@
         </v-card>
       </div>
 
-      <div class="px-5 mb-10">
+      <!-- <div class="px-5 mb-10">
         <v-col class="pa-0" cols="12" sm="6" md="3">
           <h1 class="topic justify-center">
             หมวดหมู่หนังสือ
@@ -145,7 +145,7 @@
         <p class="addon mb-20 pt-2">
           เพิ่มเติม หมวดหมู่หนังสือ
         </p>
-      </div>
+      </div> -->
 
       <div class="px-5 pb-0">
         <v-col class="px-0 pb-0 " cols="12" sm="6" md="3">
@@ -258,114 +258,6 @@ export default {
     const res = await this.$axios.$get(
       '/market/'
     )
-    // const res = {
-    //   books: [
-    //     {
-    //       createAt: {
-    //         _seconds: 1653722464,
-    //         _nanoseconds: 652000000
-    //       },
-    //       bookId: 'Gezftq5aU5zMsnSuwKiI',
-    //       distributorId: 'LpWBgBNMJaXC39ygnkbkdkpzAC92',
-    //       release: true,
-    //       genre: [
-    //         'วิทยาศาสตร์',
-    //         'ผจญภัย',
-    //         'ระทึกขวัญ'
-    //       ],
-    //       price: '613',
-    //       description: "A masterful tale of ''buccaneers and buried gold''. First published in the children's magazine Young Folks, and considered a coming of age story, it is an adventure tale of superb atmosphere, character, and action, as well as a wry commentary on the ambiguity of morality—as seen in Long John Silver—unusual for children's literature then and now. It is one of the most frequently dramatised of all novels, and its influence on popular lore about pirates can not be overestimated.",
-    //       author: 'Robert Louis Stevenson',
-    //       category: 'บันเทิงคดี',
-    //       bookImage: null,
-    //       bookTitle: 'Treasure Island',
-    //       id: 'Gezftq5aU5zMsnSuwKiI'
-    //     },
-    //     {
-    //       bookId: 'JynpLP4mGC4JqxOGp4S9',
-    //       release: true,
-    //       distributorId: 'LpWBgBNMJaXC39ygnkbkdkpzAC92',
-    //       price: '300',
-    //       bookTitle: 'The Adventures of Sherlock Holmes',
-    //       author: 'Arthur Conan Doyle',
-    //       category: 'บันเทิงคดี',
-    //       createAt: {
-    //         _seconds: 1653723744,
-    //         _nanoseconds: 955000000
-    //       },
-    //       description: 'A delight for a public which enjoys incident, mystery, and above all that matching of the wits of a clever man against the dumb resistance of the secrecy of inanimate things, which results in the triumph of the human intelligence.',
-    //       bookImage: null,
-    //       genre: [
-    //         'วิทยาศาสตร์',
-    //         'ระทึกขวัญ',
-    //         'โรแมนติก'
-    //       ],
-    //       id: 'JynpLP4mGC4JqxOGp4S9'
-    //     },
-    //     {
-    //       price: '294',
-    //       bookTitle: 'Adventures of pinocchio',
-    //       bookImage: null,
-    //       release: true,
-    //       bookId: 'cQnyLdr8ioehbVxgRUnM',
-    //       author: 'Carlo Collodi',
-    //       createAt: {
-    //         _seconds: 1662916542,
-    //         _nanoseconds: 828000000
-    //       },
-    //       category: 'บันเทิงคดี',
-    //       description: "rionette and, what is much worse, you have a wooden head.\" At these last words, Pinocchio jumped up in a fury, took a hammer from the bench, and threw it with all his strength at the Talking Cricket.  Perhaps he did not think he would strike it. But, sad to relate, my dear children, he did hit the Cricket, straight on its head.  With a last weak \"cri-cri-cri\" the poor Cricket fell from the wall, dead!  CHAPTER 5 Pinocchio is hungry and looks for an egg to cook himself an omelet; but, to his surprise, the omelet flies out of the window.  If the Cricket's death scared Pinocchio at all, it was only for a very few moments. For, as night came on, a queer, empty feeling at the pit of his stomach reminded the Marionette that he had eaten nothing as yet.  A boy's appetite grows very fast, and in a few moments the queer, empty feeling had become hunger, and the hunger grew bigger and bigger, until soon he was as ravenous as a bear.  Poor Pinocchio ran to the fire",
-    //       distributorId: 'LpWBgBNMJaXC39ygnkbkdkpzAC92',
-    //       genre: [
-    //         'โรแมนติก',
-    //         'ระทึกขวัญ'
-    //       ],
-    //       id: 'cQnyLdr8ioehbVxgRUnM'
-    //     },
-    //     {
-    //       bookTitle: 'Alice in Wonderland',
-    //       author: 'Lewis Carroll',
-    //       release: true,
-    //       genre: [
-    //         'วิทยาศาสตร์',
-    //         'ต่อสู้',
-    //         'แฟนตาซี',
-    //         'ตลก'
-    //       ],
-    //       description: "The story of a girl named Alice who falls down a rabbit hole into a fantasy world populated by peculiar and anthropomorphic creatures. The tale is filled with allusions to Dodgson's friends. The tale plays with logic in ways that have given the story lasting popularity with adults as well as children. It is considered to be one of the most characteristic examples of the genre of literary nonsense, and its narrative course and structure have been enormously influential, especially in the fantasy genre.",
-    //       price: '450',
-    //       createAt: {
-    //         _seconds: 1661229962,
-    //         _nanoseconds: 540000000
-    //       },
-    //       category: 'บันเทิงคดี',
-    //       distributorId: 'LpWBgBNMJaXC39ygnkbkdkpzAC92',
-    //       bookId: 'oE6KcAgwgJGKsyuYW8py',
-    //       bookImage: null,
-    //       id: 'oE6KcAgwgJGKsyuYW8py'
-    //     },
-    //     {
-    //       category: 'บันเทิงคดี',
-    //       description: "A missing student. A gunned-down detective. A woman in fear for her life. All three are connected. Detective Inspector Carl Sant and his team get on the case. But what links the disappearance of a university student, the death of an off-duty police sergeant, and a professor reluctant to help them solve the case? Their only clue is a sequence of numbers, etched on a misty window. Soon, both the past and the present are on a collision course with the very heart of Sant’s profession. Racing against time, D.I. Sant must find out what's behind the mysterious events - before the bodies start piling up.",
-    //       author: 'Dan Laughey',
-    //       release: true,
-    //       bookImage: null,
-    //       genre: [
-    //         'สืบสวนสอบสวน',
-    //         'ระทึกขวัญ'
-    //       ],
-    //       price: '300',
-    //       createAt: {
-    //         _seconds: 1662915763,
-    //         _nanoseconds: 2000000
-    //       },
-    //       bookTitle: 'Chloe-Lost Girl',
-    //       distributorId: 'LpWBgBNMJaXC39ygnkbkdkpzAC92',
-    //       bookId: 'pY8BHtVsWDlCec2cCoy4',
-    //       id: 'pY8BHtVsWDlCec2cCoy4'
-    //     }
-    //   ]
-    // }
     this.backupBook = res.books
     this.newBook = res.books.slice(0, 4)
     this.hotBook = res.books.slice(0, 4)
@@ -380,7 +272,6 @@ export default {
       // eslint-disable-next-line eqeqeq
       const genreBuffer = this.genre == '' ? '' : 'genre=' + this.genre
       const res = await this.$axios.$get('/market/filter?' + categoryBuffer + '&' + genreBuffer)
-      console.log(res)
       this.allBook = res.bookDetail
     },
     login () {

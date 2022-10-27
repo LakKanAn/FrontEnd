@@ -255,60 +255,13 @@ export default {
         'นิตยสาร'
       ],
       backUPList: [],
-      listBook: [
-        {
-          genre: [
-            'วิทยาศาสตร์',
-            'ผจญภัย',
-            'ระทึกขวัญ'
-          ],
-          author: 'Robert Louis Stevenson',
-          distributorId: 'LpWBgBNMJaXC39ygnkbkdkpzAC92',
-          release: true,
-          bookImage: null,
-          createAt: {
-            _seconds: 1653722464,
-            _nanoseconds: 652000000
-          },
-          bookId: 'Gezftq5aU5zMsnSuwKiI',
-          bookTitle: 'Treasure Island',
-          description: "A masterful tale of ''buccaneers and buried gold''. First published in the children's magazine Young Folks, and considered a coming of age story, it is an adventure tale of superb atmosphere, character, and action, as well as a wry commentary on the ambiguity of morality—as seen in Long John Silver—unusual for children's literature then and now. It is one of the most frequently dramatised of all novels, and its influence on popular lore about pirates can not be overestimated.",
-          category: 'บันเทิงคดี',
-          price: '613',
-          id: 'Gezftq5aU5zMsnSuwKiI',
-          day: '7'
-        },
-        {
-          author: 'Arthur Conan Doyle',
-          release: true,
-          category: 'บันเทิงคดี',
-          bookTitle: 'The Adventures of Sherlock Holmes',
-          genre: [
-            'วิทยาศาสตร์',
-            'ระทึกขวัญ',
-            'โรแมนติก'
-          ],
-          description: 'A delight for a public which enjoys incident, mystery, and above all that matching of the wits of a clever man against the dumb resistance of the secrecy of inanimate things, which results in the triumph of the human intelligence.',
-          createAt: {
-            _seconds: 1653723744,
-            _nanoseconds: 955000000
-          },
-          distributorId: 'LpWBgBNMJaXC39ygnkbkdkpzAC92',
-          bookImage: null,
-          price: '300',
-          bookId: 'JynpLP4mGC4JqxOGp4S9',
-          id: 'JynpLP4mGC4JqxOGp4S9',
-          day: '7'
-        }
-      ]
-
+      listBook: []
     }
   },
   async fetch () {
     const res = await this.$axios.$get(
       '/trade/'
     )
-    console.log(res)
     this.listBook = res.books
     this.backUPList = res.books
     this.page = res.config.currentPage
@@ -340,7 +293,6 @@ export default {
           raw.push(e)
         }
       })
-      console.log(raw)
       this.listBook = raw
     },
     filterCategory (event) {
@@ -351,7 +303,6 @@ export default {
           raw.push(e)
         }
       })
-      console.log(raw)
       this.listBook = raw
     }
   }

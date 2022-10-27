@@ -65,7 +65,7 @@
           <h3 class="d-flex align-center justify-center">
             {{ p1_Status }}
           </h3>
-          <v-row justify="center" v-if="dialogm1" class="mt-1">
+          <v-row v-if="dialogm1" justify="center" class="mt-1">
             <v-col cols="6" class="d-flex justify-center">
               <v-btn
                 depressed
@@ -212,7 +212,7 @@
 
             <v-divider class="mx-4" />
           </v-card>
-          <div v-if="dialogm1" >
+          <div v-if="dialogm1">
             <h3 class="d-flex align-center justify-center">
               สถานะของฝ่ายตรงข้าม
             </h3>
@@ -284,7 +284,6 @@ export default {
     const res = await this.$axios.$get(
       '/trade/' + this.idBook
     )
-    console.log(res)
     this.allData = res
     this.day = res.postDetail
     this.mainBook = res.BookDetails
@@ -296,21 +295,15 @@ export default {
     }
   },
   methods: {
-    con () {
-      console.log(this.dialogm1)
-    },
     async confirmButton () {
       const index = this.offerBook.map(e => e.book.bookTitle).indexOf(this.dialogm1)
-      console.log(this.offerBook[index].book.bookTitle)
-      console.log(this.offerBook[index].book.bookId)
       await this.$axios.$post('/trade/confirm/' + this.idBook + '/' + this.offerBook[index].offerId)
       this.confirmDialog = false
-      setTimeout(location.reload(), 5000)
+      setTimeout(this.$nuxt.$router.push('/user/storage'), 5000)
     },
     changeOfferCard (index) {
       this.offerBookCard = this.offerBook[index].book
       this.offerUserName = this.offerBook[index].name
-      console.log(this.offerBookCard)
     },
     cancelSelect () {
       this.dialogm1 = ''

@@ -206,7 +206,7 @@
           <h3 class="d-flex align-center justify-center">
             {{ p2_Status }}
           </h3>
-          <v-row justify="center" v-if="dialogm1" class="mt-1">
+          <v-row v-if="dialogm1" justify="center" class="mt-1">
             <v-col cols="6" class="d-flex justify-center">
               <v-btn
                 depressed
@@ -221,7 +221,7 @@
         </v-col>
       </v-row>
     </div>
-        <v-dialog
+    <v-dialog
       v-model="confirmDialog"
       persistent
       max-width="290"
@@ -284,18 +284,13 @@ export default {
     const resListBook = await this.$axios.$get(
       '/users/bookshelf'
     )
-    console.log(res)
     this.allData = res
     this.day = res.postDetail
     this.mainBook = res.BookDetails
     this.ownerName = res.ownerDetails.name
     this.offerBook = resListBook.bookDetail
-    console.log(this.offerBook)
   },
   methods: {
-    con () {
-      console.log(this.dialogm1)
-    },
     async confirmButton () {
       const index = this.offerBook.map(e => e.bookTitle).indexOf(this.dialogm1)
       await this.$axios.$post('/trade/' + this.idBook, { bookId: this.offerBook[index].bookId })
@@ -304,7 +299,6 @@ export default {
     },
     changeOfferCard (index) {
       this.offerBookCard = this.offerBook[index]
-      console.log(this.offerBookCard)
     },
     cancelSelect () {
       this.dialogm1 = ''

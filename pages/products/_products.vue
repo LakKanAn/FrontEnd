@@ -11,7 +11,7 @@
         <v-row class="main-card-book py-5">
           <v-col cols="12" sm="12" md="8">
             <div class="d-flex justify-center">
-            <v-img :src="mainBooks.bookImage" class="image-cover" max-width="400" />
+              <v-img :src="mainBooks.bookImage" class="image-cover" max-width="400" />
             </div>
           </v-col>
           <v-col cols="12" sm="12" md="4">
@@ -132,30 +132,12 @@ export default {
       },
       newBook: [],
       mainBooks: {
-        author: 'dsadasd',
-        createAt: {
-          _seconds: 1653404873,
-          _nanoseconds: 814000000
-        },
-        bookImage: 'https://minioapi.lakkanan.shop/books/281244747_756397855358450_999238111691385875_n.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIOSFODNN7EXAMPLE%2F20220525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220525T110539Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=6a2a48a592b9ae03513defb77ec851b7de2e0e4c894f1aacc96812f8d7b262bb',
-        release: true,
-        bookId: 'HyPJlWI0067nttlGIdgm',
-        price: '123123',
-        distributorId: '1hOKs2HCWyal8VrhgLIZQ7VE32B3',
-        genre: 'นิตยสาร',
-        Category: 'สิ่งพิมพ์',
-        fileUrl: 'https://www.googleapis.com/books/',
-        description: '1231232',
-        category: 'วารสาร',
-        bookTitle: 'dsadasdas',
-        id: 'HyPJlWI0067nttlGIdgm'
       }
     }
   },
   async fetch () {
     let slug = this.$nuxt.$route.path
-    slug = slug.split('/products/') // When calling /abc the slug will be "abc"
-    console.log(slug[1])
+    slug = slug.split('/products/')
     const resMain = await this.$axios.$get(
       '/market/' + slug[1]
     )
@@ -163,9 +145,7 @@ export default {
       '/market/'
     )
     this.idBook = slug[1]
-    console.log(this.idBook)
     this.newBook = res.books.reverse()
-    console.log(resMain.BookDetails)
     this.mainBooks = resMain.BookDetails
     this.mainBooks.genre = this.mainBooks.genre.join()
   },

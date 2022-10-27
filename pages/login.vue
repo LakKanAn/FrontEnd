@@ -213,12 +213,6 @@ export default {
           that.snackbarText = error.message
           that.snackbar = true
         })
-    },
-    forgotPassword () {
-      console.log('Sad')
-      console.log(this.snackbarCheck)
-      this.snackbarCheck = true
-      console.log(this.snackbarCheck)
     }
   }
 }

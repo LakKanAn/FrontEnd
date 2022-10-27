@@ -3,13 +3,23 @@
     <v-row class="row-login" align="center" justify="center">
       <v-col cols="12" sm="8" md="4" align="center" justify="center">
         <v-card width="600" class="pa-5 elevation-1 text-left card-login">
-          <v-card-title class="text-lg-h4 my-0">ข้อมูลผู้จัดจำหน่าย</v-card-title>
+          <v-card-title class="text-lg-h4 my-0">
+            ข้อมูลผู้จัดจำหน่าย
+          </v-card-title>
           <!-- <v-card-subtitle>เข้าสู่ระบบเพื่อใช้งาน</v-card-subtitle> -->
           <v-divider />
-          <p class="text-lg-h5 my-4">ชื่อบริษัท </p>
-          <p class="text-lg-h5 my-4">ชื่อที่แสดง </p>
-          <p class="text-lg-h5 my-4">อีเมล </p>
-          <p class="text-lg-h5 my-4">ที่อยู่ </p>
+          <p class="text-lg-h5 my-4">
+            ชื่อบริษัท  : {{ company }}
+          </p>
+          <p class="text-lg-h5 my-4">
+            ชื่อที่แสดง : {{ displayName }}
+          </p>
+          <p class="text-lg-h5 my-4">
+            อีเมล : {{ email }}
+          </p>
+          <p class="text-lg-h5 my-4">
+            ที่อยู่ : {{ address }}
+          </p>
         </v-card>
       </v-col>
     </v-row>
@@ -26,8 +36,19 @@ export default {
       address: ''
     }
   },
+  async fetch () {
+    const res = await this.$axios.$get(
+      '/distributors/info'
+    )
+    console.log(res.distributor)
+    this.email = res.distributor.email
+    this.address = res.distributor.address
+    this.displayName = res.distributor.displayName
+    this.company = res.distributor.company
+  },
   methods: {
   }
+
 }
 </script>
 
@@ -51,9 +72,6 @@ export default {
 }
 .v-card__subtitle{
     text-align: center;
-}
-.login-button{
-    background-color: #FF8C00 !important;
 }
 
 </style>
