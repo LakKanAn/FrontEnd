@@ -186,7 +186,7 @@
                         outlined
                         color="#FF8C00"
                         x-large
-                        @click="tradeReadBook(items.bookId)"
+                        @click="tradeReadBook(items.exchangeId)"
                       >
                         อ่านหนังสือ
                       </v-btn>
