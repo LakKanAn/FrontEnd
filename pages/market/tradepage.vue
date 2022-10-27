@@ -2,19 +2,25 @@
   <div class="ma-auto">
     <v-col class="py-5 bg-orange" cols="12" sm="12" md="12">
       <h1 class="d-flex justify-center h1-trade">
-        <img class="pr-2" src="~/assets/icon/trade-white.png" alt="trade-image">การแลกเปลี่ยนของฉัน
+        <img
+          class="pr-2"
+          src="~/assets/icon/trade-white.png"
+          alt="trade-image"
+        >การแลกเปลี่ยนของฉัน
       </h1>
     </v-col>
     <div class="wid-60 ma-auto">
       <v-row class="mt-2">
         <v-col cols="12">
           <h2 class="d-flex justify-center align-center text-head">
-            <img class="pr-2" src="~/assets/icon/bi_clock_black.png"> ระยะเวลาการแลกเปลี่ยน: {{ day }} วัน
+            <img class="pr-2" src="~/assets/icon/bi_clock_black.png">
+            ระยะเวลาการแลกเปลี่ยน: {{ day }} วัน
           </h2>
         </v-col>
         <v-col cols="12">
-          <h2 class="d-flex justify-center align-center text-head" @click="con">
-            ระหว่าง คุณ {{ ownerName }} กับ คุณ {{ $nuxt.$fire.auth.currentUser.displayName }}
+          <h2 class="d-flex justify-center align-center text-head">
+            ระหว่าง คุณ {{ ownerName }} กับ คุณ
+            {{ $nuxt.$fire.auth.currentUser.displayName }}
           </h2>
         </v-col>
       </v-row>
@@ -33,20 +39,14 @@
               />
             </template>
 
-            <v-img
-              height="500"
-              :src="mainBook.bookImage"
-            />
+            <v-img height="500" :src="mainBook.bookImage" />
 
             <v-card-title class="font-white">
               {{ mainBook.bookTitle }}
             </v-card-title>
 
             <v-card-text>
-              <v-row
-                align="center"
-                class="mx-0"
-              />
+              <v-row align="center" class="mx-0" />
 
               <div class="my-4 text-subtitle-trade-1 font-white">
                 {{ mainBook.author }}
@@ -66,13 +66,15 @@
             {{ p1_Status }}
           </h3>
         </v-col>
-        <v-col cols="12" sm="12" md="12" lg="2" class="justify-center align-center d-flex">
+        <v-col
+          cols="12"
+          sm="12"
+          md="12"
+          lg="2"
+          class="justify-center align-center d-flex"
+        >
           <v-row justify="center">
-            <v-dialog
-              v-model="dialog"
-              scrollable
-              max-width="500px"
-            >
+            <v-dialog v-model="dialog" scrollable max-width="500px">
               <template #activator="{ on, attrs }">
                 <v-row>
                   <v-col cols="12" class="d-flex justify-center">
@@ -94,13 +96,10 @@
               <v-card>
                 <v-card-title>เลือกหนังสือที่จะแลกเปลี่ยน</v-card-title>
                 <v-divider />
-                <v-card-text style="height: 300px;">
-                  <v-radio-group
-                    v-model="dialogm1"
-                    column
-                  >
+                <v-card-text style="height: 300px">
+                  <v-radio-group v-model="dialogm1" column>
                     <v-radio
-                      v-for="(listOffer,index) in offerBook"
+                      v-for="(listOffer, index) in offerBook"
                       :key="index"
                       :label="listOffer.bookTitle"
                       :value="listOffer.bookTitle"
@@ -110,18 +109,10 @@
                 </v-card-text>
                 <v-divider />
                 <v-card-actions>
-                  <v-btn
-                    color="blue darken-1"
-                    text
-                    @click="cancelSelect"
-                  >
+                  <v-btn color="blue darken-1" text @click="cancelSelect">
                     ยกเลิก
                   </v-btn>
-                  <v-btn
-                    color="blue darken-1"
-                    text
-                    @click="dialog = false"
-                  >
+                  <v-btn color="blue darken-1" text @click="dialog = false">
                     เลือก
                   </v-btn>
                 </v-card-actions>
@@ -130,11 +121,7 @@
           </v-row>
         </v-col>
         <v-col cols="12" sm="12" md="5" lg="5">
-          <v-card
-            v-if="dialogm1"
-            class="mx-auto my-12"
-            max-width="374"
-          >
+          <v-card v-if="dialogm1" class="mx-auto my-12" max-width="374">
             <template slot="progress">
               <v-progress-linear
                 color="deep-purple"
@@ -143,18 +130,12 @@
               />
             </template>
 
-            <v-img
-              height="500"
-              :src="offerBookCard.bookImage"
-            />
+            <v-img height="500" :src="offerBookCard.bookImage" />
 
             <v-card-title>{{ offerBookCard.bookTitle }}</v-card-title>
 
             <v-card-text>
-              <v-row
-                align="center"
-                class="mx-0"
-              />
+              <v-row align="center" class="mx-0" />
 
               <div class="my-4 text-subtitle-trade-1">
                 {{ offerBookCard.author }}
@@ -165,11 +146,7 @@
 
             <v-divider class="mx-4" />
           </v-card>
-          <v-card
-            v-if="!dialogm1"
-            class="mx-auto my-12"
-            max-width="374"
-          >
+          <v-card v-if="!dialogm1" class="mx-auto my-12" max-width="374">
             <template slot="progress">
               <v-progress-linear
                 color="deep-purple"
@@ -186,10 +163,7 @@
             <v-card-title>ชื่อหนังสือที่ต้องการจะแลกเปลี่ยน</v-card-title>
 
             <v-card-text>
-              <v-row
-                align="center"
-                class="mx-0"
-              />
+              <v-row align="center" class="mx-0" />
 
               <div class="my-4 text-subtitle-trade-1">
                 ชื่อผู้เขียน
@@ -221,34 +195,20 @@
         </v-col>
       </v-row>
     </div>
-    <v-dialog
-      v-model="confirmDialog"
-      persistent
-      max-width="290"
-    >
+    <v-dialog v-model="confirmDialog" persistent max-width="290">
       <v-card>
-        <v-card-title>
-          กรุณายืนยันการแลกเปลี่ยน
-        </v-card-title>
+        <v-card-title> กรุณายืนยันการแลกเปลี่ยน </v-card-title>
 
         <v-card-text>
           หากกดตกลงแล้วหนังสือที่ถูกแลกเปลี่ยนจะอยู่ในคลัง
         </v-card-text>
 
         <v-card-actions>
-          <v-btn
-            color="#FF8C00"
-            text
-            @click="confirmDialog = false"
-          >
+          <v-btn color="#FF8C00" text @click="confirmDialog = false">
             ยกเลิก
           </v-btn>
 
-          <v-btn
-            color="#FF8C00"
-            text
-            @click="confirmButton"
-          >
+          <v-btn color="#FF8C00" text @click="confirmButton">
             ตกลง
           </v-btn>
         </v-card-actions>
@@ -278,12 +238,8 @@ export default {
   },
   async fetch () {
     this.idBook = localStorage.getItem('data-trade')
-    const res = await this.$axios.$get(
-      '/trade/' + this.idBook
-    )
-    const resListBook = await this.$axios.$get(
-      '/users/bookshelf'
-    )
+    const res = await this.$axios.$get('/trade/' + this.idBook)
+    const resListBook = await this.$axios.$get('/users/bookshelf')
     this.allData = res
     this.day = res.postDetail
     this.mainBook = res.BookDetails
@@ -293,7 +249,9 @@ export default {
   methods: {
     async confirmButton () {
       const index = this.offerBook.map(e => e.bookTitle).indexOf(this.dialogm1)
-      await this.$axios.$post('/trade/' + this.idBook, { bookId: this.offerBook[index].bookId })
+      await this.$axios.$post('/trade/' + this.idBook, {
+        bookId: this.offerBook[index].bookId
+      })
       this.confirmDialog = false
       setTimeout(this.$nuxt.$router.push('/user/storage'), 5000)
     },
@@ -312,32 +270,32 @@ export default {
 .wid-60 {
   width: 60%;
 }
-.text-subtitle-trade-1{
-     font-family: 'Prompt', sans-serif !important;
+.text-subtitle-trade-1 {
+  font-family: 'Prompt', sans-serif !important;
 }
 .bg-orange {
-    background-color: #FF8C00;
-    color: white;
-}
-.font-white{
+  background-color: #ff8c00;
   color: white;
 }
-.font-black{
+.font-white {
+  color: white;
+}
+.font-black {
   color: black;
 }
 @media screen and (max-width: 1700px) {
   .wid-60 {
-  width: 90%;
-}
+    width: 90%;
+  }
 }
 @media screen and (max-width: 479px) {
   .h1-trade {
-  font-size: 18px !important;
-  align-items: center;
-}
-   .text-head {
-  font-size: 18px !important;
-  align-items: center;
+    font-size: 18px !important;
+    align-items: center;
+  }
+  .text-head {
+    font-size: 18px !important;
+    align-items: center;
   }
 }
 </style>

@@ -7,7 +7,7 @@
     </v-col>
     <v-row class="mt-4" justify="center">
       <v-col cols="12" sm="3" md="3" lg="3" class="d-flex justify-center">
-        <v-btn
+        <!-- <v-btn
           outlined
           elevation="0"
           color="#ff8c00"
@@ -24,9 +24,9 @@
             mdi-clock-time-two-outline
           </v-icon>
           ประวัติการแลกเปลี่ยน
-        </v-btn>
+        </v-btn> -->
       </v-col>
-      <v-col cols="12" sm="3" md="3" lg="3" class="d-flex justify-center">
+      <v-col cols="12" sm="12" md="12" lg="12" class="d-flex justify-center">
         <v-btn
           elevation="0"
           color="#ff8c00"
