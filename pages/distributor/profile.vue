@@ -28,6 +28,7 @@
 
 <script>
 export default {
+  middleware: ['protectDis', 'authCheck'],
   data () {
     return {
       email: '',

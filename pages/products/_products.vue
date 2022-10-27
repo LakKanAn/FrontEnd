@@ -1,6 +1,6 @@
 <template>
   <div class="inner-index-page">
-    <div :class="{'content-book-center':!$vuetify.theme.dark, 'content-book-center-dark':$vuetify.theme.dark} ">
+    <div class="content-book-center">
       <div class="px-5">
         <v-col class="pa-0" cols="12" sm="12" md="12">
           <p class="product-topic justify-center">
@@ -168,18 +168,9 @@ export default {
 }
 .content-book-center{
   padding-top: 30px;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-bottom: 2%;
+  margin-left: 20%;
+  margin-right: 20%;
   background-color: white;
-  height: 100%;
-}
-.content-book-center-dark{
-  padding-top: 30px;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-bottom: 2%;
-  background-color: #1E1E1E;
   height: 100%;
 }
 .buy-min{
@@ -263,9 +254,6 @@ hr{
 .inner-index-page{
     width: 100%;
     height: 100%;
-    background-image: url("~/assets/background/book-bg-flat.png");
-    background-size: auto;
-    background-repeat: repeat;
 }
 .v-sheet.v-card {
     border-radius: 0px !important;

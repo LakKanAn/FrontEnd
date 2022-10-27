@@ -295,6 +295,7 @@
 
 <script>
 export default {
+  middleware: ['protectAdmin', 'authCheck'],
   data () {
     return {
       userTotal: 0,

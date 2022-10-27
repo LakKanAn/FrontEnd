@@ -27,7 +27,7 @@
                 >
               </v-list-item-avatar>
               <v-list-item-avatar
-                v-if="$nuxt.$auth.user.role === 'distributor'"
+                v-if="$nuxt.$auth.user.role === 'distributor' || $nuxt.$auth.user.role === 'admin'"
               >
                 <v-icon v-if="$nuxt.$auth.loggedIn" color="#FF8C00" large>
                   mdi-account-circle-outline
@@ -52,7 +52,7 @@
                   >
                 </v-list-item-avatar>
                 <v-list-item-avatar
-                  v-if="$nuxt.$auth.user.role === 'distributor'"
+                  v-if="$nuxt.$auth.user.role === 'distributor' || $nuxt.$auth.user.role === 'admin'"
                 >
                   <v-icon v-if="$nuxt.$auth.loggedIn" color="#FF8C00" large>
                     mdi-account-circle-outline
@@ -134,7 +134,7 @@
     <v-main>
       <Nuxt />
     </v-main>
-    <v-row justify="center">
+    <v-row v-if="$nuxt.$auth.loggedIn" justify="center">
       <v-dialog v-model="dialogReport" max-width="600px">
         <template #activator="{ on, attrs }">
           <v-fab-transition v-if="$nuxt.$auth.loggedIn">
