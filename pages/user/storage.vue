@@ -186,6 +186,7 @@
                         outlined
                         color="#FF8C00"
                         x-large
+                        @click="readBook(items.bookId)"
                       >
                         อ่านหนังสือ
                       </v-btn>
