@@ -1,16 +1,28 @@
-/* eslint-disable vue/valid-v-slot */
 <template>
   <div class="justify-center align-self-center width-100">
     <v-row class="row-login" align="center" justify="center">
       <v-col cols="12" sm="12" md="12" align="center" justify="center">
-        <v-card class="containner">
-          <v-row align="center" justify="center">
-            <v-col cols="12" sm="12" md="12" align="center" justify="center">
-              <h1>รายชื่อหนังสือที่ลงทะเบียน</h1>
+        <div class="containner" tile outlined>
+          <v-row>
+            <v-col cols="11" sm="11" md="11">
+              <h1 class="text-left">
+                รายชื่อหนังสือที่ลงทะเบียน
+              </h1>
+            </v-col>
+            <v-col cols="1">
+              <v-btn
+                elevation="4"
+                outlined
+                color="#FF8C00"
+                x-large
+                @click="addBook"
+              >
+                เพิ่มหนังสือ
+              </v-btn>
             </v-col>
           </v-row>
           <v-row align="center" justify="end">
-            <v-col
+            <!-- <v-col
               class="pa-0"
               cols="4"
               sm="4"
@@ -18,29 +30,33 @@
               align="center"
               justify="center"
             >
-              <v-btn @click="addBook">
-                เพิ่มหนังสือ
-              </v-btn>
-            </v-col>
+            </v-col> -->
           </v-row>
           <v-row align="center" justify="center">
             <v-col cols="12" sm="12" md="12" align="center" justify="center">
               <v-data-table
                 :headers="headers"
                 :items="books"
+                item-key="bookTitle"
+                calculate-widths
                 :items-per-page="5"
-                class="elevation-1"
+                class="elevation-1 text-black"
               >
+              <template #[`item.description`]="{ item }">
+                  <p class="text-left over-text-des my-2">{{ item.description }}</p>
+                </template>
                 <template #[`item.actions`]="{ item }">
                   <v-icon
-                    small
+                    large
                     class="mr-2"
+                    color="black"
                     @click="editBook(item)"
                   >
                     mdi-pencil
                   </v-icon>
                   <v-icon
-                    small
+                    large
+                    color="black"
                     @click="deleteBook(item)"
                   >
                     mdi-delete
@@ -49,6 +65,8 @@
                 <template #[`item.release`]="{ item }">
                   <v-simple-checkbox
                     v-model="item.release"
+                    :ripple="false"
+                    color="black"
                     @click="sendRelease(item)"
                   />
                 </template>
@@ -60,7 +78,7 @@
               </v-data-table>
             </v-col>
           </v-row>
-        </v-card>
+        </div>
       </v-col>
     </v-row>
   </div>
@@ -71,15 +89,6 @@ export default {
   middleware: ['protectDis', 'authCheck'],
   data () {
     return {
-      headers: [
-        { text: 'ชื่อหนังสือ', value: 'bookTitle', align: 'start' },
-        { text: 'ชื่อผู้เขียน', value: 'author' },
-        { text: 'หมวดหมู่', value: 'category' },
-        { text: 'รายละเอียด', value: 'description' },
-        { text: 'ราคา', value: 'price' },
-        { text: 'Actions', value: 'actions' },
-        { text: 'ลงในร้านค้า', value: 'release' }
-      ],
       books: []
     }
   },
@@ -88,6 +97,19 @@ export default {
       '/distributors/books'
     )
     this.books = res.books
+  },
+  computed: {
+    headers () {
+      return [
+        { text: 'ชื่อหนังสือ', value: 'bookTitle', align: 'start', width: 400 },
+        { text: 'ชื่อผู้เขียน', value: 'author', width: 300 },
+        { text: 'หมวดหมู่', value: 'category' },
+        { text: 'รายละเอียด', value: 'description', width: 500 },
+        { text: 'ราคา', value: 'price', align: 'center', width: 200 },
+        { text: 'Actions', value: 'actions' },
+        { text: 'ลงในร้านค้า', value: 'release' }
+      ]
+    }
   },
   methods: {
     addBook () {
@@ -125,6 +147,9 @@ export default {
       const id = element => element === item.bookId
       const eiei = this.books.findIndex(id)
       this.books.splice(eiei, 1)
+    },
+    setRowStyle (item) {
+      return 'height-row'
     }
   }
 }
@@ -135,43 +160,12 @@ export default {
     font-family: 'Prompt', sans-serif !important;
  }
 .v-application .elevation-1 {
-    box-shadow: 0px 2px 1px -1px rgb(255, 140, 0), 0px 1px 1px 0px rgb(255, 140, 0), 0px 1px 3px 0px rgb(255, 140, 0) !important;
-}
-.theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr:last-child > th {
-    border-bottom: thin solid rgba(255, 140, 0,0.7);
-    border-bottom-width: thin;
-    border-bottom-style: solid;
-    border-bottom-color: rgba(255, 140, 0,0.7);
-}
-.theme--dark.v-data-table > .v-data-table__wrapper > table > thead > tr:last-child > th {
-    border-bottom: thin solid rgba(255, 140, 0,0.7);
-    border-bottom-width: thin;
-    border-bottom-style: solid;
-    border-bottom-color: rgba(255, 140, 0,0.7);
-}
-.theme--light.v-data-table > .v-data-table__wrapper > table > tbody > tr:not(:last-child) > td:not(.v-data-table__mobile-row), .theme--light.v-data-table > .v-data-table__wrapper > table > tbody > tr:not(:last-child) > th:not(.v-data-table__mobile-row) {
-    border-bottom: thin solid rgba(255, 140, 0,0.7);
-}
-.theme--dark.v-data-table > .v-data-table__wrapper > table > tbody > tr:not(:last-child) > td:not(.v-data-table__mobile-row), .theme--light.v-data-table > .v-data-table__wrapper > table > tbody > tr:not(:last-child) > th:not(.v-data-table__mobile-row) {
-    border-bottom: thin solid rgba(255, 140, 0,0.7);
-}
-.v-data-table-header{
-      border-top: thin solid rgba(255, 140, 0,0.7);
-}
-table{
-  border-top: thin solid rgba(255, 140, 0,0.7);
-}
-.theme--light.v-data-table .v-data-footer {
-    border-top: thin solid rgba(255, 140, 0,0.7);
-}
-.theme--dark.v-data-table .v-data-footer {
-    border-top: thin solid rgba(255, 140, 0,0.7);
+    box-shadow: 0px 2px 1px -2px rgba(0, 0, 0,0.1), 0px 1px 1px 0px rgb(0, 0, 0), 0px 1px 3px 5px rgba(0, 0, 0,0.1) !important;
 }
 .width-100{
   width: 100%;
   height: 100%;
-  background-image: url("~/assets/background/book-bg.jpg");
-  background-size: auto;
+
 }
 .row-login{
     height: 100%;
@@ -187,4 +181,16 @@ table{
     box-shadow: 0px 3px 1px -2px rgb(255, 140, 0), 0px 2px 2px 0px rgb(255, 140, 0), 0px 1px 5px 0px rgb(255, 140, 0);
 }
 
+.over-text-des{
+display: -webkit-box;
+-webkit-line-clamp: 5;
+-webkit-box-orient: vertical;
+overflow-y: scroll;
+text-align: left;
+}
+.v-data-table {
+  color: black !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+}
 </style>

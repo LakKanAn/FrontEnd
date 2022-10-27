@@ -12,7 +12,7 @@
           elevation="0"
           color="#ff8c00"
           large
-          class="mr-1"
+          class=""
           @click="routerBookShelf"
         >
           <v-icon
@@ -31,7 +31,7 @@
           elevation="0"
           color="#ff8c00"
           large
-          class="ml-1 exchange-button"
+          class="exchange-button"
           @click="routerBookShelf"
         >
           <v-icon
@@ -123,16 +123,17 @@
               v-for="(list,index) in listBook"
               :key="index"
               cols="12"
-              sm="5"
+              sm="6"
               lg="5"
-              md="5"
-              class="pa-0 mb-5"
+              md="6"
+              class="pb-5 br-bot"
             >
-              <v-card outlined @click="routerGo(list.postId)">
-                <v-row justify="center" class="br-bot">
-                  <v-col cols="12" sm="5" md="5" class="d-flex justify-center">
+              <v-card elevation="0" @click="routerGo(list.postId)">
+                <v-row justify="center">
+                  <v-col cols="12" sm="5" md="5" class="center-600">
                     <v-img
                       :src="list.bookImage"
+                      class="ml-2"
                       height="311"
                       max-width="212"
                     />
@@ -397,6 +398,16 @@ hr{
   .h1-trade {
   font-size: 18px !important;
   align-items: center;
+}
+ .center-600 {
+  display: flex;
+  justify-self: center;
+}
+}
+@media screen and (max-width: 600px) {
+ .center-600 {
+  display: flex;
+  justify-content: center;
 }
 }
 </style>

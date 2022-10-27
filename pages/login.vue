@@ -21,9 +21,9 @@
             class="my-2 pa-2 login-button"
             width="49%"
             large
-            @click="forgotPassword"
+            @click="loginPage = 'distributor'"
           >
-            Forget Password
+            Distributor Login
           </v-btn>
           <v-btn
             class="my-2 pa-2 login-button"
@@ -62,6 +62,57 @@
             width="100%"
             depressed
             large
+            @click="adminLogin"
+          >
+            Login
+          </v-btn>
+          <v-divider class="my-3" />
+          <v-btn
+            class="my-2 pa-2 login-button"
+            width="49%"
+            depressed
+            large
+            @click="loginPage = 'distributor'"
+          >
+            Distributor Login
+          </v-btn>
+          <v-btn
+            class="my-2 pa-2 login-button"
+            width="49%"
+            depressed
+            large
+            @click="switchLogin"
+          >
+            Users Login
+          </v-btn>
+        </v-card>
+        <v-card v-if="loginPage === 'distributor'" width="500" class="pa-5 elevation-1 text-left">
+          <v-card-title>เข้าสู่ระบบของผู้จัดจำหน่าย</v-card-title>
+          <v-card-subtitle>เข้าสู่ระบบเพื่อใช้งาน</v-card-subtitle>
+          <v-card-text>
+            <v-form>
+              <v-text-field
+                v-model="auth.email"
+                label="Login"
+                name="login"
+                prepend-icon="mdi-account"
+                type="text"
+              />
+
+              <v-text-field
+                v-model="auth.password"
+                label="Password"
+                name="password"
+                prepend-icon="mdi-lock"
+                type="password"
+              />
+            </v-form>
+          </v-card-text>
+          <v-btn
+            class="my-2 pa-2 login-button"
+            width="100%"
+            depressed
+            large
             @click="login"
           >
             Login
@@ -72,9 +123,9 @@
             width="49%"
             depressed
             large
-            @click="login"
+            @click="switchLogin"
           >
-            Forget Password
+            Admin Login
           </v-btn>
           <v-btn
             class="my-2 pa-2 login-button"
@@ -114,14 +165,27 @@ export default {
         ).then((user) => {
           const formData = {
             email: this.$nuxt.$fire.auth.currentUser.email,
-            userId: this.$nuxt.$fire.auth.currentUser.uid,
-            displayName: this.$nuxt.$fire.auth.currentUser.displayName
+            distributorId: this.$nuxt.$fire.auth.currentUser.uid
           }
           this.$axios.$post('/distributors/registration', formData)
           this.$auth.loginWith('local', {
             data: { token: user.user._delegate.accessToken }
           })
           this.$nuxt.$router.push('/distributor/managebook')
+        })
+      } catch (error) {
+      }
+    },
+
+    async adminLogin () {
+      try {
+        await this.$fire.auth.signInWithEmailAndPassword(
+          this.auth.email,
+          this.auth.password
+        ).then((user) => {
+          this.$auth.loginWith('admin', {
+            data: { token: user.user._delegate.accessToken }
+          })
         })
       } catch (error) {
       }
@@ -141,7 +205,7 @@ export default {
             displayName: this.$nuxt.$fire.auth.currentUser.displayName
           }
           this.$axios.$post('/users/registration', formData)
-          this.$auth.loginWith('local', {
+          this.$auth.loginWith('user', {
             data: { token: user.user._delegate.accessToken }
           })
         })
@@ -155,23 +219,12 @@ export default {
       console.log(this.snackbarCheck)
       this.snackbarCheck = true
       console.log(this.snackbarCheck)
-      // const that = this
-      // this.$fire.auth
-      //   .sendPasswordResetEmail(this.auth.email)
-      //   .then(function () {
-      //     that.snackbarText = 'reset link sent to ' + that.auth.email
-      //     that.snackbar = true
-      //   })
-      //   .catch(function (error) {
-      //     that.snackbarText = error.message
-      //     that.snackbar = true
-      //   })
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .v-application{
     font-family: 'Prompt', sans-serif !important;
  }

@@ -305,6 +305,7 @@ export default {
       console.log(this.offerBook[index].book.bookId)
       await this.$axios.$post('/trade/confirm/' + this.idBook + '/' + this.offerBook[index].offerId)
       this.confirmDialog = false
+      setTimeout(location.reload(), 5000)
     },
     changeOfferCard (index) {
       this.offerBookCard = this.offerBook[index].book
