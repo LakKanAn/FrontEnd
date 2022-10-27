@@ -13,7 +13,7 @@
           </h2>
         </v-col>
         <v-col cols="12">
-          <h2 class="d-flex justify-center align-center text-head" @click="con">
+          <h2 class="d-flex justify-center align-center text-head">
             ระหว่าง คุณ {{ ownerName }} กับ คุณ {{ offerUserName == '' ? 'ผู้ใช้งานท่านอื่น' : offerUserName }}
           </h2>
         </v-col>
