@@ -77,7 +77,7 @@
           </div>
           <div v-if="newBook.length == 0" class="d-flex justify-center ma-auto">
             <div class="ma-auto my-16">
-              <v-img :src="require('~/assets/image/stack_of_books.png')" />
+              <v-img :src="require('~/assets/image/stack_of_books.png')" max-width="444" />
               <p class="mt-6 text-center p-no-data">
                 ยังไม่มีหนังสือในชั้น
               </p>
@@ -143,7 +143,7 @@
           </div>
           <div v-if="postBook.length == 0" class="d-flex justify-center ma-auto">
             <div class="mx-auto my-16">
-              <v-img :src="require('~/assets/image/stack_of_books.png')" />
+              <v-img :src="require('~/assets/image/stack_of_books.png')" max-width="444" />
               <p class="mt-6 text-center p-no-data">
                 ยังไม่มีหนังสือที่ลงทะเบียนแลกเปลี่ยน
               </p>
@@ -197,7 +197,7 @@
           </div>
           <div v-if="finishBook.length == 0" class="d-flex justify-center ma-auto">
             <div class="mx-auto my-16">
-              <v-img :src="require('~/assets/image/stack_of_books.png')" />
+              <v-img :src="require('~/assets/image/stack_of_books.png')" max-width="444" />
               <p class="mt-6 text-center p-no-data">
                 ยังไม่มีหนังสือที่ได้รับการแลกเปลี่ยน
               </p>

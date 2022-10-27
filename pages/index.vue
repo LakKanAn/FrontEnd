@@ -48,8 +48,8 @@
           </v-col>
           <v-row class="card-book py-5">
             <v-col v-for="(items, index) in hotBook" :key="'sd'+index" cols="12" sm="12" md="12">
-              <v-card class="v-card-index" outlined @click="routerGo(items.bookId)">
-                <v-row class="br-bot">
+              <v-card class="v-card-index v-card-delete-bot " outlined @click="routerGo(items.bookId)">
+                <v-row class="br-bot ">
                   <v-col cols="12" sm="3" md="3">
                     <div class="d-flex justify-center">
                       <v-img
@@ -78,8 +78,8 @@
               </v-card>
             </v-col>
             <v-col v-for="(items, index) in subHotBook" :key="'th'+index" cols="12" sm="6" md="6">
-              <v-card class="v-card-index" outlined @click="routerGo(items.bookId)">
-                <v-row class="br-bot">
+              <v-card class="v-card-index v-card-delete-bot " outlined @click="routerGo(items.bookId)">
+                <v-row class="br-bot ">
                   <v-col cols="5" sm="4" md="4">
                     <v-img
                       :src="items.bookImage"
@@ -106,9 +106,9 @@
               </v-card>
             </v-col>
           </v-row>
-          <p class="addon mb-20">
+          <!-- <p class="addon mb-20">
             เพิ่มเติม หนังสือใหม่ขายดี
-          </p>
+          </p> -->
         </v-card>
       </div>
 
@@ -188,7 +188,7 @@
         </v-row>
         <hr>
         <v-row class="card-book py-5">
-          <v-col v-for="(items, index) in allBook" :key="'four'+index" cols="6" sm="4" md="3">
+          <v-col v-for="(items, index) in allBook" :key="'four'+index" cols="12" sm="4" md="3">
             <v-card class="br-bot v-card-index" outlined @click="routerGo(items.bookId)">
               <v-img
                 :src="items.bookImage"
@@ -366,10 +366,20 @@ hr{
     text-align: left !important;
 }
 .theme--light.v-sheet--outlined .v-card-index{
-    border: 0;
+  border-left: 0px !important;
+  border-right: 0px !important;
+  border-top: 0px !important;
 }
 .theme--dark.v-sheet--outlined .v-card-index{
-    border: 0;
+    border: 0 !important;
+}
+.v-card-index {
+  border-left: 0px !important;
+  border-right: 0px !important;
+  border-top: 0px !important;
+}
+.v-card-delete-bot {
+  border-bottom: 0px !important;
 }
 .v-sheet.v-card {
     border-radius: 0px !important;

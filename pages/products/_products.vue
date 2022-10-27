@@ -25,9 +25,6 @@
               <v-card-subtitle class="py-4 px-0 over-text">
                 ประเภท : {{ mainBooks.genre }}
               </v-card-subtitle>
-              <v-card-subtitle class="py-4 px-0 over-text">
-                ความยาวหน้า : ****
-              </v-card-subtitle>
             </v-card>
             <div class="buy-max">
               <slot>
@@ -90,11 +87,11 @@
           </v-col>
           <hr>
           <v-row class="main-card-book py-5">
-            <v-col v-for="(items, index) in newBook.slice(0,4)" :key="index" cols="6" sm="6" md="3">
+            <v-col v-for="(items, index) in newBook.slice(0,4)" :key="index" cols="12" sm="4" md="3">
               <v-card class="br-bot" outlined @click="routerGo(items.bookId)">
                 <v-img
                   :src="items.bookImage"
-                  height="300px"
+                  height="450px"
                   max-width="359"
                 />
                 <v-card-subtitle class="py-1 px-0 over-text">
@@ -149,23 +146,7 @@ export default {
     this.mainBooks = resMain.BookDetails
     this.mainBooks.genre = this.mainBooks.genre.join()
   },
-  methods: {
-    login () {
-      this.$nuxt.$router.push('/login')
-    },
-    signout () {
-      if (this.$nuxt.$fire.auth.currentUser) {
-        this.$nuxt.$fire.auth.signOut()
-        this.$nuxt.$auth.logout()
-      } else {
-        this.$nuxt.$fire.auth.signOut()
-        this.$nuxt.$auth.logout()
-      }
-    },
-    routerGo (item) {
-      this.$nuxt.$router.push('/products/' + item)
-    }
-  }
+  methods: {}
 }
 </script>
 
@@ -285,5 +266,8 @@ hr{
     background-image: url("~/assets/background/book-bg-flat.png");
     background-size: auto;
     background-repeat: repeat;
+}
+.v-sheet.v-card {
+    border-radius: 0px !important;
 }
 </style>

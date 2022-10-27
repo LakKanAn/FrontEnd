@@ -102,11 +102,11 @@
                     <v-list-item-title v-text="'Dashboard'" />
                   </v-list-item-content>
                 </v-list-item>
-                <v-list-item v-if="$nuxt.$auth.user.role === 'user'">
+                <!-- <v-list-item v-if="$nuxt.$auth.user.role === 'user'">
                   <v-list-item-content>
                     <v-list-item-title v-text="'ประวัติการใช้งาน'" />
                   </v-list-item-content>
-                </v-list-item>
+                </v-list-item> -->
                 <v-list-item
                   v-if="$nuxt.$auth.user.role === 'user'"
                   @click="exchangeBook"
@@ -115,76 +115,6 @@
                     <v-list-item-title v-text="'หน้าแลกเปลี่ยน'" />
                   </v-list-item-content>
                 </v-list-item>
-                <v-list-item
-                  v-if="$nuxt.$auth.user.role === 'user'"
-                >
-                  <v-row justify="center">
-                    <v-dialog v-model="dialogReport" max-width="600px">
-                      <template #activator="{ on, attrs }">
-                        <v-list-item
-                          v-if="$nuxt.$auth.user.role === 'user'"
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-list-item-content>
-                            <v-list-item-title v-text="'แจ้งปัญหา'" />
-                          </v-list-item-content>
-                        </v-list-item>
-                      </template>
-                      <v-card class="font-propmt">
-                        <v-card-title>
-                          <span>แจ้งปัญหา</span>
-                        </v-card-title>
-                        <v-divider />
-                        <v-card-text>
-                          <v-container>
-                            <v-row>
-                              <v-col cols="12">
-                                <v-text-field outlined label="หัวข้อเรื่อง" required />
-                              </v-col>
-                              <v-col cols="12">
-                                <v-textarea
-                                  label="รายละเอียด"
-                                  outlined
-                                  no-resize
-                                  required
-                                />
-                              </v-col>
-                            </v-row>
-                          </v-container>
-                          <small>กรุณาพิมพ์เนื้อหาของปัญหาให้ละเอียดและครบถ้วน</small>
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer />
-                          <v-btn
-                            color="primary"
-                            text
-                            @click="dialogReport = false"
-                          >
-                            ยกเลิก
-                          </v-btn>
-                          <v-btn
-                            color="primary"
-                            text
-                            @click="dialogReport = false"
-                          >
-                            ส่ง
-                          </v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </v-row>
-                </v-list-item>
-
-                <!-- <v-list-item>
-                  <v-list-item-action>
-                    <v-switch
-                      v-model="$vuetify.theme.dark"
-                      color="purple"
-                    />
-                  </v-list-item-action>
-                  <v-list-item-title>DarkMode</v-list-item-title>
-                </v-list-item> -->
                 <v-list-item @click="signout">
                   <v-list-item-content>
                     <v-list-item-title v-text="'ออกจากระบบ'" />
@@ -204,6 +134,68 @@
     <v-main>
       <Nuxt />
     </v-main>
+    <v-row justify="center">
+      <v-dialog v-model="dialogReport" max-width="600px">
+        <template #activator="{ on, attrs }">
+          <v-fab-transition v-if="$nuxt.$auth.loggedIn">
+            <v-btn
+              v-if="$nuxt.$auth.user.role === 'user'"
+              large
+              dark
+              bottom
+              right
+              fixed
+              class="v-btn--example"
+              v-bind="attrs"
+              v-on="on"
+            >
+              แจ้งปัญหา
+            </v-btn>
+          </v-fab-transition>
+        </template>
+        <v-card class="font-propmt">
+          <v-card-title>
+            <span>แจ้งปัญหา</span>
+          </v-card-title>
+          <v-divider />
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field outlined label="หัวข้อเรื่อง" required />
+                </v-col>
+                <v-col cols="12">
+                  <v-textarea
+                    label="รายละเอียด"
+                    outlined
+                    no-resize
+                    required
+                  />
+                </v-col>
+              </v-row>
+            </v-container>
+            <small>กรุณาพิมพ์เนื้อหาของปัญหาให้ละเอียดและครบถ้วน</small>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              color="primary"
+              text
+              @click="dialogReport = false"
+            >
+              ยกเลิก
+            </v-btn>
+            <v-btn
+              color="primary"
+              text
+              @click="dialogReport = false"
+            >
+              ส่ง
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
     <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
       <v-list>
         <v-list-item @click.native="right = !right">

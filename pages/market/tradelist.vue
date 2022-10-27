@@ -65,22 +65,6 @@
     <div class="body-market mt-5">
       <v-row class="mb-5">
         <v-col cols="12">
-          <!-- <v-row class="pt-3">
-            <v-bottom-navigation grow>
-              <v-btn value="recent">
-                <span>หนังสือยอดนิยม</span>
-              </v-btn>
-
-              <v-btn value="favorites">
-                <span>ตั้งรายการใหม่</span>
-              </v-btn>
-
-              <v-btn value="nearby">
-                <span>แลกเปลี่ยนเรียบร้อย</span>
-              </v-btn>
-            </v-bottom-navigation>
-          </v-row> -->
-
           <v-row justify="center" class="py-5">
             <v-col cols="12" sm="4" md="4">
               <v-text-field
@@ -156,72 +140,16 @@
                 </v-row>
               </v-card>
             </v-col>
-          </v-row>
-          <!-- <v-row v-for="(list,index) in listBook" :key="index" class="mt-6">
-            <v-col cols="12" class="pa-0">
-              <v-card class="mt-6">
-                <v-row>
-                  <v-col cols="2" class="py-0">
-                    <img :src="list.bookImage" alt="" width="100%" height="100%">
-                  </v-col>
-                  <v-col cols="6">
-                    <p>{{ list.bookTitle }}</p>
-                    <p>ผู้เขียน {{ list.author }}</p>
-                  </v-col>
-                  <v-col cols="2" class="text-center d-flex align-center justify-center">
-                    <p>{{ list.category }}</p>
-                  </v-col>
-                  <v-col cols="2" class="text-center d-flex align-center justify-center">
-                    <p>{{ list.day }} วัน</p>
-                  </v-col>
-                </v-row>
-              </v-card>
-            </v-col>
-          </v-row> -->
-          <!-- <div class="text-center mt-10">
-            <v-pagination
-              v-model="page"
-              :length="totalPage"
-            />
-          </div> -->
-        </v-col>
-        <!-- <v-col cols="3">
-          <v-card outlined elevation="4">
-            <div class="ma-4">
-              <p class="text-center">
-                ชื่อ
-              </p>
-              <v-text-field
-                outlined
-                placeholder="ชื่อ"
-              />
-              <p class="text-center">
-                หมวดหมู่
-              </p>
-              <v-select
-                dense
-                outlined
-                placeholder="หมวดหมู่"
-              />
-              <p class="text-center">
-                ประเภท
-              </p>
-              <v-select
-                dense
-                outlined
-                placeholder="ประเภท"
-              />
-              <p class="text-center">
-                ระยะวัน
-              </p>
-              <v-select
-                dense
-                outlined
-                placeholder="ประเภท"
-              />
+            <div v-if="listBook.length == 0" class="d-flex justify-center ma-auto">
+              <div class="mx-auto my-16">
+                <v-img :src="require('~/assets/image/stack_of_books.png')" max-width="444"/>
+                <p class="mt-6 text-center p-no-data">
+                  ไม่มีหนังสือที่ลงทะเบียนแลกเปลี่ยน
+                </p>
+              </div>
             </div>
-          </v-card>
-        </v-col> -->
+          </v-row>
+        </v-col>
       </v-row>
     </div>
   </div>
@@ -361,4 +289,10 @@ hr{
   justify-content: center;
 }
 }
+ .p-no-data {
+  font-family: 'Prompt';
+font-style: normal;
+font-weight: 400;
+font-size: 24px;
+ }
 </style>
