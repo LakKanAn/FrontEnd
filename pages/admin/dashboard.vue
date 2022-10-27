@@ -171,13 +171,13 @@
         >
           <template #top>
             <v-row class="mx-2">
-              <v-col cols="11">
+              <v-col cols="12" sm="12" md="8" lg="10">
                 <v-text-field
                   v-model="searchDis"
                   label="Search (UPPER CASE ONLY)"
                 />
               </v-col>
-              <v-col cols="1">
+              <v-col cols="12" sm="12" md="4" lg="2">
                 <v-dialog
                   v-model="dialogDis"
                   max-width="600px"

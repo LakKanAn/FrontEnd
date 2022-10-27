@@ -66,6 +66,11 @@
           >
             Login
           </v-btn>
+          <div class="d-flex justify-center">
+            <p v-if="adminText !== ''" class="red--text">
+              {{ adminText }}
+            </p>
+          </div>
           <v-divider class="my-3" />
           <v-btn
             class="my-2 pa-2 login-button"
@@ -117,25 +122,31 @@
           >
             Login
           </v-btn>
-          <v-divider class="my-3" />
-          <v-btn
-            class="my-2 pa-2 login-button"
-            width="49%"
-            depressed
-            large
-            @click="switchLogin"
-          >
-            Admin Login
-          </v-btn>
-          <v-btn
-            class="my-2 pa-2 login-button"
-            width="49%"
-            depressed
-            large
-            @click="switchLogin"
-          >
-            Users Login
-          </v-btn>
+          <div class="d-flex justify-center">
+            <p v-if="disText" class="text-red d-flex justify-center px-auto">
+              {{ disText }}
+            </p>
+            <div />
+            <v-divider class="my-3" />
+            <v-btn
+              class="my-2 pa-2 login-button"
+              width="49%"
+              depressed
+              large
+              @click="switchLogin"
+            >
+              Admin Login
+            </v-btn>
+            <v-btn
+              class="my-2 pa-2 login-button"
+              width="49%"
+              depressed
+              large
+              @click="switchLogin"
+            >
+              Users Login
+            </v-btn>
+          </div>
         </v-card>
       </v-col>
     </v-row>
@@ -150,6 +161,12 @@ export default {
       snackbar: false,
       snackbarCheck: false,
       snackbarText: 'No error message',
+      adminValidate: false,
+      disValidate: false,
+      adminText: '',
+      disText: '',
+      errorNoUser: 'Firebase: There is no user record corresponding to this identifier. The user may have been deleted. (auth/user-not-found).',
+      errorWrongPassword: 'Firebase: The password is invalid or the user does not have a password. (auth/wrong-password).',
       auth: {
         email: '',
         password: ''
@@ -174,6 +191,8 @@ export default {
           this.$nuxt.$router.push('/distributor/managebook')
         })
       } catch (error) {
+        error.message === this.errorNoUser ? this.disText = 'ไม่มีผู้ใช้งานนี้' : this.snackbarText = 'No error message'
+        error.message === this.errorWrongPassword ? this.disText = 'รหัสผ่านไม่ถูกต้อง' : this.snackbarText = 'No error message'
       }
     },
 
@@ -187,7 +206,10 @@ export default {
             data: { token: user.user._delegate.accessToken }
           })
         })
-      } catch (error) {
+      } catch (errore) {
+        console.log(errore.message)
+        errore.message === this.errorNoUser ? this.adminText = 'ไม่มีผู้ใช้งานนี้' : this.snackbarText = 'No error message'
+        errore.message === this.errorWrongPassword ? this.adminText = 'รหัสผ่านไม่ถูกต้อง' : this.snackbarText = 'No error message'
       }
     },
     switchLogin () {
@@ -242,5 +264,7 @@ export default {
 .login-button{
     background-color: #FF8C00 !important;
 }
-
+.text-red {
+  color: red !important;
+}
 </style>
