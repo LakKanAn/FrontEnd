@@ -160,19 +160,23 @@
             <v-divider />
             <v-card-text>
               <v-container>
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field outlined label="หัวข้อเรื่อง" required />
-                  </v-col>
-                  <v-col cols="12">
-                    <v-textarea
-                      label="รายละเอียด"
-                      outlined
-                      no-resize
-                      required
-                    />
-                  </v-col>
-                </v-row>
+                <v-form ref="formReport">
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field v-model="topic" outlined label="หัวข้อเรื่อง" :rules="req" required />
+                    </v-col>
+                    <v-col cols="12">
+                      <v-textarea
+                        v-model="details"
+                        label="รายละเอียด"
+                        outlined
+                        no-resize
+                        required
+                        :rules="req"
+                      />
+                    </v-col>
+                  </v-row>
+                </v-form>
               </v-container>
               <small>กรุณาพิมพ์เนื้อหาของปัญหาให้ละเอียดและครบถ้วน</small>
             </v-card-text>
@@ -188,7 +192,7 @@
               <v-btn
                 color="primary"
                 text
-                @click="dialogReport = false"
+                @click="sendReport"
               >
                 ส่ง
               </v-btn>
@@ -223,10 +227,15 @@ export default {
   name: 'DefaultLayout',
   data () {
     return {
+      topic: '',
+      details: '',
       clipped: false,
       drawer: false,
       fixed: false,
       dialogReport: false,
+      req: [
+        v => !!v || 'ช่องนี้จำเป็นต้องใส่'
+      ],
       items: [
         {
           icon: 'mdi-apps',
@@ -278,6 +287,9 @@ export default {
         this.$nuxt.$fire.auth.signOut()
         this.$nuxt.$auth.logout()
       }
+    },
+    sendReport () {
+      this.$axios.$post('/users/report/', { topic: this.topic, details: this.details })
     }
   }
 }
