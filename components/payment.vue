@@ -204,8 +204,6 @@ export default {
     },
     async buy () {
       if (this.cardNumber && this.name && this.expireMonth && this.expireYear && this.cvv) {
-        // const buffer = this.$nuxt.$auth.user
-        console.log(this.idBook)
         const res = await this.$axios.$post(
           '/payment/create/' + this.idBook
         )
@@ -217,8 +215,9 @@ export default {
       await this.$axios.$put(
         '/payment/confirm/' + this.idBook
         , { paymentId: this.paymentId }).then(
-        this.dialog = false,
-        this.confirmDialog = false
+        setTimeout(
+          this.dialog = false,
+          this.confirmDialog = false, 5000)
       )
     }
   }

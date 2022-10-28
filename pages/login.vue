@@ -21,9 +21,9 @@
             class="my-2 pa-2 login-button"
             width="49%"
             large
-            @click="forgotPassword"
+            @click="loginPage = 'distributor'"
           >
-            Forget Password
+            Distributor Login
           </v-btn>
           <v-btn
             class="my-2 pa-2 login-button"
@@ -62,19 +62,80 @@
             width="100%"
             depressed
             large
-            @click="login"
+            @click="adminLogin"
           >
             Login
           </v-btn>
+          <div class="d-flex justify-center">
+            <p v-if="adminText !== ''" class="red--text">
+              {{ adminText }}
+            </p>
+          </div>
           <v-divider class="my-3" />
           <v-btn
             class="my-2 pa-2 login-button"
             width="49%"
             depressed
             large
+            @click="loginPage = 'distributor'"
+          >
+            Distributor Login
+          </v-btn>
+          <v-btn
+            class="my-2 pa-2 login-button"
+            width="49%"
+            depressed
+            large
+            @click="switchLogin"
+          >
+            Users Login
+          </v-btn>
+        </v-card>
+        <v-card v-if="loginPage === 'distributor'" width="500" class="pa-5 elevation-1 text-left">
+          <v-card-title>เข้าสู่ระบบของผู้จัดจำหน่าย</v-card-title>
+          <v-card-subtitle>เข้าสู่ระบบเพื่อใช้งาน</v-card-subtitle>
+          <v-card-text>
+            <v-form>
+              <v-text-field
+                v-model="auth.email"
+                label="Login"
+                name="login"
+                prepend-icon="mdi-account"
+                type="text"
+              />
+
+              <v-text-field
+                v-model="auth.password"
+                label="Password"
+                name="password"
+                prepend-icon="mdi-lock"
+                type="password"
+              />
+            </v-form>
+          </v-card-text>
+          <v-btn
+            class="my-2 pa-2 login-button"
+            width="100%"
+            depressed
+            large
             @click="login"
           >
-            Forget Password
+            Login
+          </v-btn>
+          <div class="d-flex justify-center">
+            <p v-if="disText" class="text-red d-flex justify-center px-auto">
+              {{ disText }}
+            </p>
+          </div>
+          <v-divider class="my-3" />
+          <v-btn
+            class="my-2 pa-2 login-button"
+            width="49%"
+            depressed
+            large
+            @click="switchLogin"
+          >
+            Admin Login
           </v-btn>
           <v-btn
             class="my-2 pa-2 login-button"
@@ -99,6 +160,12 @@ export default {
       snackbar: false,
       snackbarCheck: false,
       snackbarText: 'No error message',
+      adminValidate: false,
+      disValidate: false,
+      adminText: '',
+      disText: '',
+      errorNoUser: 'Firebase: There is no user record corresponding to this identifier. The user may have been deleted. (auth/user-not-found).',
+      errorWrongPassword: 'Firebase: The password is invalid or the user does not have a password. (auth/wrong-password).',
       auth: {
         email: '',
         password: ''
@@ -114,8 +181,7 @@ export default {
         ).then((user) => {
           const formData = {
             email: this.$nuxt.$fire.auth.currentUser.email,
-            userId: this.$nuxt.$fire.auth.currentUser.uid,
-            displayName: this.$nuxt.$fire.auth.currentUser.displayName
+            distributorId: this.$nuxt.$fire.auth.currentUser.uid
           }
           this.$axios.$post('/distributors/registration', formData)
           this.$auth.loginWith('local', {
@@ -124,6 +190,26 @@ export default {
           this.$nuxt.$router.push('/distributor/managebook')
         })
       } catch (error) {
+        console.log(error)
+        error.message === this.errorNoUser ? this.disText = 'ไม่มีผู้ใช้งานนี้' : this.snackbarText = 'No error message'
+        error.message === this.errorWrongPassword ? this.disText = 'รหัสผ่านไม่ถูกต้อง' : this.snackbarText = 'No error message'
+      }
+    },
+
+    async adminLogin () {
+      try {
+        await this.$fire.auth.signInWithEmailAndPassword(
+          this.auth.email,
+          this.auth.password
+        ).then((user) => {
+          this.$auth.loginWith('admin', {
+            data: { token: user.user._delegate.accessToken }
+          })
+        })
+      } catch (errore) {
+        console.log(errore.message)
+        errore.message === this.errorNoUser ? this.adminText = 'ไม่มีผู้ใช้งานนี้' : this.snackbarText = 'No error message'
+        errore.message === this.errorWrongPassword ? this.adminText = 'รหัสผ่านไม่ถูกต้อง' : this.snackbarText = 'No error message'
       }
     },
     switchLogin () {
@@ -141,7 +227,7 @@ export default {
             displayName: this.$nuxt.$fire.auth.currentUser.displayName
           }
           this.$axios.$post('/users/registration', formData)
-          this.$auth.loginWith('local', {
+          this.$auth.loginWith('user', {
             data: { token: user.user._delegate.accessToken }
           })
         })
@@ -149,29 +235,12 @@ export default {
           that.snackbarText = error.message
           that.snackbar = true
         })
-    },
-    forgotPassword () {
-      console.log('Sad')
-      console.log(this.snackbarCheck)
-      this.snackbarCheck = true
-      console.log(this.snackbarCheck)
-      // const that = this
-      // this.$fire.auth
-      //   .sendPasswordResetEmail(this.auth.email)
-      //   .then(function () {
-      //     that.snackbarText = 'reset link sent to ' + that.auth.email
-      //     that.snackbar = true
-      //   })
-      //   .catch(function (error) {
-      //     that.snackbarText = error.message
-      //     that.snackbar = true
-      //   })
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .v-application{
     font-family: 'Prompt', sans-serif !important;
  }
@@ -195,5 +264,7 @@ export default {
 .login-button{
     background-color: #FF8C00 !important;
 }
-
+.text-red {
+  color: red !important;
+}
 </style>

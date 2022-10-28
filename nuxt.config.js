@@ -6,11 +6,16 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - lakkanan',
-    title: 'lakkanan',
+    titleTemplate: 'LakkanAn',
+    title: 'LakkanAn',
     htmlAttrs: {
       lang: 'en'
     },
+    script: [
+      {
+        src: 'https://mozilla.github.io/pdf.js/build/pdf.js'
+      }
+    ],
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -50,6 +55,7 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/dotenv',
+    'nuxt-healthcheck',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
@@ -78,7 +84,13 @@ export default {
       }
     ]
   ],
-
+  healthcheck: {
+    path: '/ping',
+    contentType: 'application/json',
+    healthy: () => {
+      return JSON.stringify({ result: 'pong' })
+    }
+  },
   auth: {
     localStorage: false,
     redirect: {
@@ -88,6 +100,34 @@ export default {
     },
     strategies: {
       local: {
+        scheme: 'local',
+        token: {
+          property: 'access_token',
+          required: true,
+          type: 'Bearer'
+        },
+        user: {
+          property: 'distributor', // <--- Default "user"
+          autoFetch: true
+        },
+        endpoints: {
+          login: {
+            url: process.env.BACKEND_URL + '/site/access_token',
+            method: 'post',
+            propertyName: 'access_token'
+          },
+          logout: {
+            url: process.env.BACKEND_URL + '/site/bye',
+            method: 'get'
+          },
+          user: {
+            url: process.env.BACKEND_URL + '/site/me',
+            method: 'get'
+          }
+        }
+      },
+      user: {
+        scheme: 'local',
         token: {
           property: 'access_token',
           required: true,
@@ -95,6 +135,33 @@ export default {
         },
         user: {
           property: 'user', // <--- Default "user"
+          autoFetch: true
+        },
+        endpoints: {
+          login: {
+            url: process.env.BACKEND_URL + '/site/access_token',
+            method: 'post',
+            propertyName: 'access_token'
+          },
+          logout: {
+            url: process.env.BACKEND_URL + '/site/bye',
+            method: 'get'
+          },
+          user: {
+            url: process.env.BACKEND_URL + '/site/me',
+            method: 'get'
+          }
+        }
+      },
+      admin: {
+        scheme: 'local',
+        token: {
+          property: 'access_token',
+          required: true,
+          type: 'Bearer'
+        },
+        user: {
+          property: 'admin',
           autoFetch: true
         },
         endpoints: {

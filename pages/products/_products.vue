@@ -1,6 +1,6 @@
 <template>
   <div class="inner-index-page">
-    <div :class="{'content-book-center':!$vuetify.theme.dark, 'content-book-center-dark':$vuetify.theme.dark} ">
+    <div class="content-book-center">
       <div class="px-5">
         <v-col class="pa-0" cols="12" sm="12" md="12">
           <p class="product-topic justify-center">
@@ -11,7 +11,7 @@
         <v-row class="main-card-book py-5">
           <v-col cols="12" sm="12" md="8">
             <div class="d-flex justify-center">
-            <v-img :src="mainBooks.bookImage" class="image-cover" max-width="400" />
+              <v-img :src="mainBooks.bookImage" class="image-cover" max-width="400" />
             </div>
           </v-col>
           <v-col cols="12" sm="12" md="4">
@@ -24,9 +24,6 @@
               </v-card-subtitle>
               <v-card-subtitle class="py-4 px-0 over-text">
                 ประเภท : {{ mainBooks.genre }}
-              </v-card-subtitle>
-              <v-card-subtitle class="py-4 px-0 over-text">
-                ความยาวหน้า : ****
               </v-card-subtitle>
             </v-card>
             <div class="buy-max">
@@ -90,11 +87,11 @@
           </v-col>
           <hr>
           <v-row class="main-card-book py-5">
-            <v-col v-for="(items, index) in newBook.slice(0,4)" :key="index" cols="6" sm="6" md="3">
+            <v-col v-for="(items, index) in newBook.slice(0,4)" :key="index" cols="12" sm="4" md="3">
               <v-card class="br-bot" outlined @click="routerGo(items.bookId)">
                 <v-img
                   :src="items.bookImage"
-                  height="300px"
+                  height="450px"
                   max-width="359"
                 />
                 <v-card-subtitle class="py-1 px-0 over-text">
@@ -132,30 +129,12 @@ export default {
       },
       newBook: [],
       mainBooks: {
-        author: 'dsadasd',
-        createAt: {
-          _seconds: 1653404873,
-          _nanoseconds: 814000000
-        },
-        bookImage: 'https://minioapi.lakkanan.shop/books/281244747_756397855358450_999238111691385875_n.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIOSFODNN7EXAMPLE%2F20220525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220525T110539Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=6a2a48a592b9ae03513defb77ec851b7de2e0e4c894f1aacc96812f8d7b262bb',
-        release: true,
-        bookId: 'HyPJlWI0067nttlGIdgm',
-        price: '123123',
-        distributorId: '1hOKs2HCWyal8VrhgLIZQ7VE32B3',
-        genre: 'นิตยสาร',
-        Category: 'สิ่งพิมพ์',
-        fileUrl: 'https://www.googleapis.com/books/',
-        description: '1231232',
-        category: 'วารสาร',
-        bookTitle: 'dsadasdas',
-        id: 'HyPJlWI0067nttlGIdgm'
       }
     }
   },
   async fetch () {
     let slug = this.$nuxt.$route.path
-    slug = slug.split('/products/') // When calling /abc the slug will be "abc"
-    console.log(slug[1])
+    slug = slug.split('/products/')
     const resMain = await this.$axios.$get(
       '/market/' + slug[1]
     )
@@ -163,29 +142,11 @@ export default {
       '/market/'
     )
     this.idBook = slug[1]
-    console.log(this.idBook)
     this.newBook = res.books.reverse()
-    console.log(resMain.BookDetails)
     this.mainBooks = resMain.BookDetails
     this.mainBooks.genre = this.mainBooks.genre.join()
   },
-  methods: {
-    login () {
-      this.$nuxt.$router.push('/login')
-    },
-    signout () {
-      if (this.$nuxt.$fire.auth.currentUser) {
-        this.$nuxt.$fire.auth.signOut()
-        this.$nuxt.$auth.logout()
-      } else {
-        this.$nuxt.$fire.auth.signOut()
-        this.$nuxt.$auth.logout()
-      }
-    },
-    routerGo (item) {
-      this.$nuxt.$router.push('/products/' + item)
-    }
-  }
+  methods: {}
 }
 </script>
 
@@ -207,18 +168,9 @@ export default {
 }
 .content-book-center{
   padding-top: 30px;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-bottom: 2%;
+  margin-left: 20%;
+  margin-right: 20%;
   background-color: white;
-  height: 100%;
-}
-.content-book-center-dark{
-  padding-top: 30px;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-bottom: 2%;
-  background-color: #1E1E1E;
   height: 100%;
 }
 .buy-min{
@@ -302,8 +254,8 @@ hr{
 .inner-index-page{
     width: 100%;
     height: 100%;
-    background-image: url("~/assets/background/book-bg-flat.png");
-    background-size: auto;
-    background-repeat: repeat;
+}
+.v-sheet.v-card {
+    border-radius: 0px !important;
 }
 </style>
