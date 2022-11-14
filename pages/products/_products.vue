@@ -146,7 +146,11 @@ export default {
     this.mainBooks = resMain.BookDetails
     this.mainBooks.genre = this.mainBooks.genre.join()
   },
-  methods: {}
+  methods: {
+    routerGo (item) {
+      this.$nuxt.$router.push('/products/' + item)
+    }
+  }
 }
 </script>
 

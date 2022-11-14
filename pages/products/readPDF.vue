@@ -1,42 +1,86 @@
 <template>
   <div>
-    <div class="d-flex justify-space-around ma-4">
-      <div class="my-auto">
-        <v-btn
-          elevation="4"
-          outlined
-          color="#FF8C00"
-          x-large
-          @click="onPrevPage"
-        >
-          Previous
-        </v-btn>
-        <v-btn
-          elevation="4"
-          outlined
-          color="#FF8C00"
-          x-large
-          @click="onNextPage"
-        >
-          Next
-        </v-btn>
-      </div>
-      <div class="select-wid">
-        <v-select
-          :items="choice"
-          label="Standard"
-          hide-details
-          value="แนวนอน"
-          outlined
-          @change="changeStyle($event)"
-        />
-      </div>
+    <v-row justify="center" class="my-4">
+      <v-col cols="3">
+        <div v-if="!vertical" class="my-auto">
+          <v-btn
+            elevation="4"
+            outlined
+            color="#FF8C00"
+            x-large
+            @click="onPrevPage"
+          >
+            Previous
+          </v-btn>
+          <v-btn
+            elevation="4"
+            outlined
+            color="#FF8C00"
+            x-large
+            @click="onNextPage"
+          >
+            Next
+          </v-btn>
+        </div>
+      </v-col>
+      <v-col cols="6">
+        <div class="select-wid mx-auto">
+          <v-select
+            :items="choice"
+            label="Standard"
+            hide-details
+            value="แนวนอน"
+            outlined
+            @change="changeStyle($event)"
+          />
+        </div>
+      </v-col>
       <span class="my-auto">Page: <span id="page_num" /> / <span id="page_count" /></span>
-    </div>
+
+      <v-col cols="3" />
+    </v-row>
     <div id="horizontal" class="pdf-read d-flex justify-center">
       <canvas id="the-canvas" />
     </div>
+    <v-row v-if="!vertical" justify="end" class="my-4">
+      <v-col cols="3">
+        <div class="my-auto">
+          <v-btn
+            elevation="4"
+            outlined
+            color="#FF8C00"
+            x-large
+            @click="onPrevPage"
+          >
+            Previous
+          </v-btn>
+          <v-btn
+            elevation="4"
+            outlined
+            color="#FF8C00"
+            x-large
+            @click="onNextPage"
+          >
+            Next
+          </v-btn>
+        </div>
+      </v-col>
+    </v-row>
     <div id="vertical" class="pdf-read" />
+    <v-fab-transition>
+      <v-btn
+        v-scroll="onScroll"
+        fab
+        dark
+        fixed
+        bottom
+        left
+        color="primary"
+        @click="toTop"
+      >
+        <v-icon>mdi-arrow-up-bold</v-icon>
+      </v-btn>
+    </v-fab-transition>
   </div>
 </template>
 
@@ -58,7 +102,9 @@ export default {
       choice: [
         'แนวนอน',
         'แนวตั้ง'
-      ]
+      ],
+      vertical: false,
+      upButton: false
     }
   },
   async mounted () {
@@ -85,10 +131,16 @@ export default {
         pageRendering = true
         pdfDoc.getPage(pageNum).then(function (page) {
           const viewport = page.getViewport({ scale })
+          // canvas.width = viewport.width
+          // canvas.height = viewport.height
           canvas.width = Math.floor(viewport.width * outputScale)
           canvas.height = Math.floor(viewport.height * outputScale)
-          canvas.style.width = Math.floor(viewport.width) + 'px'
-          canvas.style.height = Math.floor(viewport.height) + 'px'
+          // canvas.style.width = Math.floor(viewport.width) + 'px'
+          // canvas.style.height = Math.floor(viewport.height) + 'px'
+          // canvas.width = Math.floor(viewport.width * outputScale)
+          // canvas.height = Math.floor(viewport.height * outputScale)
+          // canvas.style.width = Math.floor(viewport.width) + 'px'
+          // canvas.style.height = Math.floor(viewport.height) + 'px'
           const transform = outputScale !== 1
             ? [outputScale, 0, 0, outputScale, 0, 0]
             : null
@@ -122,8 +174,11 @@ export default {
         const ctx = canvas.getContext('2d')
         canvas.width = Math.floor(viewport.width * outputScale)
         canvas.height = Math.floor(viewport.height * outputScale)
-        canvas.style.width = Math.floor(viewport.width) + 'px'
-        canvas.style.height = Math.floor(viewport.height) + 'px'
+
+        // canvas.width = Math.floor(viewport.width * outputScale)
+        // canvas.height = Math.floor(viewport.height * outputScale)
+        // canvas.style.width = Math.floor(viewport.width) + 'px'
+        // canvas.style.height = Math.floor(viewport.height) + 'px'
         const transform = outputScale !== 1
           ? [outputScale, 0, 0, outputScale, 0, 0]
           : null
@@ -184,6 +239,8 @@ export default {
     },
     changeStyle (event) {
       if (event === 'แนวตั้ง') {
+        this.vertical = true
+        pageNum = 1
         const divCanvas = document.getElementById('horizontal')
         divCanvas.innerHTML = ''
         for (let i = 1; i <= pdfDoc.numPages; i++) {
@@ -191,6 +248,8 @@ export default {
         }
       }
       if (event === 'แนวนอน') {
+        this.vertical = false
+        pageNum = 1
         const divHorizontal = document.getElementById('horizontal')
         const setId = document.createElement('canvas')
         setId.setAttribute('id', 'the-canvas')
@@ -220,6 +279,14 @@ export default {
       }
       pageNum++
       this.queueRenderPage(pageNum)
+    },
+    onScroll (e) {
+      if (typeof window === 'undefined') { return }
+      const top = window.pageYOffset || e.target.scrollTop || 0
+      this.fab = top > 20
+    },
+    toTop () {
+      this.$vuetify.goTo(0)
     }
   }
 }
@@ -238,5 +305,26 @@ export default {
   direction: ltr;
   display: flex;
   justify-items: center;
+}
+
+canvas {
+  border: 1px solid black;
+  margin: 5px;
+  width: 90%;
+}
+
+@media only screen and (max-width: 1980px) {
+  canvas {
+  border: 1px solid black;
+  width: 60%;
+  height: 60%;
+}
+}
+@media only screen and (max-width: 1024px) {
+  canvas {
+  border: 1px solid black;
+  width: 90%;
+  height: 100%;
+}
 }
 </style>

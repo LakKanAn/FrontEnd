@@ -290,6 +290,7 @@ export default {
     },
     sendReport () {
       this.$axios.$post('/users/report/', { topic: this.topic, details: this.details })
+      setTimeout(this.dialogReport = false, 2000)
     }
   }
 }

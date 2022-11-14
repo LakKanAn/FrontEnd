@@ -137,16 +137,16 @@
 
         <v-card-actions>
           <v-btn
-            color="green darken-1"
             text
+            color="#FF8C00"
             @click="dialog = false,confirmDialog = false"
           >
             ยกเลิก
           </v-btn>
 
           <v-btn
-            color="green darken-1"
             text
+            color="#FF8C00"
             @click="confirmBuy"
           >
             ตกลง
@@ -217,7 +217,9 @@ export default {
         , { paymentId: this.paymentId }).then(
         setTimeout(
           this.dialog = false,
-          this.confirmDialog = false, 5000)
+          this.confirmDialog = false, 5000),
+        setTimeout(
+          this.$nuxt.$router.push('/'), 5000)
       )
     }
   }
