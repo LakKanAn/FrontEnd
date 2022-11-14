@@ -1,14 +1,12 @@
 <template>
-  <v-app dark>
-    <h1 v-if="error.statusCode === 404">
-      {{ pageNotFound }}
-    </h1>
-    <h1 v-else>
-      {{ otherError }}
-    </h1>
-    <NuxtLink to="/">
-      Home page
-    </NuxtLink>
+  <v-app>
+    <div class="ma-auto">
+      <v-img :src="require('~/assets/logo/logo-web.png')" width="500"></v-img>
+      <p>ไม่พบหน้าที่ต้องการ กรุณากลับสู่หน้าหลัก</p>
+      <NuxtLink to="/">
+        Home page
+      </NuxtLink>
+    </div>
   </v-app>
 </template>
 

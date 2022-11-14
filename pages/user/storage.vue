@@ -24,7 +24,7 @@
             <v-col v-for="(items, index) in newBook" :key="index" cols="12" sm="12" md="12">
               <v-card outlined>
                 <v-row class="br-bot">
-                  <v-col cols="12" sm="1" md="1">
+                  <v-col cols="12" sm="2" md="2" lg="2">
                     <v-img
                       class="ma-auto"
                       :src="items.bookImage"
@@ -32,7 +32,7 @@
                       width="160"
                     />
                   </v-col>
-                  <v-col cols="12" sm="8" md="8">
+                  <v-col cols="12" sm="7" md="7" lg="7">
                     <v-card-subtitle class="py-1 px-0 over-text">
                       {{ items.category }}
                     </v-card-subtitle>
@@ -47,7 +47,7 @@
                       <p> {{ items.description }}</p>
                     </v-card-text>
                   </v-col>
-                  <v-col cols="3" sm="3" md="3" class="ma-auto">
+                  <v-col cols="3" sm="3" md="3" lg="3" class="ma-auto">
                     <div class="d-flex justify-center mb-2">
                       <v-btn
                         elevation="4"
@@ -217,30 +217,32 @@
         <v-card-title>
           กรุณาเลือกจำนวนวันที่จะแลกเปลี่ยน
         </v-card-title>
-
-        <v-card-text>
-          <v-radio-group
-            v-model="selected"
-            column
-          >
-            <v-radio
-              label="1 วัน"
-              value="1"
-            />
-            <v-radio
-              label="3 วัน"
-              value="3"
-            />
-            <v-radio
-              label="7 วัน"
-              value="7"
-            />
-            <v-radio
-              label="14 วัน"
-              value="14"
-            />
-          </v-radio-group>
-        </v-card-text>
+        <v-form ref="selectDay">
+          <v-card-text>
+            <v-radio-group
+              v-model="selected"
+              column
+              :rules="requireRules"
+            >
+              <v-radio
+                label="1 วัน"
+                value="1"
+              />
+              <v-radio
+                label="3 วัน"
+                value="3"
+              />
+              <v-radio
+                label="7 วัน"
+                value="7"
+              />
+              <v-radio
+                label="14 วัน"
+                value="14"
+              />
+            </v-radio-group>
+          </v-card-text>
+        </v-form>
 
         <v-card-actions>
           <v-btn
@@ -316,7 +318,10 @@ export default {
       },
       newBook: [],
       postBook: [],
-      finishBook: []
+      finishBook: [],
+      requireRules: [
+        v => !!v || 'กรุณาเลือกวัน'
+      ]
     }
   },
   async fetch () {
@@ -347,8 +352,10 @@ export default {
       this.$nuxt.$router.push('/products/readPDF?book=' + item + '&trade=' + true)
     },
     registerBook () {
-      this.$axios.$post('/users/bookshelf/' + this.currentId + '/post', { timeSet: Number(this.selected) })
-      setTimeout(location.reload(), 3000)
+      if (this.$refs.selectDay.validate()) {
+        this.$axios.$post('/users/bookshelf/' + this.currentId + '/post', { timeSet: Number(this.selected) })
+        setTimeout(location.reload(), 3000)
+      }
     },
     cancelBook () {
       this.$axios.$post('/users/bookshelf/' + this.currentCancelId + '/cancel')
