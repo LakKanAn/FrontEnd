@@ -246,15 +246,13 @@ export default {
   }),
   fetch () {
     if (this.$nuxt.$route.path === '/distributor/editbook') {
+      this.fileRules = []
       const retrievedObject = localStorage.getItem('bookObject')
       const jsonP = JSON.parse(retrievedObject)
       this.bookTitle = jsonP.bookTitle
       this.author = jsonP.author
       this.category = jsonP.category
-      console.log(jsonP.genre)
-      console.log(this.genreSelect)
       this.genreSelect = jsonP.genre
-      console.log(this.genreSelect)
       this.description = jsonP.description
       this.price = jsonP.price
       this.bookId = jsonP.bookId
