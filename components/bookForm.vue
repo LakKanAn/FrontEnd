@@ -197,6 +197,21 @@
         </v-col>
       </v-row>
     </div>
+        <v-dialog
+      v-model="succDialog"
+      max-width="350"
+    >
+      <v-card rounded="lg" class="pa-4">
+        <div class="d-flex justify-center">
+          <v-icon color="success" size="80">
+            mdi-check-circle-outline
+          </v-icon>
+        </div>
+        <v-card-title class="d-flex justify-center">
+          บันทึกหนังสือเรียบร้อย
+        </v-card-title>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -211,6 +226,7 @@ export default {
     description: '',
     price: '',
     genreSelect: [],
+    succDialog: false,
     genre: [],
     fileImage: [],
     imageUrl: null,
@@ -242,19 +258,19 @@ export default {
       'สืบสวนสอบสวน',
       'อิงประวัติศาสตร์'
     ],
-    checkbox: false
+    checkbox: false,
+    checkPath: false
   }),
   fetch () {
     if (this.$nuxt.$route.path === '/distributor/editbook') {
+      this.checkPath = true
+      this.fileRules = []
       const retrievedObject = localStorage.getItem('bookObject')
       const jsonP = JSON.parse(retrievedObject)
       this.bookTitle = jsonP.bookTitle
       this.author = jsonP.author
       this.category = jsonP.category
-      console.log(jsonP.genre)
-      console.log(this.genreSelect)
-      this.genreSelect = jsonP.genre
-      console.log(this.genreSelect)
+      typeof jsonP.genre === 'string' ? this.genreSelect = [jsonP.genre] : this.genreSelect = jsonP.genre
       this.description = jsonP.description
       this.price = jsonP.price
       this.bookId = jsonP.bookId
@@ -286,12 +302,17 @@ export default {
       this.genre.splice(index, 1)
     },
     validate () {
-      console.log(this.genreSelect)
       if (this.$refs.form.validate()) {
-        const newName = String(this.pdfFile.name).split('.')
-        const typeNew = String(this.fileImage.name).split('.')
-        const blob = this.fileImage.slice(0, this.fileImage.size, this.fileImage.type)
-        const newFile = new File([blob], newName[0] + '.' + typeNew[1], { type: this.fileImage.type })
+        let newName
+        let typeNew = String(this.fileImage.name).split('.')
+        let blob = this.fileImage.slice(0, this.fileImage.size, this.fileImage.type)
+        let newFile
+        if (this.pdfFile !== null && this.fileImage !== null) {
+          newName = String(this.pdfFile.name).split('.')
+          typeNew = String(this.fileImage.name).split('.')
+          blob = this.fileImage.slice(0, this.fileImage.size, this.fileImage.type)
+          newFile = new File([blob], newName[0] + '.' + typeNew[1], { type: this.fileImage.type })
+        }
         if (this.$nuxt.$route.path === '/distributor/editbook') {
           this.$axios.$post('/distributors/books/edit/' + this.bookId,
             {
@@ -302,13 +323,16 @@ export default {
               price: this.price,
               genre: this.genreSelect
             }).then((user) => {
-            const formData = new FormData()
-            const formData2 = new FormData()
-            formData.append('image', newFile)
-            formData2.append('content', this.pdfFile)
-            this.$axios.$post('/distributors/books/' + this.bookId, formData)
-            this.$axios.$post('/distributors/books/' + this.bookId, formData2)
+            if (this.pdfFile !== null && this.fileImage !== null) {
+              const formData = new FormData()
+              const formData2 = new FormData()
+              formData.append('image', newFile)
+              formData2.append('content', this.pdfFile)
+              this.$axios.$post('/distributors/books/' + this.bookId, formData)
+              this.$axios.$post('/distributors/books/' + this.bookId, formData2)
+            }
           })
+          this.succDialog = true
           setTimeout(() => { this.$nuxt.$router.push('/distributor/managebook') }, 2000)
         } else {
           this.$axios.$post('/distributors/books',
@@ -327,6 +351,7 @@ export default {
             this.$axios.$post('/distributors/books/' + user.newBook.bookId, formData)
             this.$axios.$post('/distributors/books/' + user.newBook.bookId, formData2)
           })
+          this.succDialog = true
           setTimeout(() => { this.$nuxt.$router.push('/distributor/managebook') }, 2000)
         }
       }
