@@ -38,7 +38,7 @@ export default {
         bookId: this.offerBook[index].bookId
       })
       this.confirmDialog = false
-      setTimeout(this.$nuxt.$router.push('/user/storage'), 5000)
+      setTimeout(() => { this.$nuxt.$router.push('/user/storage') }, 2000)
     },
     changeOfferCard (index) {
       this.offerBookCard = this.offerBook[index]

@@ -6,7 +6,7 @@
           class="pa-0 d-flex justify-center"
           cols="12"
           sm="12"
-          md="4"
+          md="6"
           lg="4"
           xl="4"
         >
@@ -62,7 +62,7 @@
                   hide-details
                   value="ทั้งหมด"
                   label="หมวดหมู่"
-                  @change="filterCategory($event)"
+                  @change="filterGenre($event)"
                 />
               </v-col>
               <v-col cols="6" sm="3" md="3">
@@ -76,10 +76,18 @@
                   hide-details
                   value="ทั้งหมด"
                   label="ประเภท"
-                  @change="filterGenre($event)"
+                  @change="filterCategory($event)"
                 />
               </v-col>
             </v-row>
+            <div class="text-center d-flex justify-end">
+              <v-pagination
+                v-model="page"
+                :length="totalPage"
+                :total-visible="7"
+                @input="changePagination($event)"
+              />
+            </div>
             <v-row class="py-5">
               <v-col v-for="(items, index) in listBook" :key="'new'+index" cols="12" sm="12" md="6">
                 <bookcard :main="true" :data-all="items" />
@@ -145,9 +153,10 @@ export default {
       page: 1,
       totalPage: 1,
       choieName: '',
-      genre: '',
-      category: '',
+      genre: 'ทั้งหมด',
+      category: 'ทั้งหมด',
       choieGenre: [
+        'ทั้งหมด',
         'ตลก',
         'ต่อสู้',
         'โรแมนติก',
@@ -158,6 +167,7 @@ export default {
         'อิงประวัติศาสตร์'
       ],
       choieCategory: [
+        'ทั้งหมด',
         'สารคดี',
         'บันเทิงคดี',
         'สิ่งพิมพ์',
@@ -165,7 +175,8 @@ export default {
         'วารสาร',
         'นิตยสาร'
       ],
-      backUPList: [],
+      backupAllBook: [],
+      backupBook: [],
       listBook: []
     }
   },
@@ -174,7 +185,8 @@ export default {
       '/trade/'
     )
     this.listBook = res.books
-    this.backUPList = res.books
+    this.backupAllBook = res.books
+    this.backupBook = res.books
     this.page = res.config.currentPage
     this.totalPage = res.config.totalPage
   },
@@ -186,35 +198,109 @@ export default {
     routerBookShelf () {
       this.$nuxt.$router.push('/user/storage')
     },
+    changePagination (event) {
+      const startIndex = 2 * (event - 1)
+      const endIndex = 2 * event
+      console.log(startIndex, endIndex)
+      console.log(this.backupAllBook.slice(startIndex, endIndex))
+      this.listBook = this.backupAllBook.slice(startIndex, endIndex)
+    },
     searchButton (event) {
       const raw = []
       // eslint-disable-next-line array-callback-return
-      this.backUPList.filter((e) => {
+      this.backupBook.filter((e) => {
         if (e.bookTitle.includes(event)) {
           raw.push(e)
         }
       })
-      this.listBook = raw
+      this.backupAllBook = raw
+      this.totalPage = Math.floor(raw.length / 2)
+      this.listBook = raw.slice(0, 2)
     },
     filterGenre (event) {
-      const raw = []
-      // eslint-disable-next-line array-callback-return
-      this.backUPList.filter((e) => {
-        if (e.category.includes(event)) {
-          raw.push(e)
+      let raw = []
+      this.backupAllBook = this.backupBook
+      if (event === 'ทั้งหมด') {
+        if (this.category === 'ทั้งหมด') {
+          raw = this.backupBook
+          this.arrayLoop = this.backupBook
+        } else {
+          // eslint-disable-next-line array-callback-return
+          this.backupBook.filter((e) => {
+            if (e.category.includes(this.category)) {
+              raw.push(e)
+            }
+          })
         }
-      })
-      this.listBook = raw
+      } else if (this.category === 'ทั้งหมด') {
+        // eslint-disable-next-line array-callback-return
+        this.backupAllBook.filter((e) => {
+          if (e.genre.includes(event)) {
+            raw.push(e)
+          }
+        })
+      } else {
+        const rawSencond = []
+        // eslint-disable-next-line array-callback-return
+        this.backupAllBook.filter((e) => {
+          if (e.genre.includes(event)) {
+            raw.push(e)
+          }
+        })
+        console.log(raw)
+        // eslint-disable-next-line array-callback-return
+        raw.filter((e) => {
+          if (e.category.includes(this.category)) {
+            rawSencond.push(e)
+          }
+        })
+        raw = rawSencond
+      }
+      this.backupAllBook = raw
+      this.arrayLoop = raw
+      this.totalPage = Math.floor(raw.length / 2)
+      this.listBook = raw.slice(0, 2)
     },
     filterCategory (event) {
-      const raw = []
-      // eslint-disable-next-line array-callback-return
-      this.backUPList.filter((e) => {
-        if (e.genre.includes(event)) {
-          raw.push(e)
+      let raw = []
+      this.backupAllBook = this.backupBook
+      if (event === 'ทั้งหมด') {
+        if (this.genre === 'ทั้งหมด') {
+          raw = this.backupBook
+        } else {
+          // eslint-disable-next-line array-callback-return
+          this.backupBook.filter((e) => {
+            if (e.genre.includes(this.genre)) {
+              raw.push(e)
+            }
+          })
         }
-      })
-      this.listBook = raw
+      } else if (this.genre === 'ทั้งหมด') {
+        // eslint-disable-next-line array-callback-return
+        this.backupBook.filter((e) => {
+          if (e.category.includes(event)) {
+            raw.push(e)
+          }
+        })
+      } else {
+        const rawSencond = []
+        // eslint-disable-next-line array-callback-return
+        this.backupAllBook.filter((e) => {
+          if (e.category.includes(event)) {
+            raw.push(e)
+          }
+        })
+        // eslint-disable-next-line array-callback-return
+        raw.filter((e) => {
+          if (e.genre.includes(this.event)) {
+            rawSencond.push(e)
+          }
+        })
+        raw = rawSencond
+      }
+      this.backupAllBook = raw
+      this.totalPage = Math.floor(raw.length / 2)
+      this.listBook = raw.slice(0, 2)
     }
   }
 }

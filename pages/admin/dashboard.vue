@@ -491,7 +491,7 @@ export default {
           this.disData
         )
         this.dialogDis = false
-        setTimeout(location.reload(), 5000)
+        setTimeout(() => { location.reload() }, 2000)
       }
     }
   }

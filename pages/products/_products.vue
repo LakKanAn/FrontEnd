@@ -89,29 +89,7 @@ export default {
         password: ''
       },
       newBook: [],
-      mainBooks:
-        {
-          bookId: '2YysmusBe2hfJyROVeaM',
-          description: 'ลีออน ผู้มีอดีตชาติเป็นพนักงานเงินเดือนในญี่ปุ่น ซึ่งเกิดใหม่ในโลก “เกมจีบหนุ่ม” ที่มีดาบและเวทมนตร์ ก็พบกับความสิ้นหวังกับโลกที่ผู้หญิงเป็นใหญ่ ในโลกใบนี้ ผู้ชายมีค่าแค่ปศุสัตว์ไว้เลี้ยงดูผู้หญิง ผู้ที่เป็นข้อยกเว้น มีแค่กองกำลังหนุ่มหล่อของเจ้าชายรัชทายาทที่เป็นตัวละครให้จีบในเกมเท่านั้น ในสภาพแวดล้อมอันแสนจะไร้เหตุผลสิ้นดี ลีออนก็มีอาวุธอยู่อย่างหนึ่ง ใช่แล้ว มันคือความรู้ของเกมนี้ที่เขาถูกน้องสาวแก่แดดบังคับขู่เข็ญให้เล่นในชาติก่อน ลีออนที่เคยคิดอยากใช้ชีวิตเก็บตัวเงียบๆ ในบ้านนอก ก็หันมาใช้ความรู้นั้นต่อต้านเหล่าผู้หญิงและพวกหน้าหล่อที่ชอบทำอะไรตามใจตัวเอง นิยายแฟนตาซีของการโค่นล้มผู้อยู่เหนือกว่าอย่างสบายๆ (?) โดยพระเอกนอกรีต ได้เริ่มขึ้นแล้ว!',
-          bookTitle: 'ชีวิตตัวประกอบอย่างตูช่างอยู่ยากเมื่ออยู่ในโลกเกมจีบหนุ่ม',
-          release: true,
-          category: 'บันเทิงคดี',
-          genre: [
-            'ตลก',
-            'ต่อสู้',
-            'โรแมนติก',
-            'วิทยาศาสตร์'
-          ],
-          createAt: {
-            _seconds: 1668509621,
-            _nanoseconds: 935000000
-          },
-          author: 'Mishima Yomu / Shiosato Jun',
-          price: '220',
-          distributorId: 'soLyqWMXcZOjFejWdWo9n3t9Fc13',
-          id: '2YysmusBe2hfJyROVeaM',
-          bookImage: 'https://minioapi.lakkanan.shop/books-prd?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIOSFODNN7EXAMPLE%2F20221116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221116T044243Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=8ea5760a111361fc4e3dd0156567041e00e015d31d520829139c06e37cb0a64e'
-        }
+      mainBooks: []
     }
   },
   async fetch () {
@@ -124,7 +102,7 @@ export default {
       '/market/'
     )
     this.idBook = slug[1]
-    this.newBook = res.books.reverse()
+    this.newBook = res.books.slice(0, 3).reverse()
     this.mainBooks = resMain.BookDetails
     typeof resMain.BookDetails.genre === 'string' ? this.mainBooks.genre = [resMain.BookDetails.genre] : this.mainBooks.genre = resMain.BookDetails.genre
   },

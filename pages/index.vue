@@ -75,7 +75,7 @@
               hide-details
               value="ทั้งหมด"
               label="หมวดหมู่"
-              @change="filterCategory($event)"
+              @change="filterGenre($event)"
             />
           </v-col>
           <v-col cols="6" sm="3" md="3">
@@ -89,15 +89,16 @@
               hide-details
               value="ทั้งหมด"
               label="ประเภท"
-              @change="filterGenre($event)"
+              @change="filterCategory($event)"
             />
           </v-col>
         </v-row>
         <div class="text-center d-flex justify-end">
           <v-pagination
             v-model="page"
-            :length="15"
+            :length="totalPage"
             :total-visible="7"
+            @input="changePagination($event)"
           />
         </div>
         <v-row dense>
@@ -105,6 +106,14 @@
             <bookcard :main="true" :data-all="items" />
           </v-col>
         </v-row>
+        <div v-if="allBook.length == 0" class="d-flex justify-center ma-auto">
+          <div class="mx-auto my-16">
+            <v-img :src="require('~/assets/image/stack_of_books.png')" max-width="325" class="ma-auto" />
+            <p class="mt-6 text-center p-no-data">
+              ไม่มีหนังสือที่ค้นหา
+            </p>
+          </div>
+        </div>
       </div>
       <!-- <div class="px-5 mb-10">
         <v-col class="pa-0" cols="12" sm="6" md="3">
@@ -159,8 +168,8 @@ export default {
         password: ''
       },
       choiceName: '',
-      genre: '',
-      category: '',
+      genre: 'ทั้งหมด',
+      category: 'ทั้งหมด',
       choieGenre: [
         'ทั้งหมด',
         'ตลก',
@@ -185,7 +194,10 @@ export default {
       hotBook: [],
       subHotBook: [],
       allBook: [],
+      backupAllBook: [],
+      checkLoop: false,
       backupBook: [],
+      totalPage: 1,
       rules: [
         value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
         value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!'
@@ -204,10 +216,13 @@ export default {
       '/market/'
     )
     this.backupBook = res.books
+    this.backupAllBook = res.books
     this.newBook = res.books.slice(0, 4)
     this.hotBook = res.books.slice(0, 4)
     this.subHotBook = res.books.slice(0, 4)
-    this.allBook = res.books
+    this.allBook = res.books.slice(0, 2)
+    this.totalPage = Math.floor(this.backupBook.length / 2)
+    console.log(this.totalPage)
     this.hotBook = this.hotBook.reverse()
   },
   methods: {
@@ -219,6 +234,13 @@ export default {
     //   const res = await this.$axios.$get('/market/filter?' + categoryBuffer + '&' + genreBuffer)
     //   this.allBook = res.bookDetail
     // },
+    changePagination (event) {
+      const startIndex = 2 * (event - 1)
+      const endIndex = 2 * event
+      console.log(startIndex, endIndex)
+      console.log(this.backupAllBook.slice(startIndex, endIndex))
+      this.allBook = this.backupAllBook.slice(startIndex, endIndex)
+    },
     searchButton (event) {
       const raw = []
       // eslint-disable-next-line array-callback-return
@@ -227,27 +249,92 @@ export default {
           raw.push(e)
         }
       })
-      this.allBook = raw
+      this.backupAllBook = raw
+      this.totalPage = Math.floor(raw.length / 2)
+      this.allBook = raw.slice(0, 2)
     },
     filterGenre (event) {
-      const raw = []
-      // eslint-disable-next-line array-callback-return
-      this.backupBook.filter((e) => {
-        if (e.category.includes(event)) {
-          raw.push(e)
+      let raw = []
+      this.backupAllBook = this.backupBook
+      if (event === 'ทั้งหมด') {
+        if (this.category === 'ทั้งหมด') {
+          raw = this.backupBook
+        } else {
+          // eslint-disable-next-line array-callback-return
+          this.backupBook.filter((e) => {
+            if (e.category.includes(this.category)) {
+              raw.push(e)
+            }
+          })
         }
-      })
-      this.allBook = raw
+      } else if (this.category === 'ทั้งหมด') {
+        // eslint-disable-next-line array-callback-return
+        this.backupAllBook.filter((e) => {
+          if (e.genre.includes(event)) {
+            raw.push(e)
+          }
+        })
+      } else {
+        const rawSencond = []
+        // eslint-disable-next-line array-callback-return
+        this.backupAllBook.filter((e) => {
+          if (e.genre.includes(event)) {
+            raw.push(e)
+          }
+        })
+        console.log(raw)
+        // eslint-disable-next-line array-callback-return
+        raw.filter((e) => {
+          if (e.category.includes(this.category)) {
+            rawSencond.push(e)
+          }
+        })
+        raw = rawSencond
+      }
+      this.backupAllBook = raw
+      this.totalPage = Math.floor(raw.length / 2)
+      this.allBook = raw.slice(0, 2)
     },
     filterCategory (event) {
-      const raw = []
-      // eslint-disable-next-line array-callback-return
-      this.backupBook.filter((e) => {
-        if (e.genre.includes(event)) {
-          raw.push(e)
+      let raw = []
+      this.backupAllBook = this.backupBook
+      if (event === 'ทั้งหมด') {
+        if (this.genre === 'ทั้งหมด') {
+          raw = this.backupBook
+        } else {
+          // eslint-disable-next-line array-callback-return
+          this.backupBook.filter((e) => {
+            if (e.genre.includes(this.genre)) {
+              raw.push(e)
+            }
+          })
         }
-      })
-      this.allBook = raw
+      } else if (this.genre === 'ทั้งหมด') {
+        // eslint-disable-next-line array-callback-return
+        this.backupBook.filter((e) => {
+          if (e.category.includes(event)) {
+            raw.push(e)
+          }
+        })
+      } else {
+        const rawSencond = []
+        // eslint-disable-next-line array-callback-return
+        this.backupAllBook.filter((e) => {
+          if (e.category.includes(event)) {
+            raw.push(e)
+          }
+        })
+        // eslint-disable-next-line array-callback-return
+        raw.filter((e) => {
+          if (e.genre.includes(this.event)) {
+            rawSencond.push(e)
+          }
+        })
+        raw = rawSencond
+      }
+      this.backupAllBook = raw
+      this.totalPage = Math.floor(raw.length / 2)
+      this.allBook = raw.slice(0, 2)
     },
     login () {
       this.$nuxt.$router.push('/login')

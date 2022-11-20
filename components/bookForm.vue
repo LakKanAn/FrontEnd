@@ -103,6 +103,7 @@
                         required
                         solo
                         placeholder="หมวดหมู่"
+                        :rules="[v => v.length !== 0 || 'กรุณากรอกช่องนี้']"
                         multiple
                       />
                     </v-col>
@@ -112,10 +113,10 @@
                       </p>
                       <v-textarea
                         v-model="description"
-                        :rules="nameRules"
                         required
                         solo
-                        placeholder="ชื่อผู้เขียน"
+                        :rules="[v => !!v || 'กรุณากรอกช่องนี้']"
+                        placeholder="รายละเอียด"
                         no-resize
                       />
                     </v-col>
@@ -299,7 +300,7 @@ export default {
               category: this.category,
               description: this.description,
               price: this.price,
-              genre: (this.category === 'บันเทิงคดี') ? this.genre : this.category
+              genre: this.genreSelect
             }).then((user) => {
             const formData = new FormData()
             const formData2 = new FormData()
@@ -308,7 +309,7 @@ export default {
             this.$axios.$post('/distributors/books/' + this.bookId, formData)
             this.$axios.$post('/distributors/books/' + this.bookId, formData2)
           })
-          setTimeout(this.$nuxt.$router.push('/distributor/managebook'), 5000)
+          setTimeout(() => { this.$nuxt.$router.push('/distributor/managebook') }, 2000)
         } else {
           this.$axios.$post('/distributors/books',
             {
@@ -317,7 +318,7 @@ export default {
               category: this.category,
               description: this.description,
               price: this.price,
-              genre: (this.category === 'บันเทิงคดี') ? this.genre : this.category
+              genre: this.genreSelect
             }).then((user) => {
             const formData = new FormData()
             const formData2 = new FormData()
@@ -326,7 +327,7 @@ export default {
             this.$axios.$post('/distributors/books/' + user.newBook.bookId, formData)
             this.$axios.$post('/distributors/books/' + user.newBook.bookId, formData2)
           })
-          setTimeout(this.$nuxt.$router.push('/distributor/managebook'), 5000)
+          setTimeout(() => { this.$nuxt.$router.push('/distributor/managebook') }, 2000)
         }
       }
     },

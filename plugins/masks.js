@@ -29,5 +29,5 @@ export const cardMasks = {
 }
 
 export const cvvMask = {
-  mask: '0000'
+  mask: '000'
 }
