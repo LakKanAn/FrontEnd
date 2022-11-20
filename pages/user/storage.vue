@@ -6,6 +6,7 @@
           <v-tabs
             v-model="currentItem"
             centered
+            mobile-breakpoint
             grow
           >
             <v-tab>
@@ -77,7 +78,7 @@
           </div>
           <div v-if="newBook.length == 0" class="d-flex justify-center ma-auto">
             <div class="ma-auto my-16">
-              <v-img :src="require('~/assets/image/stack_of_books.png')" max-width="444" />
+              <v-img :src="require('~/assets/image/stack_of_books.png')" max-width="325" class="ma-auto" />
               <p class="mt-6 text-center p-no-data">
                 ยังไม่มีหนังสือในชั้น
               </p>
@@ -90,7 +91,7 @@
             <v-col v-for="(items, index) in postBook" :key="index" cols="12" sm="12" md="12">
               <v-card outlined>
                 <v-row class="br-bot">
-                  <v-col cols="12" sm="1" md="1">
+                  <v-col cols="12" sm="2" md="2">
                     <v-img
                       class="ma-auto"
                       :src="items.bookImage"
@@ -98,7 +99,7 @@
                       width="160"
                     />
                   </v-col>
-                  <v-col cols="12" sm="8" md="8">
+                  <v-col cols="12" sm="7" md="7">
                     <v-card-subtitle class="py-1 px-0 over-text">
                       {{ items.category }}
                     </v-card-subtitle>
@@ -143,7 +144,7 @@
           </div>
           <div v-if="postBook.length == 0" class="d-flex justify-center ma-auto">
             <div class="mx-auto my-16">
-              <v-img :src="require('~/assets/image/stack_of_books.png')" max-width="444" />
+              <v-img :src="require('~/assets/image/stack_of_books.png')" max-width="325" class="ma-auto" />
               <p class="mt-6 text-center p-no-data">
                 ยังไม่มีหนังสือที่ลงทะเบียนแลกเปลี่ยน
               </p>
@@ -156,7 +157,7 @@
             <v-col v-for="(items, index) in finishBook" :key="index" cols="12" sm="12" md="12">
               <v-card outlined>
                 <v-row class="br-bot">
-                  <v-col cols="12" sm="1" md="1">
+                  <v-col cols="12" sm="2" md="2">
                     <v-img
                       class="ma-auto"
                       :src="items.bookImage"
@@ -164,7 +165,7 @@
                       width="160"
                     />
                   </v-col>
-                  <v-col cols="12" sm="8" md="8">
+                  <v-col cols="12" sm="7" md="7">
                     <v-card-subtitle class="py-1 px-0 over-text">
                       {{ items.category }}
                     </v-card-subtitle>
@@ -197,8 +198,8 @@
             </v-col>
           </div>
           <div v-if="finishBook.length == 0" class="d-flex justify-center ma-auto">
-            <div class="mx-auto my-16">
-              <v-img :src="require('~/assets/image/stack_of_books.png')" max-width="444" />
+            <div class="ma-auto my-16">
+              <v-img :src="require('~/assets/image/stack_of_books.png')" max-width="325" class="ma-auto" />
               <p class="mt-6 text-center p-no-data">
                 ยังไม่มีหนังสือที่ได้รับการแลกเปลี่ยน
               </p>
@@ -211,14 +212,14 @@
     <v-dialog
       v-model="confirmDialog"
       persistent
-      max-width="400"
+      max-width="500"
     >
       <v-card>
         <v-card-title>
           กรุณาเลือกจำนวนวันที่จะแลกเปลี่ยน
         </v-card-title>
         <v-form ref="selectDay">
-          <v-card-text>
+          <v-card-text class="px-10 py-0">
             <v-radio-group
               v-model="selected"
               column
@@ -243,23 +244,30 @@
             </v-radio-group>
           </v-card-text>
         </v-form>
-
-        <v-card-actions>
-          <v-btn
-            color="#FF8C00"
-            text
-            @click="confirmDialog = false"
-          >
-            ยกเลิก
-          </v-btn>
-
-          <v-btn
-            color="#FF8C00"
-            text
-            @click="registerBook"
-          >
-            ตกลง
-          </v-btn>
+        <v-card-actions class="py-0 px-10">
+          <v-row justify="center" class="my-0">
+            <v-col cols="12" md="6" lg="6" xl="6">
+              <v-btn
+                x-large
+                color="primary"
+                class="button-choice"
+                @click="registerBook"
+              >
+                ยืนยัน
+              </v-btn>
+            </v-col>
+            <v-col cols="12" md="6" lg="6" xl="6">
+              <v-btn
+                x-large
+                color="black"
+                class="button-choice"
+                outlined
+                @click="confirmDialog = false"
+              >
+                ยกเลิก
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -269,30 +277,39 @@
       max-width="400"
     >
       <v-card>
-        <v-card-title>
-          กรุณายืนยันที่จะยกเลิกการลงทะเบียน
+        <div class="d-flex justify-center pt-5">
+          <v-icon color="black" size="80">
+            mdi-alert-circle-outline
+          </v-icon>
+        </div>
+        <v-card-title class="d-flex justify-center">
+          ยืนยันที่จะยกเลิกการลงทะเบียนหรือไม่
         </v-card-title>
 
-        <v-card-text>
-          คุณต้องการที่จะยกเลิกการลงทะเบียนแลกเปลี่ยนหนังสือหรือไม่ ?
-        </v-card-text>
-
         <v-card-actions>
-          <v-btn
-            color="#FF8C00"
-            text
-            @click="cancelDialog = false"
-          >
-            ยกเลิก
-          </v-btn>
-
-          <v-btn
-            color="#FF8C00"
-            text
-            @click="cancelBook"
-          >
-            ตกลง
-          </v-btn>
+          <v-row justify="center" class="my-0">
+            <v-col cols="12" md="6" lg="6" xl="6">
+              <v-btn
+                x-large
+                color="primary"
+                class="button-choice"
+                @click="registerBook"
+              >
+                ยืนยัน
+              </v-btn>
+            </v-col>
+            <v-col cols="12" md="6" lg="6" xl="6">
+              <v-btn
+                x-large
+                color="black"
+                class="button-choice"
+                outlined
+                @click="confirmDialog = false"
+              >
+                ยกเลิก
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -475,4 +492,8 @@ font-style: normal;
 font-weight: 400;
 font-size: 24px;
  }
+ .button-choice{
+    display: flex;
+    width: 100%;
+}
 </style>

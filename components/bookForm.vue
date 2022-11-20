@@ -1,162 +1,196 @@
-v-col<template>
-  <div class="bg-image">
-    <div class="justify-center width-100 font-propmt">
-      <v-row class="row-login" align="center" justify="center">
+<template>
+  <div class="inner-index-page">
+    <div class="content-book-center font-propmt">
+      <v-row class="row-login" justify="center">
         <v-col
           cols="12"
           sm="12"
-          md="12"
+          md="3"
+          lg="3"
+          xl="3"
+        >
+          <v-btn
+            x-large
+            width="100%"
+            elevation="4"
+            class="mb-3"
+            to="/distributor/profile"
+            nuxt
+          >
+            ข้อมูลส่วนตัว
+          </v-btn>
+          <v-btn
+            color="primary"
+            x-large
+            dark
+            width="100%"
+            elevation="4"
+            class="mb-3"
+          >
+            เพิ่มหนังสือ
+          </v-btn>
+        </v-col>
+        <v-col
+          cols="12"
+          sm="12"
+          md="8"
+          lg="8"
+          xl="8"
           align="center"
           justify="center"
           class="ma-auto"
         >
-          <v-card flat class="containner">
-            <v-row align="center" justify="center">
-              <v-col cols="12" sm="12" md="12" align="center" justify="center">
-                <h2 class="pa-5">
-                  ลงทะเบียนหนังสือ
-                </h2>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" sm="8" md="8">
+          <v-row>
+            <v-col cols="12" sm="12" md="12" class="d-flex justify-start">
+              <p class="ma-0 text-h6 text-md-h6 text-lg-h4 text-xl-h4 font-weight-medium pb-4 ">
+                ลงทะเบียนหนังสือ
+              </p>
+            </v-col>
+          </v-row>
+          <v-card class="d-flex justify-center py-10 px-4">
+            <v-row justify="center" class="py-4">
+              <v-col cols="12" sm="10" md="10">
                 <v-form
                   ref="form"
                   v-model="valid"
                   lazy-validation
                 >
-                  <v-text-field
-                    v-model="bookTitle"
-                    :rules="nameRules"
-                    label="ชื่อหนังสือ"
-                    required
-                    outlined
-                  />
-
-                  <v-text-field
-                    v-model="author"
-                    :rules="nameRules"
-                    label="ชื่อผู้เขียน"
-                    required
-                    outlined
-                  />
-                  <v-select
-                    v-model="category"
-                    :items="items"
-                    :rules="[v => !!v || 'จำเป็นต้องใส่ช่องนี้']"
-                    label="ประเภทหนังสือ"
-                    required
-                    outlined
-                  />
-                  <div class="genre-select">
-                    <v-row>
-                      <v-col cols="10">
-                        <v-select
-                          v-model="genreSelect"
-                          :items="itemsGenre"
-                          :rules="[v => !!v || 'จำเป็นต้องใส่ช่องนี้']"
-                          label="หมวดหมู่"
-                          class="genre-input"
-                          required
-                          outlined
-                        />
-                      </v-col>
-                      <v-col cols="2">
-                        <v-btn
-                          :disabled="!valid"
-                          color="success"
-                          class="mr-4"
-                          large
-                          @click="addGenre"
-                        >
-                          เพิ่ม
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                    <v-row v-if="genre.length !== 0" class="ma-0 pb-5" align-content="start">
-                      <v-col v-for="(itemsgenre, index) in genre" :key="index" cols="2">
-                        <v-chip
-                          color="red"
-                          class="mx-2"
-                          close
-                          outlined
-                          @click:close="deleteGenre(index)"
-                        >
-                          {{ itemsgenre }}
-                        </v-chip>
-                      </v-col>
-                    </v-row>
-                  </div>
-                  <v-textarea
-                    v-model="description"
-                    label="รายละเอียด"
-                    required
-                    no-resize
-                    outlined
-                  />
-                  <v-text-field
-                    v-model="price"
-                    label="ราคา"
-                    required
-                    type="number"
-                    hide-spin-buttons
-                    outlined
-                  />
-                  <v-file-input
-                    v-model="pdfFile"
-                    accept="application/pdf"
-                    label="ไฟล์ PDF"
-                    required
-                    outlined
-                  />
-                  <v-file-input
-                    v-model="fileImage"
-                    accept="image/jpeg"
-                    label="ปกหนังสือ"
-                    required
-                    outlined
-                    @change="image_preview"
-                  />
+                  <v-row dense>
+                    <v-col cols="12">
+                      <p class="mb-1 pa-0 d-flex justify-start">
+                        ชื่อหนังสือ
+                      </p>
+                      <v-text-field
+                        v-model="bookTitle"
+                        :rules="nameRules"
+                        required
+                        solo
+                        placeholder="ชื่อหนังสือ"
+                      />
+                    </v-col>
+                    <v-col cols="12">
+                      <p class="mb-1 pa-0 d-flex justify-start">
+                        ชื่อผู้เขียน
+                      </p>
+                      <v-text-field
+                        v-model="author"
+                        :rules="nameRules"
+                        required
+                        solo
+                        placeholder="ชื่อผู้เขียน"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="12" md="6" lg="6" xl="6">
+                      <p class="mb-1 pa-0 d-flex justify-start">
+                        ประเภท
+                      </p>
+                      <v-select
+                        v-model="category"
+                        :items="items"
+                        :rules="[v => !!v || 'จำเป็นต้องใส่ช่องนี้']"
+                        required
+                        solo
+                        placeholder="ประเภทหนังสือ"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="12" md="6" lg="6" xl="6">
+                      <p class="mb-1 pa-0 d-flex justify-start">
+                        หมวดหมู่
+                      </p>
+                      <v-select
+                        v-model="genreSelect"
+                        :items="itemsGenre"
+                        required
+                        solo
+                        placeholder="หมวดหมู่"
+                        multiple
+                      />
+                    </v-col>
+                    <v-col cols="12">
+                      <p class="mb-1 pa-0 d-flex justify-start">
+                        รายละเอียด
+                      </p>
+                      <v-textarea
+                        v-model="description"
+                        :rules="nameRules"
+                        required
+                        solo
+                        placeholder="ชื่อผู้เขียน"
+                        no-resize
+                      />
+                    </v-col>
+                    <v-col cols="12">
+                      <p class="mb-1 pa-0 d-flex justify-start">
+                        ราคา
+                      </p>
+                      <v-text-field
+                        v-model="price"
+                        :rules="nameRules"
+                        required
+                        solo
+                        placeholder="ราคา"
+                        type="number"
+                        hide-spin-buttons
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="12" md="6" lg="6" xl="6">
+                      <p class="mb-1 pa-0 d-flex justify-start">
+                        ไฟล์หนังสือ
+                      </p>
+                      <v-file-input
+                        v-model="pdfFile"
+                        accept="application/pdf"
+                        :rules="fileRules"
+                        required
+                        persistent-hint
+                        solo
+                        hint="กรุณาใช้ชื่อไฟล์เหมือนกันทั้งสองไฟล์"
+                        placeholder="เลือกไฟล์หนังสือ (PDF)"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="12" md="6" lg="6" xl="6">
+                      <p class="mb-1 pa-0 d-flex justify-start">
+                        ไฟล์ปกหนังสือ
+                      </p>
+                      <v-file-input
+                        v-model="fileImage"
+                        accept="image/jpeg,image/png"
+                        :rules="fileRules"
+                        required
+                        persistent-hint
+                        solo
+                        hint="กรุณาใช้ชื่อไฟล์เหมือนกันทั้งสองไฟล์"
+                        placeholder="เลือกไฟล์ปกหนังสือ (.JPG, .PNG)"
+                        @change="image_preview"
+                      />
+                    </v-col>
+                  </v-row>
                 </v-form>
-              </v-col>
-              <v-col cols="12" sm="4" md="4" justify="center">
-                <v-row>
-                  <v-col cols="12" sm="12" md="12" class="pb-0">
-                    <v-img v-if="imageUrl != '' && imageUrl != null" :src="imageUrl" class="mx-auto mb-4 elevation-4" max-width="400" />
+                <v-row class="mt-5" justify="center">
+                  <v-col cols="12" md="6" lg="6" xl="6">
+                    <v-btn
+                      x-large
+                      :disabled="!valid"
+                      color="primary"
+                      class="button-choice"
+                      @click="validate"
+                    >
+                      บันทึก
+                    </v-btn>
                   </v-col>
-                  <v-col cols="12" sm="12" md="12" class="py-0">
-                    <v-card-title class="pb-4 pt-0 px-0 text-left">
-                      {{ bookTitle }}
-                    </v-card-title>
-                    <v-card-subtitle class="py-1 px-0 over-text">
-                      {{ author }}
-                    </v-card-subtitle>
-                    <v-card-text class="pa-0 over-text-des">
-                      <p> {{ description }}</p>
-                    </v-card-text>
+                  <v-col cols="12" md="6" lg="6" xl="6">
+                    <v-btn
+                      x-large
+                      color="black"
+                      class="button-choice"
+                      outlined
+                      @click="cancelBook"
+                    >
+                      ยกเลิก
+                    </v-btn>
                   </v-col>
                 </v-row>
               </v-col>
-            </v-row>
-            <v-row class="mt-5" justify="center">
-              <v-btn
-                :disabled="!valid"
-                color="success"
-                class="mr-4"
-                large
-                @click="validate"
-              >
-                บันทึก
-              </v-btn>
-
-              <v-btn
-                color="error"
-                class="mr-4"
-                large
-                @click="cancelBook"
-              >
-                ยกเลิก
-              </v-btn>
             </v-row>
           </v-card>
         </v-col>
@@ -175,20 +209,19 @@ export default {
     category: '',
     description: '',
     price: '',
-    genreSelect: '',
+    genreSelect: [],
     genre: [],
     fileImage: [],
     imageUrl: null,
     pdfFile: null,
     nameRules: [
-      v => !!v || 'Name is required',
-      v => (v && v.length <= 100) || 'Text must be less than 100 characters'
+      v => !!v || 'กรุณากรอกช่องนี้',
+      v => (v && v.length <= 100) || 'ตัวอักษรจำเป็นต้องน้อยกว่า 100 ตัว'
+    ],
+    fileRules: [
+      v => !!v || 'กรุณากรอกช่องนี้'
     ],
     email: '',
-    emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
-    ],
     select: null,
     items: [
       'สารคดี',
@@ -217,7 +250,10 @@ export default {
       this.bookTitle = jsonP.bookTitle
       this.author = jsonP.author
       this.category = jsonP.category
-      this.genre = jsonP.genre
+      console.log(jsonP.genre)
+      console.log(this.genreSelect)
+      this.genreSelect = jsonP.genre
+      console.log(this.genreSelect)
       this.description = jsonP.description
       this.price = jsonP.price
       this.bookId = jsonP.bookId
@@ -249,7 +285,12 @@ export default {
       this.genre.splice(index, 1)
     },
     validate () {
+      console.log(this.genreSelect)
       if (this.$refs.form.validate()) {
+        const newName = String(this.pdfFile.name).split('.')
+        const typeNew = String(this.fileImage.name).split('.')
+        const blob = this.fileImage.slice(0, this.fileImage.size, this.fileImage.type)
+        const newFile = new File([blob], newName[0] + '.' + typeNew[1], { type: this.fileImage.type })
         if (this.$nuxt.$route.path === '/distributor/editbook') {
           this.$axios.$post('/distributors/books/edit/' + this.bookId,
             {
@@ -262,7 +303,7 @@ export default {
             }).then((user) => {
             const formData = new FormData()
             const formData2 = new FormData()
-            formData.append('image', this.fileImage)
+            formData.append('image', newFile)
             formData2.append('content', this.pdfFile)
             this.$axios.$post('/distributors/books/' + this.bookId, formData)
             this.$axios.$post('/distributors/books/' + this.bookId, formData2)
@@ -280,7 +321,7 @@ export default {
             }).then((user) => {
             const formData = new FormData()
             const formData2 = new FormData()
-            formData.append('image', this.fileImage)
+            formData.append('image', newFile)
             formData2.append('content', this.pdfFile)
             this.$axios.$post('/distributors/books/' + user.newBook.bookId, formData)
             this.$axios.$post('/distributors/books/' + user.newBook.bookId, formData2)
@@ -301,27 +342,20 @@ export default {
 
 <style scoped>
 @media only screen and (max-width: 600px) {
-.containner{
-  margin-left: 10% !important;
-  margin-right: 10% !important;
+    .content-book-center {
+  margin-left: 2%;
+  margin-right: 2%;
+  }
 }
-.width-100{
-  width: 90% !important;
-}
+.content-book-center{
+  margin-top: 5%;
+  margin-left: 10%;
+  margin-right: 10%;
+  background-color: white;
 }
 .font-propmt{
     font-family: 'Prompt', sans-serif !important;
  }
-.containner{
-  padding-left: 10%;
-  padding-right: 5%;
-  padding: 5%;
-  padding-top: 10%;
-  padding-bottom: 10%;
-}
-.v-sheet.v-card:not(.v-sheet--outlined) {
-    box-shadow: 0px 3px 1px -2px rgb(255, 140, 0), 0px 2px 2px 0px rgb(255, 140, 0), 0px 1px 5px 0px rgb(255, 140, 0);
-}
 .width-100{
   width: 60%;
 }
@@ -342,10 +376,7 @@ overflow: hidden;
 text-overflow: ellipsis;
 text-align: left;
 }
-.bg-image {
-  background-image: url("~/assets/background/book-bg-flat.png");
-    background-repeat: repeat;
-    background-size: auto;
+.inner-index-page {
         width: 100%;
     height: 100%;
 }

@@ -1,115 +1,76 @@
 <template>
   <div class="inner-index-page">
-    <div class="content-book-center">
-      <div class="px-5">
-        <v-col class="pa-0" cols="12" sm="12" md="12">
-          <p class="product-topic justify-center">
-            {{ mainBooks.bookTitle }}
-          </p>
-        </v-col>
-        <hr>
-        <v-row class="main-card-book py-5">
-          <v-col cols="12" sm="12" md="8">
-            <div class="d-flex justify-center">
-              <v-img :src="mainBooks.bookImage" class="image-cover" max-width="400" />
-            </div>
-          </v-col>
-          <v-col cols="12" sm="12" md="4">
-            <v-card class="detail-card-book br-bot" outlined>
-              <v-card-title class="pb-6 pt-0 px-0 over-text">
-                ผู้เขียน : {{ mainBooks.author }}
-              </v-card-title>
-              <v-card-subtitle class="py-4 px-0 over-text">
-                หมวดหมู่ : {{ mainBooks.category }}
-              </v-card-subtitle>
-              <v-card-subtitle class="py-4 px-0 over-text">
-                ประเภท : {{ mainBooks.genre }}
-              </v-card-subtitle>
-            </v-card>
-            <div class="buy-max">
-              <slot>
-                <payment :price="mainBooks.price" :id-book="idBook" />
-              </slot>
-              <v-col class="ma-auto d-flex justify-center">
-                <v-btn
-                  elevation="2"
-                  outlined
-                  rounded
-                  large
-                  class="ma-auto test-button justify-center"
-                  disabled
-                >
-                  ทดลองอ่าน
-                </v-btn>
-              </v-col>
-            </div>
-          </v-col>
-        </v-row>
-
-        <v-row class="card-book pb-5 pt-0">
-          <v-col cols="12" sm="12" md="8">
-            <v-card class="main-card-book br-bot card-description " outlined>
-              <v-card-title class="pb-4 pt-4 px-4 over-text">
-                เรื่องย่อ
-              </v-card-title>
-              <v-card-text class="text--primary">
-                <div>{{ mainBooks.description }}</div>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-        <div class="buy-min">
-          <v-col class="justify-center">
-            <slot>
-              <payment :price="mainBooks.price" :id-book="idBook" />
-            </slot>
-          </v-col>
-
-          <v-col class="ma-auto d-flex justify-center">
-            <v-btn
-              elevation="2"
-              outlined
-              rounded
-              large
-              class="ma-auto test-button justify-center"
-              disabled
-            >
-              ทดลองอ่าน
-            </v-btn>
-          </v-col>
-        </div>
-
-        <div class="pt-10">
-          <v-col class="pa-0" cols="8" sm="6" md="3">
-            <h1 class="topic justify-center">
-              หนังสือมาใหม่
-            </h1>
-          </v-col>
-          <hr>
-          <v-row class="main-card-book py-5">
-            <v-col v-for="(items, index) in newBook.slice(0,4)" :key="index" cols="12" sm="4" md="3">
-              <v-card class="br-bot" outlined @click="routerGo(items.bookId)">
+    <div class="content-book-center mb-14">
+      <v-col cols="12" sm="12" md="12" class="mb-4">
+        <v-card outlined rounded="xl" class="pa-4" elevation="3">
+          <v-row justify="center" class="mb-6">
+            <v-col cols="12" sm="12" md="4" lg="4" xl="4">
+              <v-col cols="12" class="d-flex justify-center">
                 <v-img
-                  :src="items.bookImage"
-                  height="450px"
-                  max-width="359"
+                  :src="mainBooks.bookImage"
+                  max-height="447"
+                  max-width="325"
                 />
-                <v-card-subtitle class="py-1 px-0 over-text">
-                  {{ items.category }}
+              </v-col>
+              <v-col cols="12">
+                <slot>
+                  <payment :price="mainBooks.price" :id-book="idBook" />
+                </slot>
+              </v-col>
+            </v-col>
+            <v-col cols="12" sm="12" md="6" lg="6" xl="6">
+              <div class="px-4">
+                <v-card-subtitle class="py-1 px-0 text-caption text-sm-caption text-md-subtitle-1 text-lg-subtitle-1 text-xl-subtitle-1 orange--text text--darken-1">
+                  {{ mainBooks.category }}
                 </v-card-subtitle>
-                <v-card-title class="pb-4 pt-0 px-0 over-text">
-                  {{ items.bookTitle }}
+                <v-card-title class="pb-4 pt-0 px-0 text-subtitle-1 text-sm-subtitle-1 text-md-h4 text-lg-h4 text-xl-h4 ">
+                  {{ mainBooks.bookTitle }}
                 </v-card-title>
-
-                <v-card-subtitle class="py-1 px-0 over-text">
-                  {{ items.author }}
+                <v-card-subtitle class="py-1 px-0 text-caption text-sm-caption text-md-h6 text-lg-h6 text-xl-h6">
+                  โดย {{ mainBooks.author }}
                 </v-card-subtitle>
-              </v-card>
+                <div class="px-0">
+                  <v-btn
+                    v-for="(item,index) in mainBooks.genre"
+                    :key="index"
+                    color="#F6C35D"
+                    rounded
+                    dark
+                    elevation="0"
+                    class="pa-3 my-1 mr-1"
+                  >
+                    {{ item }}
+                  </v-btn>
+                </div>
+                <v-card-subtitle class="py-1 px-0 text-caption text-sm-caption text-md-subtitle-1 text-lg-subtitle-1 text-xl-subtitle-1 orange--text text--darken-1">
+                  เรื่องย่อ
+                </v-card-subtitle>
+                <v-card-subtitle class="text-body-2 text-sm-body-2 text-md-h6 text-lg-h6 text-xl-h6 pa-0 font-weight-regular">
+                  {{ mainBooks.description }}
+                </v-card-subtitle>
+                <v-card-title class="pb-4 pt-4 px-0 text-h5 text-sm-h5 text-md-h4 text-lg-h4 text-xl-h4 orange--text text--darken-1 ">
+                  ราคา {{ mainBooks.price }} บาท
+                </v-card-title>
+              </div>
             </v-col>
           </v-row>
-        </div>
+        </v-card>
+      </v-col>
+
+      <div class="recommend-book">
+        <v-col cols="12" sm="6" md="6">
+          <v-list-item-title class="text-h4 mb-1 head-topic">
+            หนังสือแนะนำ
+          </v-list-item-title>
+        </v-col>
+        <v-row dense>
+          <v-col v-for="(items, index) in newBook" :key="'new'+index" cols="12" sm="12" md="4">
+            <bookcard :main="false" :data-all="items" />
+          </v-col>
+        </v-row>
       </div>
     </div>
+    <compofooter />
   </div>
 </template>
 
@@ -128,8 +89,29 @@ export default {
         password: ''
       },
       newBook: [],
-      mainBooks: {
-      }
+      mainBooks:
+        {
+          bookId: '2YysmusBe2hfJyROVeaM',
+          description: 'ลีออน ผู้มีอดีตชาติเป็นพนักงานเงินเดือนในญี่ปุ่น ซึ่งเกิดใหม่ในโลก “เกมจีบหนุ่ม” ที่มีดาบและเวทมนตร์ ก็พบกับความสิ้นหวังกับโลกที่ผู้หญิงเป็นใหญ่ ในโลกใบนี้ ผู้ชายมีค่าแค่ปศุสัตว์ไว้เลี้ยงดูผู้หญิง ผู้ที่เป็นข้อยกเว้น มีแค่กองกำลังหนุ่มหล่อของเจ้าชายรัชทายาทที่เป็นตัวละครให้จีบในเกมเท่านั้น ในสภาพแวดล้อมอันแสนจะไร้เหตุผลสิ้นดี ลีออนก็มีอาวุธอยู่อย่างหนึ่ง ใช่แล้ว มันคือความรู้ของเกมนี้ที่เขาถูกน้องสาวแก่แดดบังคับขู่เข็ญให้เล่นในชาติก่อน ลีออนที่เคยคิดอยากใช้ชีวิตเก็บตัวเงียบๆ ในบ้านนอก ก็หันมาใช้ความรู้นั้นต่อต้านเหล่าผู้หญิงและพวกหน้าหล่อที่ชอบทำอะไรตามใจตัวเอง นิยายแฟนตาซีของการโค่นล้มผู้อยู่เหนือกว่าอย่างสบายๆ (?) โดยพระเอกนอกรีต ได้เริ่มขึ้นแล้ว!',
+          bookTitle: 'ชีวิตตัวประกอบอย่างตูช่างอยู่ยากเมื่ออยู่ในโลกเกมจีบหนุ่ม',
+          release: true,
+          category: 'บันเทิงคดี',
+          genre: [
+            'ตลก',
+            'ต่อสู้',
+            'โรแมนติก',
+            'วิทยาศาสตร์'
+          ],
+          createAt: {
+            _seconds: 1668509621,
+            _nanoseconds: 935000000
+          },
+          author: 'Mishima Yomu / Shiosato Jun',
+          price: '220',
+          distributorId: 'soLyqWMXcZOjFejWdWo9n3t9Fc13',
+          id: '2YysmusBe2hfJyROVeaM',
+          bookImage: 'https://minioapi.lakkanan.shop/books-prd?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIOSFODNN7EXAMPLE%2F20221116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221116T044243Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=8ea5760a111361fc4e3dd0156567041e00e015d31d520829139c06e37cb0a64e'
+        }
     }
   },
   async fetch () {
@@ -144,7 +126,7 @@ export default {
     this.idBook = slug[1]
     this.newBook = res.books.reverse()
     this.mainBooks = resMain.BookDetails
-    this.mainBooks.genre = this.mainBooks.genre.join()
+    typeof resMain.BookDetails.genre === 'string' ? this.mainBooks.genre = [resMain.BookDetails.genre] : this.mainBooks.genre = resMain.BookDetails.genre
   },
   methods: {
     routerGo (item) {
@@ -154,112 +136,62 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .v-application{
     font-family: 'Prompt', sans-serif !important;
  }
-.detail-card-book .v-card__title{
-    display: block;
-    text-align: center !important;
-    font-size: 24px;
-}
-.detail-card-book .v-card__subtitle{
-    text-align: center;
-    font-size: 18px;
-}
-.login-button-router{
-    background-color: aqua !important;
+ .head-topic{
+  font-family: 'Prompt', sans-serif !important;
+  font-weight: 500;
+ }
+.inner-index-page{
+    width: 100%;
 }
 .content-book-center{
-  padding-top: 30px;
-  margin-left: 20%;
-  margin-right: 20%;
+  margin-top: 27px;
+  margin-left: 10%;
+  margin-right: 10%;
   background-color: white;
-  height: 100%;
+  /* height: 100%; */
 }
-.buy-min{
-    display: none;
-}
+
 @media only screen and (max-width: 600px) {
-  .content-book-center-dark {
-  margin-left: 2%;
-  margin-right: 2%;
-  }
     .content-book-center {
   margin-left: 2%;
   margin-right: 2%;
   }
-    h1{
-    font-size: 24px;
-  }
-}
-@media only screen and (max-width: 900px) {
-  .buy-min{
-    display: flex;
-}
-  .buy-max{
-    display: none;
-}
-}
-.product-topic{
-  display: flex;
-  font-size: 32px;
-}
-hr{
-  height: 3px;
-  color: #FF8C00 !important;
-  background-color:#FF8C00 !important;
-  border-color: #FF8C00 !important;
-}
-.main-card-book .v-card__title{
-    display: block;
-    text-align: left !important;
-}
-.main-card-book .v-card__subtitle{
-    display: block;
-    text-align: left !important;
-}
-.card-description.theme--light.v-sheet--outlined {
-    border:  3px solid #FF8C00 !important;
-}
-.card-description.theme--dark.v-sheet--outlined {
-    border:  3px solid #FF8C00 !important;
-}
-.theme--light.v-sheet--outlined {
-    border: 0;
-}
-.theme--dark.v-sheet--outlined {
-    border: 0;
-}
-.br-bot{
-    border-bottom: 3px solid #FF8C00 !important;
 }
 .topic{
+  color: var(--v-texttopic-base) !important;
   background-color:#FF8C00;
   display: flex;
 }
-.over-text{
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* .category{
+  color: var(--v-texttopic-base) !important;
+  background-color:#FF8C00;
+} */
+.search-button{
+  width: 100%;
 }
-.image-cover{
-    height: 100%;
+.font-propmt{
+    font-family: 'Prompt', sans-serif !important;
+ }
+.banner{
+width: 100%;
+background: #F6C35D;
+font-family: 'Prompt';
+font-style: normal;
+font-weight: 600 !important;
+font-size: 40px;
+display: flex;
+align-items: center;
 }
-.test-button{
-    display: flex;
-    width: 80%;
-    border-color: #FF8C00;
+.banner-subtitle{
+font-style: normal !important;
+font-weight: 400 !important;
+/* font-size: 36px; */
 }
-.buy-button{
-    display: flex;
-    width: 80%;
-}
-.inner-index-page{
-    width: 100%;
-    height: 100%;
-}
-.v-sheet.v-card {
-    border-radius: 0px !important;
+.image-footer{
+ margin-bottom: -30px;
 }
 </style>
