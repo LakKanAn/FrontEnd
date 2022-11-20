@@ -1,11 +1,11 @@
 <template>
-  <div class="justify-center align-self-center width-100">
-    <v-row class="row-login" align="center" justify="center">
+  <div class="inner-index-page">
+    <v-row class="content-book-center" align="center" justify="center">
       <v-col cols="12" sm="12" md="12" align="center" justify="center">
         <div class="containner" tile outlined>
           <v-row>
             <v-col cols="11" sm="11" md="11">
-              <h1 class="text-left">
+              <h1 class="text-left font-weight-medium">
                 รายชื่อหนังสือที่ลงทะเบียน
               </h1>
             </v-col>
@@ -150,9 +150,24 @@ export default {
 .v-application{
     font-family: 'Prompt', sans-serif !important;
  }
-.v-application .elevation-1 {
-    box-shadow: 0px 2px 1px -2px rgba(0, 0, 0,0.1), 0px 1px 1px 0px rgb(0, 0, 0), 0px 1px 3px 5px rgba(0, 0, 0,0.1) !important;
+
+@media only screen and (max-width: 600px) {
+    .content-book-center {
+  margin-left: 2%;
+  margin-right: 2%;
+  }
 }
+.content-book-center{
+  margin-top: 5%;
+  margin-left: 10%;
+  margin-right: 10%;
+  background-color: white;
+}
+.inner-index-page {
+        width: 100%;
+    height: 100%;
+}
+
 .width-100{
   width: 100%;
   height: 100%;

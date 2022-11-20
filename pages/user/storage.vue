@@ -1,78 +1,90 @@
 <template>
   <div class="inner-index-page font-propmt">
     <div :class="{'content-book-center':!$vuetify.theme.dark, 'content-book-center-dark':$vuetify.theme.dark} ">
+      <v-col cols="12" sm="12" md="12">
+        <v-tabs
+          v-model="currentItem"
+          centered
+          mobile-breakpoint
+          grow
+        >
+          <v-tab>
+            ทั้งหมดในชั้นหนังสือ ({{ newBook.length }})
+          </v-tab>
+          <v-tab>
+            หนังสือที่ลงทะเบียนแลกเปลี่ยน ({{ postBook.length }})
+          </v-tab>
+          <v-tab>
+            หนังสือที่ได้รับการแลกเปลี่ยนแล้ว ({{ finishBook.length }})
+          </v-tab>
+        </v-tabs>
+      </v-col>
       <div class="px-5">
-        <v-col cols="12" sm="12" md="12">
-          <v-tabs
-            v-model="currentItem"
-            centered
-            mobile-breakpoint
-            grow
-          >
-            <v-tab>
-              ทั้งหมดในชั้นหนังสือ ({{ newBook.length }})
-            </v-tab>
-            <v-tab>
-              หนังสือที่ลงทะเบียนแลกเปลี่ยน ({{ postBook.length }})
-            </v-tab>
-            <v-tab>
-              หนังสือที่ได้รับการแลกเปลี่ยนแล้ว ({{ finishBook.length }})
-            </v-tab>
-          </v-tabs>
-        </v-col>
-        <v-row v-if="currentItem == 0" class="card-book py-5">
+        <v-row v-if="currentItem == 0" class="card-book py-4">
           <div v-if="newBook.length !== 0">
             <v-col v-for="(items, index) in newBook" :key="index" cols="12" sm="12" md="12">
               <v-card outlined>
-                <v-row class="br-bot">
-                  <v-col cols="12" sm="2" md="2" lg="2">
+                <v-row dense>
+                  <v-col cols="12" sm="3" md="3">
                     <v-img
                       class="ma-auto"
                       :src="items.bookImage"
-                      height="190"
-                      width="160"
+                      height="324"
+                      width="255"
                     />
                   </v-col>
-                  <v-col cols="12" sm="7" md="7" lg="7">
-                    <v-card-subtitle class="py-1 px-0 over-text">
-                      {{ items.category }}
-                    </v-card-subtitle>
-                    <v-card-title class="pb-4 pt-0 px-0 over-text">
-                      {{ items.bookTitle }}
-                    </v-card-title>
+                  <v-col cols="12" sm="8" md="8">
+                    <v-row dense>
+                      <v-col cols="12" sm="12" md="12" lg="12" xl="12">
+                        <v-card-subtitle class="py-1 px-0">
+                          {{ items.category }}
+                        </v-card-subtitle>
+                        <v-card-title class="pb-4 pt-0 px-0">
+                          {{ items.bookTitle }}
+                        </v-card-title>
 
-                    <v-card-subtitle class="py-1 px-0 over-text">
-                      {{ items.author }}
-                    </v-card-subtitle>
-                    <v-card-text class="pa-0 over-text-des">
-                      <p> {{ items.description }}</p>
-                    </v-card-text>
-                  </v-col>
-                  <v-col cols="3" sm="3" md="3" lg="3" class="ma-auto">
-                    <div class="d-flex justify-center mb-2">
-                      <v-btn
-                        elevation="4"
-                        outlined
-                        color="#FF8C00"
-                        x-large
-                        @click="readBook(items.bookId)"
+                        <v-card-subtitle class="py-1 px-0">
+                          {{ items.author }}
+                        </v-card-subtitle>
+                        <v-card-text class="pa-0">
+                          <p> {{ items.description }}</p>
+                        </v-card-text>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        sm="12"
+                        md="12"
+                        lg="12"
+                        xl="12"
+                        class="ma-auto"
                       >
-                        อ่านหนังสือ
-                      </v-btn>
-                    </div>
-                    <div class="d-flex justify-center">
-                      <v-btn
-                        elevation="4"
-                        outlined
-                        color="#FF8C00"
-                        x-large
-                        @click="confirmDialog = true, currentId = items.bookId "
-                      >
-                        ลงทะเบียนแลกเปลี่ยน
-                      </v-btn>
-                    </div>
+                        <div class="mb-2">
+                          <v-btn
+                            elevation="4"
+                            x-large
+                            color="primary"
+                            rounded
+                            width="40%"
+                            @click="confirmDialog = true, currentId = items.bookId "
+                          >
+                            ลงทะเบียนแลกเปลี่ยน
+                          </v-btn>
+                          <v-btn
+                            elevation="4"
+                            x-large
+                            rounded
+                            outlined
+                            width="40%"
+                            @click="readBook(items.bookId)"
+                          >
+                            อ่านหนังสือ
+                          </v-btn>
+                        </div>
+                      </v-col>
+                    </v-row>
                   </v-col>
                 </v-row>
+                <v-divider class="my-4" />
               </v-card>
             </v-col>
           </div>
@@ -86,59 +98,71 @@
           </div>
         </v-row>
 
-        <v-row v-if="currentItem == 1" class="card-book py-5">
+        <v-row v-if="currentItem == 1" class="card-book py-4">
           <div v-if="postBook.length !== 0">
             <v-col v-for="(items, index) in postBook" :key="index" cols="12" sm="12" md="12">
               <v-card outlined>
-                <v-row class="br-bot">
-                  <v-col cols="12" sm="2" md="2">
+                <v-row dense>
+                  <v-col cols="12" sm="3" md="3" lg="3" xl="3">
                     <v-img
                       class="ma-auto"
                       :src="items.bookImage"
-                      height="190"
-                      width="160"
+                      height="324"
+                      width="255"
                     />
                   </v-col>
-                  <v-col cols="12" sm="7" md="7">
-                    <v-card-subtitle class="py-1 px-0 over-text">
-                      {{ items.category }}
-                    </v-card-subtitle>
-                    <v-card-title class="pb-4 pt-0 px-0 over-text">
-                      {{ items.bookTitle }}
-                    </v-card-title>
+                  <v-col cols="12" sm="8" md="8" lg="8" xl="8">
+                    <v-row dense>
+                      <v-col cols="12" sm="12" md="12" lg="12" xl="12">
+                        <v-card-subtitle class="py-1 px-0">
+                          {{ items.category }}
+                        </v-card-subtitle>
+                        <v-card-title class="pb-4 pt-0">
+                          {{ items.bookTitle }}
+                        </v-card-title>
 
-                    <v-card-subtitle class="py-1 px-0 over-text">
-                      {{ items.author }}
-                    </v-card-subtitle>
-                    <v-card-text class="pa-0 over-text-des">
-                      <p> {{ items.description }}</p>
-                    </v-card-text>
-                  </v-col>
-                  <v-col cols="3" sm="3" md="3" class="ma-auto">
-                    <div class="d-flex justify-center mb-2">
-                      <v-btn
-                        elevation="4"
-                        outlined
-                        color="#FF8C00"
-                        x-large
-                        @click="cancelDialog = true, currentCancelId = items.postId "
+                        <v-card-subtitle class="py-1">
+                          {{ items.author }}
+                        </v-card-subtitle>
+                        <v-card-text class="pa-0">
+                          <p> {{ items.description }}</p>
+                        </v-card-text>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        sm="12"
+                        md="12"
+                        lg="12"
+                        xl="12"
+                        class="ma-auto"
                       >
-                        ยกเลิกการลงทะเบียน
-                      </v-btn>
-                    </div>
-                    <div class="d-flex justify-center">
-                      <v-btn
-                        elevation="4"
-                        outlined
-                        color="#FF8C00"
-                        x-large
-                        @click="routerGoTrade(items.postId)"
-                      >
-                        เข้าสู่หน้าแลกเปลี่ยน
-                      </v-btn>
-                    </div>
+                        <div class="mb-2">
+                          <v-btn
+                            elevation="4"
+                            color="primary"
+                            x-large
+                            rounded
+                            width="40%"
+                            @click="routerGoTrade(items.postId)"
+                          >
+                            เข้าสู่หน้าแลกเปลี่ยน
+                          </v-btn>
+                          <v-btn
+                            elevation="4"
+                            outlined
+                            x-large
+                            rounded
+                            width="40%"
+                            @click="cancelDialog = true, currentCancelId = items.postId "
+                          >
+                            ยกเลิกการลงทะเบียน
+                          </v-btn>
+                        </div>
+                      </v-col>
+                    </v-row>
                   </v-col>
                 </v-row>
+                <v-divider class="my-4" />
               </v-card>
             </v-col>
           </div>
@@ -152,48 +176,61 @@
           </div>
         </v-row>
 
-        <v-row v-if="currentItem == 2" class="card-book py-5">
+        <v-row v-if="currentItem == 2" class="card-book py-4">
           <div v-if="finishBook.length !== 0">
             <v-col v-for="(items, index) in finishBook" :key="index" cols="12" sm="12" md="12">
               <v-card outlined>
-                <v-row class="br-bot">
-                  <v-col cols="12" sm="2" md="2">
+                <v-row dense>
+                  <v-col cols="12" sm="3" md="3" lg="3" xl="3">
                     <v-img
                       class="ma-auto"
                       :src="items.bookImage"
-                      height="190"
-                      width="160"
+                      height="324"
+                      width="255"
                     />
                   </v-col>
-                  <v-col cols="12" sm="7" md="7">
-                    <v-card-subtitle class="py-1 px-0 over-text">
-                      {{ items.category }}
-                    </v-card-subtitle>
-                    <v-card-title class="pb-4 pt-0 px-0 over-text">
-                      {{ items.bookTitle }}
-                    </v-card-title>
+                  <v-col cols="12" sm="8" md="8" lg="8" xl="8">
+                    <v-row dense>
+                      <v-col cols="12" sm="12" md="12" lg="12" xl="12">
+                        <v-card-subtitle class="py-1 px-0">
+                          {{ items.category }}
+                        </v-card-subtitle>
+                        <v-card-title class="pb-4 pt-0 px-0">
+                          {{ items.bookTitle }}
+                        </v-card-title>
 
-                    <v-card-subtitle class="py-1 px-0 over-text">
-                      {{ items.author }}
-                    </v-card-subtitle>
-                    <v-card-text class="pa-0 over-text-des">
-                      <p> {{ items.description }}</p>
-                    </v-card-text>
-                  </v-col>
-                  <v-col cols="3" sm="3" md="3" class="ma-auto">
-                    <div class="d-flex justify-center">
-                      <v-btn
-                        elevation="4"
-                        outlined
-                        color="#FF8C00"
-                        x-large
-                        @click="tradeReadBook(items.exchangeId)"
+                        <v-card-subtitle class="py-1 px-0">
+                          {{ items.author }}
+                        </v-card-subtitle>
+                        <v-card-text class="pa-0">
+                          <p> {{ items.description }}</p>
+                        </v-card-text>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        sm="12"
+                        md="12"
+                        lg="12"
+                        xl="12"
+                        class="ma-auto"
                       >
-                        อ่านหนังสือ
-                      </v-btn>
-                    </div>
+                        <div class="d-flex justify-center  mb-2">
+                          <v-btn
+                            elevation="4"
+                            color="primary"
+                            x-large
+                            width="50%"
+                            rounded
+                            @click="tradeReadBook(items.exchangeId)"
+                          >
+                            อ่านหนังสือ
+                          </v-btn>
+                        </div>
+                      </v-col>
+                    </v-row>
                   </v-col>
                 </v-row>
+                <v-divider class="my-4" />
               </v-card>
             </v-col>
           </div>
@@ -293,7 +330,7 @@
                 x-large
                 color="primary"
                 class="button-choice"
-                @click="registerBook"
+                @click="cancelBook"
               >
                 ยืนยัน
               </v-btn>
@@ -313,6 +350,21 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="succDialog"
+      max-width="350"
+    >
+      <v-card rounded="lg" class="pa-4">
+        <div class="d-flex justify-center">
+          <v-icon color="success" size="80">
+            mdi-check-circle-outline
+          </v-icon>
+        </div>
+        <v-card-title class="d-flex justify-center">
+          {{ textDialogSuccess }}
+        </v-card-title>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -328,6 +380,8 @@ export default {
       cancelDialog: false,
       selected: '',
       currentId: '',
+      textDialogSuccess: '',
+      succDialog: false,
       currentCancelId: '',
       auth: {
         email: '',
@@ -371,12 +425,18 @@ export default {
     registerBook () {
       if (this.$refs.selectDay.validate()) {
         this.$axios.$post('/users/bookshelf/' + this.currentId + '/post', { timeSet: Number(this.selected) })
-        setTimeout(location.reload(), 3000)
+        this.confirmDialog = false
+        this.textDialogSuccess = 'ลงทะเบียนเรียบร้อย'
+        this.succDialog = true
+        setTimeout(() => { location.reload() }, 2000)
       }
     },
     cancelBook () {
       this.$axios.$post('/users/bookshelf/' + this.currentCancelId + '/cancel')
-      setTimeout(location.reload(), 3000)
+      this.cancelDialog = false
+      this.textDialogSuccess = 'ยกเลิกการลงทะเบียนเรียบร้อย'
+      this.succDialog = true
+      setTimeout(() => { location.reload() }, 2000)
     },
     routerGoTrade (item) {
       localStorage.setItem('owner-trade', item)
@@ -443,23 +503,6 @@ hr{
 }
 .br-bot{
     border-bottom: 3px solid #FF8C00 !important;
-}
-.storage-over-text{
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.over-text{
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.over-text-des{
-display: -webkit-box;
--webkit-line-clamp: 4;
--webkit-box-orient: vertical;
-overflow: hidden;
-text-overflow: ellipsis;
 }
 @media only screen and (max-width: 600px) {
   .content-book-center-dark {

@@ -275,12 +275,10 @@ export default {
       await this.$axios.$put(
         '/payment/confirm/' + this.idBook
         , { paymentId: this.paymentId })
-      setTimeout(
-        this.dialog = false,
-        this.confirmDialog = false,
-        this.succDialog = true, 5000)
-      setTimeout(
-        this.$nuxt.$router.push('/'), 10000)
+      this.dialog = false
+      this.confirmDialog = false
+      this.succDialog = true
+      setTimeout(() => { this.$nuxt.$router.push('/') }, 2000)
     }
   }
 

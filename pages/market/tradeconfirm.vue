@@ -300,7 +300,7 @@ export default {
       const index = this.offerBook.map(e => e.book.bookTitle).indexOf(this.dialogm1)
       await this.$axios.$post('/trade/confirm/' + this.idBook + '/' + this.offerBook[index].offerId)
       this.confirmDialog = false
-      setTimeout(this.$nuxt.$router.push('/user/storage'), 5000)
+      setTimeout(() => { this.$nuxt.$router.push('/user/storage') }, 2000)
     },
     changeOfferCard (index) {
       this.offerBookCard = this.offerBook[index].book
