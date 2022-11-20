@@ -5,69 +5,83 @@
       width="500"
     >
       <template #activator="{ on, attrs }">
-        <v-col class="ma-auto d-flex justify-center">
+        <v-col v-if="$nuxt.$auth.loggedIn" class="ma-auto d-flex justify-center">
           <v-btn
+            v-if="$nuxt.$auth.user.role === 'user'"
             v-bind="attrs"
             elevation="2"
-            outlined
             rounded
             large
-            class="ma-auto buy-button justify-center"
+            class="ma-auto buy-button justify-center font-weight-regular"
+            color="primary"
             v-on="on"
             @click="popup"
           >
-            ซื้อ {{ price }} บาท
+            ซื้อหนังสือ
+          </v-btn>
+        </v-col>
+        <v-col v-if="!$nuxt.$auth.loggedIn" class="ma-auto d-flex justify-center">
+          <v-btn
+            v-bind="attrs"
+            elevation="2"
+            rounded
+            large
+            class="ma-auto buy-button justify-center font-weight-regular"
+            color="primary"
+            v-on="on"
+            @click="popup"
+          >
+            ซื้อหนังสือ
           </v-btn>
         </v-col>
       </template>
 
-      <v-card>
-        <v-card-title class="justify-center">
-          Payment
-        </v-card-title>
-
+      <v-card rounded="lg">
         <v-card-text>
           <div class="card-form">
             <div class="card-form__inner">
+              <p class="text-h5 text-sm-h5 text-md-h4 text-lg-h4 text-xl-h4 black--text mb-1">
+                ชำระเงิน
+              </p>
               <div class="card-input">
                 <label for="cardNumber" class="card-input__label">
-                  Card Number
+                  หมายเลขบัตร (ไม่ต้องเว้นวรรค)
                 </label>
                 <input
                   id="cardNumber"
                   v-imask="cardMasks"
                   :value="cardNumber"
                   autofocus
-                  class="card-input__input"
+                  class="card-input__input elevation-3"
                   autocomplete="off"
                   @accept="onAcceptCardType"
                 >
               </div>
               <div class="card-input">
                 <label for="cardName" class="card-input__label">
-                  Card Owner
+                  ชื่อบนบัตร
                 </label>
                 <input
 
                   id="cardName"
                   v-model="name"
-                  class="card-input__input"
+                  class="card-input__input elevation-3"
                   autocomplete="off"
                 >
               </div>
-              <div class="card-form__row">
-                <div class="card-form__col">
+              <v-row>
+                <v-col cols="12" md="8" lg="8" xl="8">
                   <div class="card-form__group">
                     <label for="cardMonth" class="card-input__label">
-                      Expiration Date
+                      วันหมดอายุ (MM/YY)
                     </label>
                     <select
                       id="cardMonth"
                       v-model="expireMonth"
-                      class="card-input__input -select"
+                      class="card-input__input -select elevation-3"
                     >
                       <option value="" disabled selected>
-                        Month
+                        เดือน
                       </option>
                       <option
                         v-for="n in 12"
@@ -80,10 +94,10 @@
                     <select
                       id="cardYear"
                       v-model="expireYear"
-                      class="card-input__input -select"
+                      class="card-input__input -select elevation-3"
                     >
                       <option value="" disabled selected>
-                        Year
+                        ปี
                       </option>
                       <option
                         v-for="(n, $index) in 12"
@@ -94,25 +108,45 @@
                       </option>
                     </select>
                   </div>
-                </div>
-                <div class="card-form__col -cvv">
+                </v-col>
+                <v-col cols="12" md="4" lg="4" xl="8">
                   <div class="card-input">
                     <label for="cardCvv" class="card-input__label">CVV</label>
-                    <input
-
-                      id="cardCvv"
-                      v-imask="cvvMask"
-                      class="card-input__input"
-                      :value="cvv"
-                      autocomplete="off"
-                      @accept="onAcceptCvv"
+                    <v-tooltip
+                      bottom
                     >
+                      <template #activator="{ on, attrs }">
+                        <div
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <input
+                            id="cardCvv"
+                            v-imask="cvvMask"
+                            class="card-input__input elevation-3"
+                            :value="cvv"
+                            autocomplete="off"
+                            @accept="onAcceptCvv"
+                          >
+                        </div>
+                      </template>
+                      <v-img :src="require('~/assets/image/cvv.png')" max-width="103" />
+                    </v-tooltip>
                   </div>
-                </div>
-              </div>
-              <button class="card-form__button" @click="buy">
-                ชำระเงิน
-              </button>
+                </v-col>
+              </v-row>
+              <v-row justify="center" class="my-2">
+                <v-col cols="12" md="6" lg="6" xl="6">
+                  <v-btn x-large color="primary" class="button-choice" @click="buy">
+                    ยืนยันการชำระเงิน
+                  </v-btn>
+                </v-col>
+                <v-col cols="12" md="6" lg="6" xl="6">
+                  <v-btn x-large color="black" class="button-choice" outlined @click="dialog = false">
+                    ยกเลิก
+                  </v-btn>
+                </v-col>
+              </v-row>
             </div>
           </div>
         </v-card-text>
@@ -124,34 +158,59 @@
     <v-dialog
       v-model="confirmDialog"
       persistent
-      max-width="290"
+      max-width="400"
     >
-      <v-card>
-        <v-card-title class="">
-          กรุณายืนยันการชำระเงิน
+      <v-card rounded="lg" class="pa-4">
+        <div class="d-flex justify-center">
+          <v-icon color="black" size="80">
+            mdi-alert-circle-outline
+          </v-icon>
+        </div>
+        <v-card-title class="d-flex justify-center">
+          ยืนยันการชำระเงินหรือไม่
         </v-card-title>
 
-        <v-card-text>
-          หากกดตกลงแล้วหนังสือที่ถูกซื้อจะอยู่ในคลังสินค้าของผู้ใช้งาน
-        </v-card-text>
-
         <v-card-actions>
-          <v-btn
-            text
-            color="#FF8C00"
-            @click="dialog = false,confirmDialog = false"
-          >
-            ยกเลิก
-          </v-btn>
-
-          <v-btn
-            text
-            color="#FF8C00"
-            @click="confirmBuy"
-          >
-            ตกลง
-          </v-btn>
+          <v-row justify="center" class="my-0">
+            <v-col cols="12" md="6" lg="6" xl="6">
+              <v-btn
+                x-large
+                color="primary"
+                class="button-choice"
+                @click="confirmBuy"
+              >
+                ยืนยันการชำระเงิน
+              </v-btn>
+            </v-col>
+            <v-col cols="12" md="6" lg="6" xl="6">
+              <v-btn
+                x-large
+                color="black"
+                class="button-choice"
+                outlined
+                @click="dialog = false,confirmDialog = false"
+              >
+                ยกเลิก
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog
+      v-model="succDialog"
+      max-width="350"
+    >
+      <v-card rounded="lg" class="pa-4">
+        <div class="d-flex justify-center">
+          <v-icon color="success" size="80">
+            mdi-check-circle-outline
+          </v-icon>
+        </div>
+        <v-card-title class="d-flex justify-center">
+          ซื้อหนังสือสำเร็จ
+        </v-card-title>
       </v-card>
     </v-dialog>
   </div>
@@ -177,7 +236,8 @@ export default {
       currentYear: new Date().getFullYear(),
       cardMasks,
       cvvMask,
-      paymentId: ''
+      paymentId: '',
+      succDialog: false
     }
   },
   methods: {
@@ -196,10 +256,10 @@ export default {
       this.cvv = maskRef.value
     },
     popup () {
-      if (this.$nuxt.$auth.loggedIn) {
-        this.dialog = true
-      } else {
+      if (!this.$nuxt.$auth.loggedIn) {
         this.$nuxt.$router.push('/login')
+      } else {
+        this.dialog = true
       }
     },
     async buy () {
@@ -214,13 +274,13 @@ export default {
     async confirmBuy () {
       await this.$axios.$put(
         '/payment/confirm/' + this.idBook
-        , { paymentId: this.paymentId }).then(
-        setTimeout(
-          this.dialog = false,
-          this.confirmDialog = false, 5000),
-        setTimeout(
-          this.$nuxt.$router.push('/'), 5000)
-      )
+        , { paymentId: this.paymentId })
+      setTimeout(
+        this.dialog = false,
+        this.confirmDialog = false,
+        this.succDialog = true, 5000)
+      setTimeout(
+        this.$nuxt.$router.push('/'), 10000)
     }
   }
 
@@ -228,14 +288,17 @@ export default {
 </script>
 
 <style lang="scss">
+.button-choice{
+    display: flex;
+    width: 100%;
+}
 .buy-button{
     display: flex;
-    width: 80%;
+    width: 100%;
 }
 .card-container {
   margin: 30px auto 50px auto;
 }
-
 .card-form {
   max-width: 570px;
   margin: auto;
@@ -243,8 +306,6 @@ export default {
 
   &__inner {
     background: #fff;
-    box-shadow: 0 30px 60px 0 rgba(90, 116, 148, 0.4);
-    border-radius: 10px;
     padding: 20px;
   }
 
@@ -282,7 +343,7 @@ export default {
   }
 
   &__button {
-    width: 100%;
+    width: 45%;
     height: 55px;
     background: #FF8C00;
     border: none;
@@ -316,7 +377,6 @@ export default {
     height: 50px;
     border-radius: 5px;
     box-shadow: none;
-    border: 1px solid #ced6e0;
     transition: all 0.3s ease-in-out;
     font-size: 18px;
     padding: 5px 15px;

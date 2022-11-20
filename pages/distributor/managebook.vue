@@ -21,17 +21,6 @@
               </v-btn>
             </v-col>
           </v-row>
-          <v-row align="center" justify="end">
-            <!-- <v-col
-              class="pa-0"
-              cols="4"
-              sm="4"
-              md="4"
-              align="center"
-              justify="center"
-            >
-            </v-col> -->
-          </v-row>
           <v-row align="center" justify="center">
             <v-col cols="12" sm="12" md="12" align="center" justify="center">
               <v-data-table
@@ -42,8 +31,10 @@
                 :items-per-page="5"
                 class="elevation-1 text-black"
               >
-              <template #[`item.description`]="{ item }">
-                  <p class="text-left over-text-des my-2">{{ item.description }}</p>
+                <template #[`item.description`]="{ item }">
+                  <p class="text-left over-text-des my-2">
+                    {{ item.description }}
+                  </p>
                 </template>
                 <template #[`item.actions`]="{ item }">
                   <v-icon
@@ -102,8 +93,8 @@ export default {
     headers () {
       return [
         { text: 'ชื่อหนังสือ', value: 'bookTitle', align: 'start', width: 400 },
-        { text: 'ชื่อผู้เขียน', value: 'author', width: 300 },
-        { text: 'หมวดหมู่', value: 'category' },
+        { text: 'ชื่อผู้เขียน', value: 'author', width: 200 },
+        { text: 'หมวดหมู่', value: 'category', width: 100 },
         { text: 'รายละเอียด', value: 'description', width: 500 },
         { text: 'ราคา', value: 'price', align: 'center', width: 200 },
         { text: 'Actions', value: 'actions' },
@@ -176,9 +167,6 @@ export default {
   padding: 5%;
   padding-top: 25px;
   padding-bottom: 35px;
-}
-.v-sheet.v-card:not(.v-sheet--outlined) {
-    box-shadow: 0px 3px 1px -2px rgb(255, 140, 0), 0px 2px 2px 0px rgb(255, 140, 0), 0px 1px 5px 0px rgb(255, 140, 0);
 }
 
 .over-text-des{

@@ -1,72 +1,85 @@
 <template>
   <div>
-    <v-row justify="center" class="my-4">
-      <v-col cols="3">
-        <div v-if="!vertical" class="my-auto">
-          <v-btn
-            elevation="4"
-            outlined
-            color="#FF8C00"
-            x-large
-            @click="onPrevPage"
-          >
-            Previous
-          </v-btn>
-          <v-btn
-            elevation="4"
-            outlined
-            color="#FF8C00"
-            x-large
-            @click="onNextPage"
-          >
-            Next
-          </v-btn>
-        </div>
-      </v-col>
-      <v-col cols="6">
+    <v-row justify="space-between" class="my-4 mx-10">
+      <v-col cols="12" sm="12" md="2" lg="2" xl="2">
         <div class="select-wid mx-auto">
           <v-select
             :items="choice"
             label="Standard"
             hide-details
             value="แนวนอน"
-            outlined
+            solo
+            class="elevation-2"
             @change="changeStyle($event)"
           />
         </div>
       </v-col>
-      <span class="my-auto">Page: <span id="page_num" /> / <span id="page_count" /></span>
-
-      <v-col cols="3" />
-    </v-row>
-    <div id="horizontal" class="pdf-read d-flex justify-center">
-      <canvas id="the-canvas" />
-    </div>
-    <v-row v-if="!vertical" justify="end" class="my-4">
-      <v-col cols="3">
-        <div class="my-auto">
+      <v-col cols="12" sm="12" md="4" lg="4" xl="4">
+        <div v-if="!vertical" class="my-auto">
+        <span class="my-auto mx-2">หน้า {{ pageNumShow }} / {{ pageCountShow }}</span>
           <v-btn
-            elevation="4"
-            outlined
+            elevation="2"
+            dark
             color="#FF8C00"
             x-large
             @click="onPrevPage"
           >
-            Previous
+            <v-icon color="white">
+              mdi-arrow-left-thin
+            </v-icon>
+            ก่อนหน้า
           </v-btn>
           <v-btn
-            elevation="4"
-            outlined
+            elevation="2"
+            dark
             color="#FF8C00"
             x-large
             @click="onNextPage"
           >
-            Next
+            ถัดไป
+            <v-icon color="white">
+              mdi-arrow-right-thin
+            </v-icon>
+          </v-btn>
+        </div>
+      </v-col>
+    </v-row>
+    <div id="horizontal" class="pdf-read d-flex justify-center">
+      <canvas id="the-canvas" />
+    </div>
+    <v-row v-if="!vertical" justify="end" class="my-4  mx-10">
+      <v-col cols="12" sm="12" md="4" lg="4" xl="4">
+        <div class="my-auto">
+        <span class="my-auto mx-2">หน้า {{ pageNumShow }} / {{ pageCountShow }}</span>
+          <v-btn
+            elevation="2"
+            dark
+            color="#FF8C00"
+            x-large
+            @click="onPrevPage"
+          >
+            <v-icon color="white">
+              mdi-arrow-left-thin
+            </v-icon>
+            ก่อนหน้า
+          </v-btn>
+          <v-btn
+            elevation="2"
+            dark
+            color="#FF8C00"
+            x-large
+            @click="onNextPage"
+          >
+            ถัดไป
+            <v-icon color="white">
+              mdi-arrow-right-thin
+            </v-icon>
           </v-btn>
         </div>
       </v-col>
     </v-row>
     <div id="vertical" class="pdf-read" />
+    <compofooter />
     <v-fab-transition>
       <v-btn
         v-scroll="onScroll"
@@ -88,6 +101,7 @@
 const pdfjsLib = window['pdfjs-dist/build/pdf']
 let pdfDoc = null
 let pageNum = 1
+let pageCount = 0
 let pageRendering = false
 let pageNumPending = null
 const scale = 1.5
@@ -104,7 +118,9 @@ export default {
         'แนวตั้ง'
       ],
       vertical: false,
-      upButton: false
+      upButton: false,
+      pageNumShow: 0,
+      pageCountShow: 0
     }
   },
   async mounted () {
@@ -127,7 +143,7 @@ export default {
       ctx = canvas.getContext('2d')
       pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
         pdfDoc = pdfDoc_
-        document.getElementById('page_count').textContent = pdfDoc.numPages
+        pageCount = pdfDoc.numPages
         pageRendering = true
         pdfDoc.getPage(pageNum).then(function (page) {
           const viewport = page.getViewport({ scale })
@@ -159,10 +175,11 @@ export default {
             }
           })
         })
-        document.getElementById('page_num').textContent = pageNum
+        this.pageNumShow = pageNum
+        this.pageCountShow = pageCount
       })
     } catch (error) {
-      this.$nuxt.$router.push('/')
+      // this.$nuxt.$router.push('/')
     }
   },
   methods: {
@@ -199,7 +216,7 @@ export default {
         })
       })
 
-      document.getElementById('page_num').textContent = num
+      this.pageNumShow = num
     },
     renderAllPage (num) {
       pageRendering = true
@@ -218,8 +235,6 @@ export default {
         const viewport = page.getViewport({ scale })
         canvasAll.width = Math.floor(viewport.width * outputScale)
         canvasAll.height = Math.floor(viewport.height * outputScale)
-        canvasAll.style.width = Math.floor(viewport.width) + 'px'
-        canvasAll.style.height = Math.floor(viewport.height) + 'px'
         const ctxAll = canvasAll.getContext('2d')
         const transform = outputScale !== 1
           ? [outputScale, 0, 0, outputScale, 0, 0]
