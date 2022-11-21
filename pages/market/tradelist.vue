@@ -1,109 +1,98 @@
 <template>
-  <div class="wid-80 ma-auto mt-5">
-    <v-col class="pa-0" cols="12" sm="12" md="12">
-      <h1 class="d-flex justify-center h1-trade">
-        <img class="pr-2" src="~/assets/icon/trade.png" alt="trade-image">ศูนย์รวมการแลกเปลี่ยน
-      </h1>
-    </v-col>
-    <v-row class="mt-4" justify="center">
-      <v-col cols="12" sm="3" md="3" lg="3" class="d-flex justify-center">
-        <!-- <v-btn
-          outlined
-          elevation="0"
-          color="#ff8c00"
-          large
-          class=""
-          @click="routerBookShelf"
+  <div class="wid-100 mx-auto">
+    <div class="content-book-center">
+      <v-row justify="space-between" class="mx-auto">
+        <v-col
+          class="pa-0 d-flex justify-center"
+          cols="12"
+          sm="12"
+          md="6"
+          lg="4"
+          xl="4"
         >
-          <v-icon
-            right
-            dark
+          <span class="mb-0 mx-auto text-h5 text-sm-h5 text-md-h4 text-lg-h4 text-xl-h4 font-weight-medium">
+            ศูนย์รวมการแลกเปลี่ยน
+          </span>
+        </v-col>
+        <v-col
+          class="pa-0 d-flex justify-end"
+          cols="12"
+          sm="12"
+          md="3"
+          lg="3"
+          xl="3"
+        >
+          <v-btn
+            elevation="0"
             color="#ff8c00"
-            class="mr-1"
+            large
+            rounded
+            class="exchange-button ma-auto"
+            @click="routerBookShelf"
           >
-            mdi-clock-time-two-outline
-          </v-icon>
-          ประวัติการแลกเปลี่ยน
-        </v-btn> -->
-      </v-col>
-      <v-col cols="12" sm="12" md="12" lg="12" class="d-flex justify-center">
-        <v-btn
-          elevation="0"
-          color="#ff8c00"
-          large
-          class="exchange-button"
-          @click="routerBookShelf"
-        >
-          <v-icon
-            right
-            dark
-            color="white"
-            class="mr-2"
-          >
-            mdi-plus-circle
-          </v-icon>
-          สร้างคำขอแลกเปลี่ยน
-        </v-btn>
-      </v-col>
-    </v-row>
-    <!-- <v-row>
-      <v-bottom-navigation grow>
-        <v-btn value="recent">
-          <span>รายการที่ลงทะเบียน</span>
-        </v-btn>
-
-        <v-btn value="favorites">
-          <span>รายการของฉัน</span>
-        </v-btn>
-
-        <v-btn value="nearby">
-          <span>ประวัติ</span>
-        </v-btn>
-      </v-bottom-navigation>
-    </v-row> -->
-
-    <div class="body-market mt-5">
-      <v-row class="mb-5">
-        <v-col cols="12">
-          <v-row justify="center" class="py-5">
-            <v-col cols="12" sm="4" md="4">
-              <v-text-field
-                v-model="choieName"
-                outlined
-                hide-details
-                label="ชื่อเรื่อง"
-                @input="searchButton($event)"
+            สร้างคำขอแลกเปลี่ยน
+          </v-btn>
+        </v-col>
+      </v-row>
+      <div class="body-market mt-5">
+        <v-row class="mb-5">
+          <v-col cols="12">
+            <v-row class="px-3 pb-3">
+              <v-col cols="12" sm="4" md="6">
+                <p class="mb-1 pa-0">
+                  ค้นหาหนังสือ
+                </p>
+                <v-text-field
+                  v-model="choieName"
+                  solo
+                  hide-details
+                  placeholder="ค้นหาชื่อหนังสือ"
+                  prepend-inner-icon="mdi-magnify"
+                  @input="searchButton($event)"
+                />
+              </v-col>
+              <v-col cols="6" sm="3" md="3">
+                <p class="mb-1 pa-0">
+                  หมวดหมู่
+                </p>
+                <v-select
+                  v-model="genre"
+                  :items="choieGenre"
+                  solo
+                  hide-details
+                  value="ทั้งหมด"
+                  label="หมวดหมู่"
+                  @change="filterGenre($event)"
+                />
+              </v-col>
+              <v-col cols="6" sm="3" md="3">
+                <p class="mb-1 pa-0">
+                  ประเภท
+                </p>
+                <v-select
+                  v-model="category"
+                  :items="choieCategory"
+                  solo
+                  hide-details
+                  value="ทั้งหมด"
+                  label="ประเภท"
+                  @change="filterCategory($event)"
+                />
+              </v-col>
+            </v-row>
+            <div class="text-center d-flex justify-end">
+              <v-pagination
+                v-model="page"
+                :length="totalPage"
+                :total-visible="7"
+                @input="changePagination($event)"
               />
-            </v-col>
-            <v-col cols="6" sm="3" md="3">
-              <v-select
-                v-model="genre"
-                :items="choieGenre"
-                outlined
-                hide-details
-                label="หมวดหมู่"
-                @change="filterCategory($event)"
-              />
-            </v-col>
-            <v-col cols="6" sm="3" md="3">
-              <v-select
-                v-model="category"
-                :items="choieCategory"
-                outlined
-                hide-details
-                label="ประเภท"
-                @change="filterGenre($event)"
-              />
-            </v-col>
-            <!-- <v-col align-self="center" cols="2" sm="2" md="2">
-              <v-btn color="#FF8C00" x-large class="text-center mb-0 search-button " @click="searchButton()">
-                ค้นหา
-              </v-btn>
-            </v-col> -->
-          </v-row>
-          <hr class="mt-2">
-          <v-row class="py-5" justify="center">
-            <v-col
+            </div>
+            <v-row class="py-5">
+              <v-col v-for="(items, index) in listBook" :key="'new'+index" cols="12" sm="12" md="6">
+                <bookcard :main="true" :data-all="items" />
+              </v-col>
+              <!-- <v-col
               v-for="(list,index) in listBook"
               :key="index"
               cols="12"
@@ -111,8 +100,8 @@
               lg="5"
               md="6"
               class="pb-5 br-bot"
-            >
-              <v-card elevation="0" @click="routerGo(list.postId)">
+            > -->
+              <!-- <v-card elevation="0" @click="routerGo(list.postId)">
                 <v-row justify="center">
                   <v-col cols="12" sm="5" md="5" class="center-600">
                     <v-img
@@ -138,20 +127,22 @@
                     </v-card-subtitle>
                   </v-col>
                 </v-row>
-              </v-card>
-            </v-col>
-            <div v-if="listBook.length == 0" class="d-flex justify-center ma-auto">
-              <div class="mx-auto my-16">
-                <v-img :src="require('~/assets/image/stack_of_books.png')" max-width="444"/>
-                <p class="mt-6 text-center p-no-data">
-                  ไม่มีหนังสือที่ลงทะเบียนแลกเปลี่ยน
-                </p>
+              </v-card> -->
+              <!-- </v-col> -->
+              <div v-if="listBook.length == 0" class="d-flex justify-center ma-auto">
+                <div class="mx-auto my-16">
+                  <v-img :src="require('~/assets/image/stack_of_books.png')" max-width="325" class="ma-auto" />
+                  <p class="mt-6 text-center p-no-data">
+                    ไม่มีหนังสือที่ลงทะเบียนแลกเปลี่ยน
+                  </p>
+                </div>
               </div>
-            </div>
-          </v-row>
-        </v-col>
-      </v-row>
+            </v-row>
+          </v-col>
+        </v-row>
+      </div>
     </div>
+    <compofooter />
   </div>
 </template>
 <script>
@@ -162,9 +153,10 @@ export default {
       page: 1,
       totalPage: 1,
       choieName: '',
-      genre: '',
-      category: '',
+      genre: 'ทั้งหมด',
+      category: 'ทั้งหมด',
       choieGenre: [
+        'ทั้งหมด',
         'ตลก',
         'ต่อสู้',
         'โรแมนติก',
@@ -175,6 +167,7 @@ export default {
         'อิงประวัติศาสตร์'
       ],
       choieCategory: [
+        'ทั้งหมด',
         'สารคดี',
         'บันเทิงคดี',
         'สิ่งพิมพ์',
@@ -182,7 +175,8 @@ export default {
         'วารสาร',
         'นิตยสาร'
       ],
-      backUPList: [],
+      backupAllBook: [],
+      backupBook: [],
       listBook: []
     }
   },
@@ -191,7 +185,8 @@ export default {
       '/trade/'
     )
     this.listBook = res.books
-    this.backUPList = res.books
+    this.backupAllBook = res.books
+    this.backupBook = res.books
     this.page = res.config.currentPage
     this.totalPage = res.config.totalPage
   },
@@ -203,43 +198,131 @@ export default {
     routerBookShelf () {
       this.$nuxt.$router.push('/user/storage')
     },
+    changePagination (event) {
+      const startIndex = 2 * (event - 1)
+      const endIndex = 2 * event
+      console.log(startIndex, endIndex)
+      console.log(this.backupAllBook.slice(startIndex, endIndex))
+      this.listBook = this.backupAllBook.slice(startIndex, endIndex)
+    },
     searchButton (event) {
       const raw = []
       // eslint-disable-next-line array-callback-return
-      this.backUPList.filter((e) => {
+      this.backupBook.filter((e) => {
         if (e.bookTitle.includes(event)) {
           raw.push(e)
         }
       })
-      this.listBook = raw
+      this.backupAllBook = raw
+      this.totalPage = Math.floor(raw.length / 2)
+      this.listBook = raw.slice(0, 2)
     },
     filterGenre (event) {
-      const raw = []
-      // eslint-disable-next-line array-callback-return
-      this.backUPList.filter((e) => {
-        if (e.category.includes(event)) {
-          raw.push(e)
+      let raw = []
+      this.backupAllBook = this.backupBook
+      if (event === 'ทั้งหมด') {
+        if (this.category === 'ทั้งหมด') {
+          raw = this.backupBook
+          this.arrayLoop = this.backupBook
+        } else {
+          // eslint-disable-next-line array-callback-return
+          this.backupBook.filter((e) => {
+            if (e.category.includes(this.category)) {
+              raw.push(e)
+            }
+          })
         }
-      })
-      this.listBook = raw
+      } else if (this.category === 'ทั้งหมด') {
+        // eslint-disable-next-line array-callback-return
+        this.backupAllBook.filter((e) => {
+          if (e.genre.includes(event)) {
+            raw.push(e)
+          }
+        })
+      } else {
+        const rawSencond = []
+        // eslint-disable-next-line array-callback-return
+        this.backupAllBook.filter((e) => {
+          if (e.genre.includes(event)) {
+            raw.push(e)
+          }
+        })
+        console.log(raw)
+        // eslint-disable-next-line array-callback-return
+        raw.filter((e) => {
+          if (e.category.includes(this.category)) {
+            rawSencond.push(e)
+          }
+        })
+        raw = rawSencond
+      }
+      this.backupAllBook = raw
+      this.arrayLoop = raw
+      this.totalPage = Math.floor(raw.length / 2)
+      this.listBook = raw.slice(0, 2)
     },
     filterCategory (event) {
-      const raw = []
-      // eslint-disable-next-line array-callback-return
-      this.backUPList.filter((e) => {
-        if (e.genre.includes(event)) {
-          raw.push(e)
+      let raw = []
+      this.backupAllBook = this.backupBook
+      if (event === 'ทั้งหมด') {
+        if (this.genre === 'ทั้งหมด') {
+          raw = this.backupBook
+        } else {
+          // eslint-disable-next-line array-callback-return
+          this.backupBook.filter((e) => {
+            if (e.genre.includes(this.genre)) {
+              raw.push(e)
+            }
+          })
         }
-      })
-      this.listBook = raw
+      } else if (this.genre === 'ทั้งหมด') {
+        // eslint-disable-next-line array-callback-return
+        this.backupBook.filter((e) => {
+          if (e.category.includes(event)) {
+            raw.push(e)
+          }
+        })
+      } else {
+        const rawSencond = []
+        // eslint-disable-next-line array-callback-return
+        this.backupAllBook.filter((e) => {
+          if (e.category.includes(event)) {
+            raw.push(e)
+          }
+        })
+        // eslint-disable-next-line array-callback-return
+        raw.filter((e) => {
+          if (e.genre.includes(this.event)) {
+            rawSencond.push(e)
+          }
+        })
+        raw = rawSencond
+      }
+      this.backupAllBook = raw
+      this.totalPage = Math.floor(raw.length / 2)
+      this.listBook = raw.slice(0, 2)
     }
   }
 }
 </script>
 
 <style >
-.wid-80 {
-  width: 80%;
+.wid-100 {
+    width: 100%;
+    height: 100%;
+}
+.content-book-center{
+  margin-top: 27px;
+  margin-left: 10%;
+  margin-right: 10%;
+  background-color: white;
+  /* height: 100%; */
+}
+@media only screen and (max-width: 600px) {
+    .content-book-center {
+  margin-left: 2%;
+  margin-right: 2%;
+  }
 }
 .body-market .v-sheet.v-card:not(.v-sheet--outlined) {
     box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%) !important;
@@ -247,15 +330,7 @@ export default {
 .topic{
   display: flex;
 }
-hr{
-  height: 3px;
-  color: #FF8C00 !important;
-  background-color:#FF8C00 !important;
-  border-color: #FF8C00 !important;
-}
-.br-bot{
-    border-bottom: 3px solid #FF8C00 !important;
-}
+
 .search-button{
   width: 100%;
   height: 100%;

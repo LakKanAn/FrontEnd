@@ -1,40 +1,238 @@
 <template>
   <div class="inner-login-page">
     <v-row class="row-login" align="center" justify="center">
-      <v-col cols="12" sm="8" md="4" align="center" justify="center">
-        <v-card v-if="loginPage === 'users'" width="500" class="pa-5 elevation-1 text-left card-login">
-          <v-card-title>เข้าสู่ระบบ</v-card-title>
-          <v-card-subtitle>เข้าสู่ระบบเพื่อใช้งาน</v-card-subtitle>
-          <v-btn
-            class="login-button-other my-2 pa-4 google-login"
-            width="100%"
-            height="50"
-            elevation="2"
-            depressed
-            large
-            @click="googleLogin"
-          >
-            <img src="~/assets/logo/google.png" width="32" height="32" alt="Google Image">&nbsp;Login with Google
-          </v-btn>
-          <v-divider class="my-3" />
-          <v-btn
-            class="my-2 pa-2 login-button"
-            width="49%"
-            large
-            @click="loginPage = 'distributor'"
-          >
-            Distributor Login
-          </v-btn>
-          <v-btn
-            class="my-2 pa-2 login-button"
-            width="49%"
-            depressed
-            large
-            @click="switchLogin"
-          >
-            Admin Login
-          </v-btn>
+      <v-col
+        cols="12"
+        sm="12"
+        md="8"
+        lg="5"
+        xl="5"
+        align="center"
+        justify="center"
+      >
+        <v-img :src="require('~/assets/image/people_gadgets.png')" max-width="302" max-height="456" />
+      </v-col>
+      <v-col
+        cols="12"
+        sm="12"
+        md="12"
+        lg="7"
+        xl="7"
+        class="bg-login"
+      >
+        <v-card width="650" class="ma-auto text-left card-login mobile-login" tile flat>
+          <v-card-title class="text-h5 text-sm-h5 text-md-h4 text-lg-h4 text-xl-h4">
+            เข้าสู่ระบบ
+          </v-card-title>
+          <v-card-actions v-if="loginPage === 'main'">
+            <v-row justify="space-around">
+              <v-col
+                cols="11"
+                sm="11"
+                md="3"
+                lg="3"
+                xl="3"
+              >
+                <v-card width="160" class="pa-4 ma-auto" @click="loginPage = 'users'">
+                  <div class="py-0 d-flex justify-center">
+                    <v-icon color="#171E45" size="50">
+                      mdi-account
+                    </v-icon>
+                  </div>
+                  <v-card-subtitle class="pa-2 d-flex justify-center">
+                    บุคคลทั่วไป
+                  </v-card-subtitle>
+                </v-card>
+              </v-col>
+              <v-col
+                cols="11"
+                sm="11"
+                md="3"
+                lg="3"
+                xl="3"
+              >
+                <v-card width="160" class="pa-4 ma-auto" @click="loginPage = 'distributor'">
+                  <div class="d-flex justify-center">
+                    <v-icon color="#171E45" size="50">
+                      mdi-account-tie-woman
+                    </v-icon>
+                  </div>
+                  <v-card-subtitle class="pa-2 d-flex justify-center">
+                    ผู้จัดจำหน่าย
+                  </v-card-subtitle>
+                </v-card>
+              </v-col>
+              <v-col
+                cols="11"
+                sm="11"
+                md="3"
+                lg="3"
+                xl="3"
+              >
+                <v-card width="160" class="pa-4 ma-auto" @click="loginPage = 'admin'">
+                  <div class="d-flex justify-center">
+                    <v-icon color="#171E45" size="50">
+                      mdi-account-tie-hat
+                    </v-icon>
+                  </div>
+                  <v-card-subtitle class="pa-2 d-flex justify-center">
+                    ผู้ดูแลระบบ
+                  </v-card-subtitle>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+
+          <v-card-actions v-if="loginPage === 'users'">
+            <v-row justify="center" align="center" dense>
+              <v-col cols="12" class="d-flex justify-center align-center">
+                <v-card-subtitle class=" orange--text text--darken-1 pa-1 text-body-2 text-sm-body-2 text-md-h6 text-lg-h6 text-xl-h6 font-weight-regular">
+                  <v-icon color="#FF8C00" size="30">
+                    mdi-account
+                  </v-icon>
+                  บุคคลทั่วไป
+                </v-card-subtitle>
+              </v-col>
+              <v-col cols="12">
+                <v-btn
+                  class="login-button-other my-2 pa-4 google-login"
+                  width="100%"
+                  height="50"
+                  elevation="2"
+                  depressed
+                  large
+                  @click="googleLogin"
+                >
+                  <img src="~/assets/logo/google.png" width="32" height="32" alt="Google Image">&nbsp;Login with Google
+                </v-btn>
+              </v-col>
+              <v-col cols="12" class="d-flex justify-center">
+                <v-card-text class="orange--text text--darken-1 d-flex justify-center pa-0 text-decoration-underline" @click="loginPage = 'main'">
+                  ย้อนกลับ
+                </v-card-text>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+
+          <v-card-actions v-if="loginPage === 'distributor'">
+            <v-row justify="center" align="center" dense>
+              <v-col cols="12" class="d-flex justify-center align-center">
+                <v-card-subtitle class=" orange--text text--darken-1 pa-1 text-body-2 text-sm-body-2 text-md-h6 text-lg-h6 text-xl-h6 font-weight-regular">
+                  <v-icon color="#FF8C00" size="30">
+                    mdi-account-tie-woman
+                  </v-icon>
+                  ผู้จัดจำหน่าย
+                </v-card-subtitle>
+              </v-col>
+              <v-col cols="12">
+                <p class="mb-1 pa-0">
+                  Email
+                </p>
+                <v-text-field
+                  v-model="auth.email"
+                  solo
+                  hide-details
+                  placeholder="Email"
+                />
+              </v-col>
+              <v-col cols="12">
+                <p class="mb-1 pa-0">
+                  Password
+                </p>
+                <v-text-field
+                  v-model="auth.password"
+                  solo
+                  hide-details
+                  placeholder="Password"
+                  type="password"
+                />
+              </v-col>
+              <v-col cols="12">
+                <v-btn
+                  class="my-2 pa-2 login-button"
+                  width="100%"
+                  depressed
+                  large
+                  dark
+                  elevation="4"
+                  @click="login"
+                >
+                  Login
+                </v-btn>
+              </v-col>
+              <v-col v-if="disText" cols="12" class="d-flex justify-center">
+                <p class="text-red d-flex justify-center px-auto">
+                  {{ disText }}
+                </p>
+              </v-col>
+              <v-col cols="12" class="d-flex justify-center">
+                <v-card-text class="orange--text text--darken-1 d-flex justify-center pa-0 text-decoration-underline" @click="loginPage = 'main'">
+                  ย้อนกลับ
+                </v-card-text>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+
+          <v-card-actions v-if="loginPage === 'admin'">
+            <v-row justify="center" align="center" dense>
+              <v-col cols="12" class="d-flex justify-center align-center">
+                <v-card-subtitle class=" orange--text text--darken-1 pa-1 text-body-2 text-sm-body-2 text-md-h6 text-lg-h6 text-xl-h6 font-weight-regular">
+                  <v-icon color="#FF8C00" size="30">
+                    mdi-account-tie-hat
+                  </v-icon>
+                  ผู้ดูแลระบบ
+                </v-card-subtitle>
+              </v-col>
+              <v-col cols="12">
+                <p class="mb-1 pa-0">
+                  Email
+                </p>
+                <v-text-field
+                  v-model="auth.email"
+                  solo
+                  hide-details
+                  placeholder="Email"
+                />
+              </v-col>
+              <v-col cols="12">
+                <p class="mb-1 pa-0">
+                  Password
+                </p>
+                <v-text-field
+                  v-model="auth.password"
+                  solo
+                  hide-details
+                  placeholder="Password"
+                  type="password"
+                />
+              </v-col>
+              <v-col cols="12">
+                <v-btn
+                  class="my-2 pa-2 login-button"
+                  width="100%"
+                  depressed
+                  large
+                  dark
+                  elevation="4"
+                  @click="adminLogin"
+                >
+                  Login
+                </v-btn>
+              </v-col>
+              <v-col v-if="disText" cols="12" class="d-flex justify-center">
+                <p class="text-red d-flex justify-center px-auto">
+                  {{ disText }}
+                </p>
+              </v-col>
+              <v-col cols="12" class="d-flex justify-center">
+                <v-card-text class="orange--text text--darken-1 d-flex justify-center pa-0 text-decoration-underline" @click="loginPage = 'main'">
+                  ย้อนกลับ
+                </v-card-text>
+              </v-col>
+            </v-row>
+          </v-card-actions>
         </v-card>
+        <!--
         <v-card v-if="loginPage === 'admin'" width="500" class="pa-5 elevation-1 text-left">
           <v-card-title>เข้าสู่ระบบของแอดมิน</v-card-title>
           <v-card-subtitle>เข้าสู่ระบบเพื่อใช้งาน</v-card-subtitle>
@@ -146,7 +344,7 @@
           >
             Users Login
           </v-btn>
-        </v-card>
+        </v-card> -->
       </v-col>
     </v-row>
   </div>
@@ -156,7 +354,7 @@
 export default {
   data () {
     return {
-      loginPage: 'users',
+      loginPage: 'main',
       snackbar: false,
       snackbarCheck: false,
       snackbarText: 'No error message',
@@ -247,12 +445,17 @@ export default {
 .inner-login-page{
     width: 100%;
     height: 100%;
-    background-image: url("~/assets/background/book-bg-flat.png");
+    background-color: #F6C35D;
     background-repeat: repeat;
     background-size: auto;
 }
 .row-login{
     height: 100%;
+}
+@media only screen and (max-width: 1024px) {
+.mobile-login{
+  margin-top: 10% !important;
+}
 }
 .v-card__title{
     display: block;
@@ -266,5 +469,11 @@ export default {
 }
 .text-red {
   color: red !important;
+}
+.bg-login {
+ background-color: white;
+ height: 100%;
+ display: flex;
+ justify-items: center;
 }
 </style>

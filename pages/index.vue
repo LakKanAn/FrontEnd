@@ -1,117 +1,120 @@
 <template>
   <div class="inner-index-page font-propmt">
+    <v-row class="banner d-flex justify-center ma-0 pa-0" dense>
+      <v-col cols="3" class="pa-0 d-sm-none d-none d-md-flex d-lg-flex d-xl-flex">
+        <v-img :src="require('~/assets/image/people_read.png')" max-width="444" class="ma-0" />
+      </v-col>
+      <v-col cols="12" md="6" lg="6" xl="6" class="pa-0 d-sm-none d-none d-md-flex d-lg-flex d-xl-flex">
+        <span class="mx-auto">
+          <p class="mb-0 text-h5 text-md-h4 text-lg-h4 text-xl-h4 font-weight-bold">LakKanAn (รักการอ่าน)</p>
+          <p class="banner-subtitle text-h6 text-md-h6 text-lg-h4 text-xl-h4">เว็บแอปพลิเคชันจําหน่ายและแลกเปลี่ยนหนังสือ</p>
+        </span>
+      </v-col>
+      <v-col cols="12" md="6" lg="6" xl="6" class="py-4 px-0 mx-0 d-sm-flex d-flex d-md-none d-lg-none d-xl-none">
+        <v-img :src="require('~/assets/logo/index_mobile.png')" max-width="350" height="53" class="ma-auto" />
+      </v-col>
+      <v-col cols="12" class="pb-0 pl-6 pr-2 d-sm-flex d-flex d-md-none d-lg-none d-xl-none">
+        <v-img :src="require('~/assets/image/people_read.png')" max-width="300" class="ma-auto" />
+      </v-col>
+    </v-row>
     <div class="content-book-center">
-      <!-- <div :class="{'content-book-center':!$vuetify.theme.dark, 'content-book-center-dark':$vuetify.theme.dark} "> -->
-      <div class="px-5 my-10">
-        <v-card
-          outlined
-          class="pa-5"
-        >
-          <v-col class="pa-0" cols="12" sm="6" md="6">
-            <v-list-item-title class="text-h4 mb-1 head-topic">
-              หนังสือมาใหม่
-            </v-list-item-title>
+      <div class="recommend-book">
+        <v-col cols="12" sm="6" md="6">
+          <v-list-item-title class="text-h4 mb-1 head-topic">
+            หนังสือแนะนำ
+          </v-list-item-title>
+        </v-col>
+        <v-row dense>
+          <v-col v-for="(items, index) in hotBook" :key="'new'+index" cols="12" sm="12" md="6">
+            <bookcard :main="true" :data-all="items" />
           </v-col>
-          <v-row class="card-book py-5">
-            <v-col v-for="(items, index) in newBook" :key="'new'+index" cols="12" sm="4" md="3">
-              <v-card class="br-bot v-card-index" outlined @click="routerGo(items.bookId)">
-                <v-img
-                  :src="items.bookImage"
-                  height="450px"
-                  max-width="359"
-                />
-                <v-card-subtitle class="py-1 px-0 over-text">
-                  {{ items.category }}
-                </v-card-subtitle>
-                <v-card-title class="pb-4 pt-0 px-0 over-text">
-                  {{ items.bookTitle }}
-                </v-card-title>
-
-                <v-card-subtitle class="py-1 px-0 over-text">
-                  {{ items.author }}
-                </v-card-subtitle>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-card>
+        </v-row>
       </div>
 
-      <div class="px-5 mb-10">
-        <v-card
-          outlined
-          class="pa-5"
-        >
-          <v-col class="pa-0" cols="12" sm="6" md="3">
-            <v-list-item-title class="text-h4 mb-1 head-topic">
-              หนังสือที่น่าสนใจ
-            </v-list-item-title>
+      <div class="new-book">
+        <v-col cols="12" sm="6" md="6">
+          <v-list-item-title class="text-h4 mb-1 head-topic">
+            หนังสือมาใหม่
+          </v-list-item-title>
+        </v-col>
+        <v-row dense>
+          <v-col v-for="(items, index) in newBook" :key="'new'+index" cols="12" sm="12" md="6">
+            <bookcard :main="true" :data-all="items" />
           </v-col>
-          <v-row class="card-book py-5">
-            <v-col v-for="(items, index) in hotBook" :key="'sd'+index" cols="12" sm="12" md="12">
-              <v-card class="v-card-index v-card-delete-bot " outlined @click="routerGo(items.bookId)">
-                <v-row class="br-bot ">
-                  <v-col cols="12" sm="3" md="3">
-                    <div class="d-flex justify-center">
-                      <v-img
-                        :src="items.bookImage"
-                        height="311"
-                        max-width="212"
-                      />
-                    </div>
-                  </v-col>
-                  <v-col cols="8" sm="8" md="8">
-                    <v-card-subtitle class="py-1 px-0 over-text">
-                      {{ items.category }}
-                    </v-card-subtitle>
-                    <v-card-title class="pb-4 pt-0 px-0 over-text">
-                      {{ items.bookTitle }}
-                    </v-card-title>
-
-                    <v-card-subtitle class="py-1 px-0 over-text">
-                      {{ items.author }}
-                    </v-card-subtitle>
-                    <v-card-text class="pa-0 over-text-des">
-                      <p> {{ items.description }}</p>
-                    </v-card-text>
-                  </v-col>
-                </v-row>
-              </v-card>
-            </v-col>
-            <v-col v-for="(items, index) in subHotBook" :key="'th'+index" cols="12" sm="6" md="6">
-              <v-card class="v-card-index v-card-delete-bot " outlined @click="routerGo(items.bookId)">
-                <v-row class="br-bot ">
-                  <v-col cols="5" sm="4" md="4">
-                    <v-img
-                      :src="items.bookImage"
-                      height="238"
-                      max-width="163"
-                    />
-                  </v-col>
-                  <v-col cols="7" sm="8" md="8">
-                    <v-card-subtitle class="py-1 px-0 over-text">
-                      {{ items.category }}
-                    </v-card-subtitle>
-                    <v-card-title class="pb-4 pt-0 px-0 over-text">
-                      {{ items.bookTitle }}
-                    </v-card-title>
-
-                    <v-card-subtitle class="py-1 px-0 over-text">
-                      {{ items.author }}
-                    </v-card-subtitle>
-                    <v-card-text class="pa-0 over-text-des">
-                      <p> {{ items.description }}</p>
-                    </v-card-text>
-                  </v-col>
-                </v-row>
-              </v-card>
-            </v-col>
-          </v-row>
-          <!-- <p class="addon mb-20">
-            เพิ่มเติม หนังสือใหม่ขายดี
-          </p> -->
-        </v-card>
+        </v-row>
       </div>
 
+      <div class="all-book">
+        <v-col cols="12" sm="6" md="6">
+          <v-list-item-title class="text-h4 mb-1 head-topic">
+            หนังสือทั้งหมด
+          </v-list-item-title>
+        </v-col>
+        <v-row class="px-3 pb-3">
+          <v-col cols="12" sm="4" md="6">
+            <p class="mb-1 pa-0">
+              ค้นหาหนังสือ
+            </p>
+            <v-text-field
+              v-model="choiceName"
+              solo
+              hide-details
+              placeholder="ค้นหาชื่อหนังสือ"
+              prepend-inner-icon="mdi-magnify"
+              @input="searchButton($event)"
+            />
+          </v-col>
+          <v-col cols="6" sm="3" md="3">
+            <p class="mb-1 pa-0">
+              หมวดหมู่
+            </p>
+            <v-select
+              v-model="genre"
+              :items="choieGenre"
+              solo
+              hide-details
+              value="ทั้งหมด"
+              label="หมวดหมู่"
+              @change="filterGenre($event)"
+            />
+          </v-col>
+          <v-col cols="6" sm="3" md="3">
+            <p class="mb-1 pa-0">
+              ประเภท
+            </p>
+            <v-select
+              v-model="category"
+              :items="choieCategory"
+              solo
+              hide-details
+              value="ทั้งหมด"
+              label="ประเภท"
+              @change="filterCategory($event)"
+            />
+          </v-col>
+        </v-row>
+        <div class="text-center d-flex justify-end">
+          <v-pagination
+            v-model="page"
+            :length="totalPage"
+            :total-visible="7"
+            @input="changePagination($event)"
+          />
+        </div>
+        <v-row dense>
+          <v-col v-for="(items, index) in allBook" :key="'new'+index" cols="12" sm="12" md="6">
+            <bookcard :main="true" :data-all="items" />
+          </v-col>
+        </v-row>
+        <div v-if="allBook.length == 0" class="d-flex justify-center ma-auto">
+          <div class="mx-auto my-16">
+            <v-img :src="require('~/assets/image/stack_of_books.png')" max-width="325" class="ma-auto" />
+            <p class="mt-6 text-center p-no-data">
+              ไม่มีหนังสือที่ค้นหา
+            </p>
+          </div>
+        </div>
+      </div>
       <!-- <div class="px-5 mb-10">
         <v-col class="pa-0" cols="12" sm="6" md="3">
           <h1 class="topic justify-center">
@@ -146,75 +149,16 @@
           เพิ่มเติม หมวดหมู่หนังสือ
         </p>
       </div> -->
-
-      <div class="px-5 pb-0">
-        <v-col class="px-0 pb-0 " cols="12" sm="6" md="3">
-          <h1 class="topic justify-center">
-            หนังสือทั้งหมด
-          </h1>
-        </v-col>
-        <hr>
-        <v-row class="py-5">
-          <v-col cols="12" sm="4" md="4">
-            <v-text-field
-              outlined
-              hide-details
-              label="ชื่อเรื่อง"
-            />
-          </v-col>
-          <v-col cols="6" sm="3" md="3">
-            <v-select
-              v-model="genre"
-              :items="choieGenre"
-              outlined
-              hide-details
-              label="หมวดหมู่"
-            />
-          </v-col>
-          <v-col cols="6" sm="3" md="3">
-            <v-select
-              v-model="category"
-              :items="choieCategory"
-              outlined
-              hide-details
-              label="ประเภท"
-            />
-          </v-col>
-          <v-col align-self="center" cols="12" sm="2" md="2" lg="2">
-            <v-btn color="#FF8C00" x-large class="text-center mb-0 search-button wid-100" @click="searchButton()">
-              ค้นหา
-            </v-btn>
-          </v-col>
-        </v-row>
-        <hr>
-        <v-row class="card-book py-5">
-          <v-col v-for="(items, index) in allBook" :key="'four'+index" cols="12" sm="4" md="3">
-            <v-card class="br-bot v-card-index" outlined @click="routerGo(items.bookId)">
-              <v-img
-                :src="items.bookImage"
-                height="450px"
-                max-width="359"
-              />
-              <v-card-subtitle class="py-1 px-0 over-text">
-                {{ items.category }}
-              </v-card-subtitle>
-              <v-card-title class="pb-4 pt-0 px-0 over-text">
-                {{ items.bookTitle }}
-              </v-card-title>
-
-              <v-card-subtitle class="py-1 px-0 over-text">
-                {{ items.author }}
-              </v-card-subtitle>
-            </v-card>
-          </v-col>
-        </v-row>
-      </div>
     </div>
+    <compofooter />
   </div>
 </template>
 
 <script>
+import bookcard from '~/components/bookcard.vue'
+import compofooter from '~/components/compofooter.vue'
 export default {
+  components: { bookcard, compofooter },
   data () {
     return {
       snackbar: true,
@@ -223,9 +167,11 @@ export default {
         email: '',
         password: ''
       },
-      genre: '',
-      category: '',
+      choiceName: '',
+      genre: 'ทั้งหมด',
+      category: 'ทั้งหมด',
       choieGenre: [
+        'ทั้งหมด',
         'ตลก',
         'ต่อสู้',
         'โรแมนติก',
@@ -236,6 +182,7 @@ export default {
         'อิงประวัติศาสตร์'
       ],
       choieCategory: [
+        'ทั้งหมด',
         'สารคดี',
         'บันเทิงคดี',
         'สิ่งพิมพ์',
@@ -247,10 +194,20 @@ export default {
       hotBook: [],
       subHotBook: [],
       allBook: [],
+      backupAllBook: [],
+      checkLoop: false,
       backupBook: [],
+      totalPage: 1,
       rules: [
         value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
         value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!'
+      ],
+      page: 1,
+      icons: [
+        'mdi-facebook',
+        'mdi-twitter',
+        'mdi-linkedin',
+        'mdi-instagram'
       ]
     }
   },
@@ -259,26 +216,128 @@ export default {
       '/market/'
     )
     this.backupBook = res.books
+    this.backupAllBook = res.books
     this.newBook = res.books.slice(0, 4)
     this.hotBook = res.books.slice(0, 4)
     this.subHotBook = res.books.slice(0, 4)
-    this.allBook = res.books
+    this.allBook = res.books.slice(0, 2)
+    this.totalPage = Math.floor(this.backupBook.length / 2)
+    console.log(this.totalPage)
     this.hotBook = this.hotBook.reverse()
   },
   methods: {
-    async searchButton () {
-      // eslint-disable-next-line eqeqeq
-      const categoryBuffer = this.category == '' ? '' : 'category=' + this.category
-      // eslint-disable-next-line eqeqeq
-      const genreBuffer = this.genre == '' ? '' : 'genre=' + this.genre
-      const res = await this.$axios.$get('/market/filter?' + categoryBuffer + '&' + genreBuffer)
-      this.allBook = res.bookDetail
+    // async searchButton () {
+    //   // eslint-disable-next-line eqeqeq
+    //   const categoryBuffer = this.category == '' ? '' : 'category=' + this.category
+    //   // eslint-disable-next-line eqeqeq
+    //   const genreBuffer = this.genre == '' ? '' : 'genre=' + this.genre
+    //   const res = await this.$axios.$get('/market/filter?' + categoryBuffer + '&' + genreBuffer)
+    //   this.allBook = res.bookDetail
+    // },
+    changePagination (event) {
+      const startIndex = 2 * (event - 1)
+      const endIndex = 2 * event
+      console.log(startIndex, endIndex)
+      console.log(this.backupAllBook.slice(startIndex, endIndex))
+      this.allBook = this.backupAllBook.slice(startIndex, endIndex)
+    },
+    searchButton (event) {
+      const raw = []
+      // eslint-disable-next-line array-callback-return
+      this.backupBook.filter((e) => {
+        if (e.bookTitle.includes(event)) {
+          raw.push(e)
+        }
+      })
+      this.backupAllBook = raw
+      this.totalPage = Math.floor(raw.length / 2)
+      this.allBook = raw.slice(0, 2)
+    },
+    filterGenre (event) {
+      let raw = []
+      this.backupAllBook = this.backupBook
+      if (event === 'ทั้งหมด') {
+        if (this.category === 'ทั้งหมด') {
+          raw = this.backupBook
+        } else {
+          // eslint-disable-next-line array-callback-return
+          this.backupBook.filter((e) => {
+            if (e.category.includes(this.category)) {
+              raw.push(e)
+            }
+          })
+        }
+      } else if (this.category === 'ทั้งหมด') {
+        // eslint-disable-next-line array-callback-return
+        this.backupAllBook.filter((e) => {
+          if (e.genre.includes(event)) {
+            raw.push(e)
+          }
+        })
+      } else {
+        const rawSencond = []
+        // eslint-disable-next-line array-callback-return
+        this.backupAllBook.filter((e) => {
+          if (e.genre.includes(event)) {
+            raw.push(e)
+          }
+        })
+        console.log(raw)
+        // eslint-disable-next-line array-callback-return
+        raw.filter((e) => {
+          if (e.category.includes(this.category)) {
+            rawSencond.push(e)
+          }
+        })
+        raw = rawSencond
+      }
+      this.backupAllBook = raw
+      this.totalPage = Math.floor(raw.length / 2)
+      this.allBook = raw.slice(0, 2)
+    },
+    filterCategory (event) {
+      let raw = []
+      this.backupAllBook = this.backupBook
+      if (event === 'ทั้งหมด') {
+        if (this.genre === 'ทั้งหมด') {
+          raw = this.backupBook
+        } else {
+          // eslint-disable-next-line array-callback-return
+          this.backupBook.filter((e) => {
+            if (e.genre.includes(this.genre)) {
+              raw.push(e)
+            }
+          })
+        }
+      } else if (this.genre === 'ทั้งหมด') {
+        // eslint-disable-next-line array-callback-return
+        this.backupBook.filter((e) => {
+          if (e.category.includes(event)) {
+            raw.push(e)
+          }
+        })
+      } else {
+        const rawSencond = []
+        // eslint-disable-next-line array-callback-return
+        this.backupAllBook.filter((e) => {
+          if (e.category.includes(event)) {
+            raw.push(e)
+          }
+        })
+        // eslint-disable-next-line array-callback-return
+        raw.filter((e) => {
+          if (e.genre.includes(this.event)) {
+            rawSencond.push(e)
+          }
+        })
+        raw = rawSencond
+      }
+      this.backupAllBook = raw
+      this.totalPage = Math.floor(raw.length / 2)
+      this.allBook = raw.slice(0, 2)
     },
     login () {
       this.$nuxt.$router.push('/login')
-    },
-    routerGo (item) {
-      this.$nuxt.$router.push('/products/' + item)
     }
   }
 }
@@ -292,49 +351,22 @@ export default {
   font-family: 'Prompt', sans-serif !important;
   font-weight: 500;
  }
- .v-card-index .v-card__title{
-    display: block;
-    text-align: center !important;
-}
-.v-card__subtitle{
-    text-align: center;
-}
-.login-button-router{
-    background-color: aqua !important;
-}
 .inner-index-page{
     width: 100%;
     height: 100%;
-    /* background-image: url("~/assets/background/book-bg-flat.png"); */
-    background-size: auto;
-    background-repeat: repeat;
 }
 .content-book-center{
-  padding-top: 30px;
-  margin-left: 20%;
-  margin-right: 20%;
-  background-color: white;
-  height: 100%;
-}
-.content-book-center-dark{
-  padding-top: 30px;
+  margin-top: 27px;
   margin-left: 10%;
   margin-right: 10%;
-  background-color: #1E1E1E;
-  height: 100%;
+  background-color: white;
+  /* height: 100%; */
 }
 
 @media only screen and (max-width: 600px) {
-  .content-book-center-dark {
-  margin-left: 2%;
-  margin-right: 2%;
-  }
     .content-book-center {
   margin-left: 2%;
   margin-right: 2%;
-  }
-      h1{
-    font-size: 24px;
   }
 }
 .topic{
@@ -342,50 +374,12 @@ export default {
   background-color:#FF8C00;
   display: flex;
 }
-.category{
+/* .category{
   color: var(--v-texttopic-base) !important;
   background-color:#FF8C00;
-}
-.addon{
-  color: #FF8C00;
-  display: flex;
-  float: right;
-}
-hr{
-  height: 3px;
-  color: #FF8C00 !important;
-  background-color:#FF8C00 !important;
-  border-color: #FF8C00 !important;
-}
-.card-book .v-card__title{
-    display: block;
-    text-align: left !important;
-}
-.card-book .v-card__subtitle{
-    display: block;
-    text-align: left !important;
-}
-.theme--light.v-sheet--outlined .v-card-index{
-  border-left: 0px !important;
-  border-right: 0px !important;
-  border-top: 0px !important;
-}
-.theme--dark.v-sheet--outlined .v-card-index{
-    border: 0 !important;
-}
-.v-card-index {
-  border-left: 0px !important;
-  border-right: 0px !important;
-  border-top: 0px !important;
-}
-.v-card-delete-bot {
-  border-bottom: 0px !important;
-}
+} */
 .v-sheet.v-card {
     border-radius: 0px !important;
-}
-.br-bot{
-    border-bottom: 3px solid #FF8C00 !important;
 }
 .search-button{
   width: 100%;
@@ -403,13 +397,31 @@ display: -webkit-box;
 overflow: hidden;
 text-overflow: ellipsis;
 }
-.wid-100{
-  width: 100%;
-}
 .font-propmt{
     font-family: 'Prompt', sans-serif !important;
  }
  .theme--light.v-sheet--outlined {
     border: thin solid #FF8C00;
+}
+.banner{
+width: 100%;
+background: #F6C35D;
+font-family: 'Prompt';
+font-style: normal;
+font-weight: 600 !important;
+font-size: 40px;
+display: flex;
+align-items: center;
+}
+.banner-subtitle{
+font-style: normal !important;
+font-weight: 400 !important;
+/* font-size: 36px; */
+}
+.image-footer{
+ margin-bottom: -30px;
+}
+.all-book{
+  margin-bottom: 20%;
 }
 </style>

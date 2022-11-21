@@ -1,5 +1,6 @@
 <template>
-  <div class="ma-auto">
+<trade :tradePage="false"></trade>
+  <!-- <div class="ma-auto">
     <v-col class="py-5 bg-orange" cols="12" sm="12" md="12">
       <h1 class="d-flex justify-center h1-trade">
         <img class="pr-2" src="~/assets/icon/trade-white.png" alt="trade-image">การแลกเปลี่ยนของฉัน
@@ -256,7 +257,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -299,7 +300,7 @@ export default {
       const index = this.offerBook.map(e => e.book.bookTitle).indexOf(this.dialogm1)
       await this.$axios.$post('/trade/confirm/' + this.idBook + '/' + this.offerBook[index].offerId)
       this.confirmDialog = false
-      setTimeout(this.$nuxt.$router.push('/user/storage'), 5000)
+      setTimeout(() => { this.$nuxt.$router.push('/user/storage') }, 2000)
     },
     changeOfferCard (index) {
       this.offerBookCard = this.offerBook[index].book

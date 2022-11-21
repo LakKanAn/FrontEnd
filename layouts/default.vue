@@ -153,66 +153,63 @@
               </v-btn>
             </v-fab-transition>
           </template>
-          <v-card class="font-propmt">
-            <v-card-title>
-              <span>แจ้งปัญหา</span>
+          <v-card class="font-propmt pa-6">
+            <v-card-title class="px-0">
+              <p class="text-h5 text-sm-h5 text-md-h4 text-lg-h4 text-xl-h4 black--text mb-1">
+                แจ้งปัญหา
+              </p>
             </v-card-title>
-            <v-divider />
-            <v-card-text>
-              <v-container>
-                <v-form ref="formReport">
-                  <v-row>
-                    <v-col cols="12">
-                      <v-text-field v-model="topic" outlined label="หัวข้อเรื่อง" :rules="req" required />
-                    </v-col>
-                    <v-col cols="12">
-                      <v-textarea
-                        v-model="details"
-                        label="รายละเอียด"
-                        outlined
-                        no-resize
-                        required
-                        :rules="req"
-                      />
-                    </v-col>
-                  </v-row>
-                </v-form>
-              </v-container>
-              <small>กรุณาพิมพ์เนื้อหาของปัญหาให้ละเอียดและครบถ้วน</small>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                color="primary"
-                text
-                @click="dialogReport = false"
-              >
-                ยกเลิก
-              </v-btn>
-              <v-btn
-                color="primary"
-                text
-                @click="sendReport"
-              >
-                ส่ง
-              </v-btn>
-            </v-card-actions>
+            <v-form ref="formReport">
+              <v-row dense>
+                <v-col cols="12">
+                  <p class="mb-1 pa-0 d-flex justify-start">
+                    หัวข้อเรื่อง
+                  </p>
+                  <v-text-field v-model="topic" solo label="หัวข้อเรื่อง" :rules="req" required />
+                </v-col>
+                <v-col cols="12">
+                  <p class="mb-1 pa-0 d-flex justify-start">
+                    รายละเอียด
+                  </p>
+                  <v-textarea
+                    v-model="details"
+                    label="รายละเอียด"
+                    solo
+                    no-resize
+                    required
+                    :rules="req"
+                  />
+                </v-col>
+              </v-row>
+            </v-form>
+            <v-row class="mt-5" justify="center">
+              <v-col cols="12" md="6" lg="6" xl="6">
+                <v-btn
+                  x-large
+                  :disabled="!valid"
+                  color="primary"
+                  class="button-choice"
+                  @click="sendReport"
+                >
+                  บันทึก
+                </v-btn>
+              </v-col>
+              <v-col cols="12" md="6" lg="6" xl="6">
+                <v-btn
+                  x-large
+                  color="black"
+                  class="button-choice"
+                  outlined
+                  @click="dialogReport = false"
+                >
+                  ยกเลิก
+                </v-btn>
+              </v-col>
+            </v-row>
           </v-card>
         </v-dialog>
       </v-row>
     </div>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
     <!-- <v-footer
       :absolute="!fixed"
       app
@@ -234,7 +231,7 @@ export default {
       fixed: false,
       dialogReport: false,
       req: [
-        v => !!v || 'ช่องนี้จำเป็นต้องใส่'
+        v => !!v || 'กรุณากรอกช่องนี้'
       ],
       items: [
         {
@@ -251,7 +248,8 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'LakkanAn'
+      title: 'LakkanAn',
+      valid: true
     }
   },
   fetch () {
@@ -289,8 +287,10 @@ export default {
       }
     },
     sendReport () {
-      this.$axios.$post('/users/report/', { topic: this.topic, details: this.details })
-      setTimeout(this.dialogReport = false, 2000)
+      if (this.$refs.formReport.validate()) {
+        this.$axios.$post('/users/report/', { topic: this.topic, details: this.details })
+        setTimeout(() => { this.dialogReport = false }, 2000)
+      }
     }
   }
 }
