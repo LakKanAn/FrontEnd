@@ -4,7 +4,6 @@
       <v-col cols="12" sm="12" md="12">
         <v-tabs
           v-model="currentItem"
-          centered
           mobile-breakpoint
           grow
         >
