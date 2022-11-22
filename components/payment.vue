@@ -134,6 +134,7 @@
                     </v-tooltip>
                   </div>
                 </v-col>
+                <p class="red--text" v-if="validateCheck">กรุณากรอกให้ครบทุกช่อง</p>
               </v-row>
               <v-row justify="center" class="my-2">
                 <v-col cols="12" md="6" lg="6" xl="6">
@@ -213,6 +214,21 @@
         </v-card-title>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="failDialog"
+      max-width="350"
+    >
+      <v-card rounded="lg" class="pa-4">
+        <div class="d-flex justify-center">
+          <v-icon color="red" size="80">
+            mdi-close-circle-outline
+          </v-icon>
+        </div>
+        <v-card-title class="d-flex justify-center">
+          มีหนังสือเล่มนี้อยู่แล้ว
+        </v-card-title>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -237,7 +253,9 @@ export default {
       cardMasks,
       cvvMask,
       paymentId: '',
-      succDialog: false
+      succDialog: false,
+      failDialog: false,
+      validateCheck: false
     }
   },
   methods: {
@@ -263,12 +281,22 @@ export default {
       }
     },
     async buy () {
+      this.validateCheck = false
       if (this.cardNumber && this.name && this.expireMonth && this.expireYear && this.cvv) {
         const res = await this.$axios.$post(
           '/payment/create/' + this.idBook
         )
-        this.paymentId = res.paymentId
-        this.confirmDialog = true
+        if (res.message === 'This book you have already bought.') {
+          console.log('hee')
+          this.dialog = false
+          this.failDialog = true
+          setTimeout(() => { this.failDialog = false }, 2000)
+        } else {
+          this.paymentId = res.paymentId
+          this.confirmDialog = true
+        }
+      } else {
+        this.validateCheck = true
       }
     },
     async confirmBuy () {
@@ -348,7 +376,7 @@ export default {
     border-radius: 5px;
     font-size: 22px;
     font-weight: 500;
-    box-shadow: 3px 10px 20px 0px rgba(35, 100, 210, 0.3);
+    box-shadow: 3px 10px 20px 0px rgba(35, 100, 210, 0.3) !important;
     color: #fff;
     margin-top: 20px;
     cursor: pointer;

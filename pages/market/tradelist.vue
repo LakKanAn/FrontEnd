@@ -201,8 +201,6 @@ export default {
     changePagination (event) {
       const startIndex = 2 * (event - 1)
       const endIndex = 2 * event
-      console.log(startIndex, endIndex)
-      console.log(this.backupAllBook.slice(startIndex, endIndex))
       this.listBook = this.backupAllBook.slice(startIndex, endIndex)
     },
     searchButton (event) {
@@ -214,8 +212,8 @@ export default {
         }
       })
       this.backupAllBook = raw
-      this.totalPage = Math.floor(raw.length / 2)
-      this.listBook = raw.slice(0, 2)
+      this.totalPage = Math.floor(raw.length / 6)
+      this.listBook = raw.slice(0, 6)
     },
     filterGenre (event) {
       let raw = []
@@ -247,7 +245,6 @@ export default {
             raw.push(e)
           }
         })
-        console.log(raw)
         // eslint-disable-next-line array-callback-return
         raw.filter((e) => {
           if (e.category.includes(this.category)) {
@@ -258,8 +255,8 @@ export default {
       }
       this.backupAllBook = raw
       this.arrayLoop = raw
-      this.totalPage = Math.floor(raw.length / 2)
-      this.listBook = raw.slice(0, 2)
+      this.totalPage = Math.floor(raw.length / 6)
+      this.listBook = raw.slice(0, 6)
     },
     filterCategory (event) {
       let raw = []
@@ -299,8 +296,8 @@ export default {
         raw = rawSencond
       }
       this.backupAllBook = raw
-      this.totalPage = Math.floor(raw.length / 2)
-      this.listBook = raw.slice(0, 2)
+      this.totalPage = Math.floor(raw.length / 6)
+      this.listBook = raw.slice(0, 6)
     }
   }
 }
