@@ -1,84 +1,102 @@
 <template>
-  <div>
-    <v-row justify="space-between" class="my-4 mx-10">
-      <v-col cols="12" sm="12" md="2" lg="2" xl="2">
-        <div class="select-wid mx-auto">
-          <v-select
-            :items="choice"
-            label="Standard"
-            hide-details
-            value="แนวนอน"
-            solo
-            class="elevation-2"
-            @change="changeStyle($event)"
-          />
-        </div>
-      </v-col>
-      <v-col cols="12" sm="12" md="4" lg="4" xl="4">
-        <div v-if="!vertical" class="my-auto">
-        <span class="my-auto mx-2">หน้า {{ pageNumShow }} / {{ pageCountShow }}</span>
-          <v-btn
-            elevation="2"
-            dark
-            color="#FF8C00"
-            x-large
-            @click="onPrevPage"
-          >
-            <v-icon color="white">
-              mdi-arrow-left-thin
-            </v-icon>
-            ก่อนหน้า
-          </v-btn>
-          <v-btn
-            elevation="2"
-            dark
-            color="#FF8C00"
-            x-large
-            @click="onNextPage"
-          >
-            ถัดไป
-            <v-icon color="white">
-              mdi-arrow-right-thin
-            </v-icon>
-          </v-btn>
-        </div>
-      </v-col>
-    </v-row>
-    <div id="horizontal" class="pdf-read d-flex justify-center">
-      <canvas id="the-canvas" />
+  <div class="inner-index-page">
+    <div class="content-book-center">
+      <v-row justify="space-between" class="my-4 mx-10">
+        <v-col cols="12" sm="12" md="2" lg="2" xl="2">
+          <div class="select-wid mx-auto">
+            <v-select
+              :items="choice"
+              label="Standard"
+              hide-details
+              value="แนวนอน"
+              solo
+              class="elevation-2"
+              @change="changeStyle($event)"
+            />
+          </div>
+        </v-col>
+        <v-col cols="12" sm="12" md="4" lg="4" xl="4">
+          <div v-if="!vertical" class="my-auto">
+            <v-row dense>
+              <v-col cols="12" sm="12" md="3" lg="3" class="ma-auto">
+                <span class="my-auto mx-auto">หน้า {{ pageNumShow }} / {{ pageCountShow }}</span>
+              </v-col>
+              <v-col
+                cols="12"
+                sm="12"
+                md="9"
+                lg="9"
+                xl="9"
+              >
+                <v-btn
+                  elevation="2"
+                  dark
+                  color="#FF8C00"
+                  large
+                  @click="onPrevPage"
+                >
+                  <v-icon color="white">
+                    mdi-arrow-left-thin
+                  </v-icon>
+                  ก่อนหน้า
+                </v-btn>
+                <v-btn
+                  elevation="2"
+                  dark
+                  color="#FF8C00"
+                  large
+                  @click="onNextPage"
+                >
+                  ถัดไป
+                  <v-icon color="white">
+                    mdi-arrow-right-thin
+                  </v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </div>
+        </v-col>
+      </v-row>
+      <div id="horizontal" class="pdf-read d-flex justify-center">
+        <canvas id="the-canvas" />
+      </div>
+      <v-row v-if="!vertical" justify="end" class="my-4  mx-10">
+        <v-col cols="12" sm="12" md="4" lg="4" xl="4">
+          <v-row dense>
+            <v-col cols="12" sm="12" md="3" lg="3" class="ma-auto">
+              <span class="my-auto mx-2">หน้า {{ pageNumShow }} / {{ pageCountShow }}</span>
+            </v-col>
+            <v-col cols="12" sm="12" md="9" lg="9" xl="9">
+              <v-btn
+                elevation="2"
+                dark
+                color="#FF8C00"
+                large
+                @click="onPrevPage"
+              >
+                <v-icon color="white">
+                  mdi-arrow-left-thin
+                </v-icon>
+                ก่อนหน้า
+              </v-btn>
+              <v-btn
+                elevation="2"
+                dark
+                color="#FF8C00"
+                large
+                @click="onNextPage"
+              >
+                ถัดไป
+                <v-icon color="white">
+                  mdi-arrow-right-thin
+                </v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+      <div id="vertical" class="pdf-read" />
     </div>
-    <v-row v-if="!vertical" justify="end" class="my-4  mx-10">
-      <v-col cols="12" sm="12" md="4" lg="4" xl="4">
-        <div class="my-auto">
-        <span class="my-auto mx-2">หน้า {{ pageNumShow }} / {{ pageCountShow }}</span>
-          <v-btn
-            elevation="2"
-            dark
-            color="#FF8C00"
-            x-large
-            @click="onPrevPage"
-          >
-            <v-icon color="white">
-              mdi-arrow-left-thin
-            </v-icon>
-            ก่อนหน้า
-          </v-btn>
-          <v-btn
-            elevation="2"
-            dark
-            color="#FF8C00"
-            x-large
-            @click="onNextPage"
-          >
-            ถัดไป
-            <v-icon color="white">
-              mdi-arrow-right-thin
-            </v-icon>
-          </v-btn>
-        </div>
-      </v-col>
-    </v-row>
-    <div id="vertical" class="pdf-read" />
     <compofooter />
     <v-fab-transition>
       <v-btn
@@ -179,7 +197,7 @@ export default {
         this.pageCountShow = pageCount
       })
     } catch (error) {
-      // this.$nuxt.$router.push('/')
+      this.$nuxt.$router.push('/')
     }
   },
   methods: {
@@ -341,5 +359,27 @@ canvas {
   width: 90%;
   height: 100%;
 }
+}
+.content-book-center{
+  padding-top: 30px;
+  margin-left: 10%;
+  margin-right: 10%;
+  background-color: white;
+}
+.inner-index-page{
+    width: 100%;
+}
+@media only screen and (max-width: 600px) {
+  .content-book-center-dark {
+  margin-left: 2%;
+  margin-right: 2%;
+  }
+    .content-book-center {
+  margin-left: 2%;
+  margin-right: 2%;
+  }
+  h1{
+    font-size: 24px;
+  }
 }
 </style>
