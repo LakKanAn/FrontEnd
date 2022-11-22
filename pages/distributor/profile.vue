@@ -148,7 +148,6 @@ export default {
     const res = await this.$axios.$get(
       '/distributors/info'
     )
-    console.log(res.distributor)
     this.email = res.distributor.email
     this.address = res.distributor.address
     this.displayName = res.distributor.displayName
