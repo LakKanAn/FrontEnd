@@ -447,7 +447,6 @@ export default {
         this.offerBook = []
       } else {
         this.offerBook = res.offerDetails
-        console.log(res.offerDetails)
       }
     }
   },
